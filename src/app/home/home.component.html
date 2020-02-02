@@ -1,0 +1,81 @@
+<div class="centered-block">
+  <div class="header">{{pageProperties.header}}</div>
+  <div class="sub-header">{{pageProperties.subheader}}</div>
+  <p>{{pageProperties.description}}</p>
+  <div class="double-section">
+      <button (click)="navigateToBrochure('english')">ENGLISH BROCHURE</button>
+      <button (click)="navigateToBrochure('spanish')">SPANISH BROCHURE</button>
+  </div>
+  <app-promo></app-promo>
+  <table class="plans">
+      <tr>
+        <td id="gold">
+            <span class="plan-header" id="gold-header"></span>
+            <hr width="50%" color="#ddd" />
+            <ul class="plan-table" id="gold-table"></ul>
+            <div class="plan-footer" id="gold-footer">
+                <hr width="50%" color="#ddd" />
+                <span id="gold-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }" ></span>
+                <p id="gold-price-promo"></p>
+                <h4 id="gold-discount"></h4>
+                <button (click)="navigateToOrderForm('gold')">ORDER NOW</button>
+            </div>
+        </td>
+        <td id="platinum">
+            <span class="plan-header" id="platinum-header"></span>
+            <hr width="50%" color="#ddd" />
+            <ul class="plan-table" id="platinum-table"></ul>
+            <div class="plan-sub-header">
+            <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
+            <ul>
+                <li> Plumbing - Fixtures, faucets, shower heads, interior hose bibs</li>
+                <li> Sediment in the water heater</li>
+                <li> Plus over 25 more items!</li>
+            </ul>
+            </div>
+            <div class="plan-footer">
+                <hr width="50%" color="#ddd" />
+                <span id="platinum-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }"></span>
+                <p id="platinum-price-promo"></p>
+                <h4 id="platinum-discount"></h4>
+                <button (click)="navigateToOrderForm('platinum')">ORDER NOW</button>
+            </div>
+        </td>
+        <td id="diamond">
+            <span class="plan-header" id="diamond-header"></span>
+            <hr width="50%" color="#ddd" />
+            <ul class="plan-table" id="diamond-table"></ul>
+            <div class="plan-sub-header">
+            <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
+            <ul>
+                <li> Plumbing - Fixtures, faucets, shower heads, interior hose bibs</li>
+                <li> Sediment in the water heater</li>
+                <li> Plus over 25 more items!</li>
+            </ul>
+            </div>
+            <ul class="plan-table" id="diamond-table-extra"></ul>
+            <div class="plan-sub-header">
+            <ul>
+                <li> Code Violations and permits up to $250</li>
+                <li> Unknown improperly matched and/or installed systems</li>
+                <li> Increases Professional Series appliances up to $2,500</li>
+                <li> Increases Toilet replacement up to $600</li>
+                <li> Removal of defective equipment</li>
+            </ul>
+            </div>
+            <div class="plan-footer">
+                <hr width="50%" color="#ddd" />
+                <span id="diamond-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }"></span>
+                <p id="diamond-price-promo"></p>
+                <h4 id="diamond-discount"></h4>
+                <button (click)="navigateToOrderForm('diamond')">ORDER NOW</button>
+            </div>
+        </td>
+    </tr>
+  </table>
+  <div class="sellers-coverage-block">
+    <div class="header">FREE Sellers Coverage</div> 
+    <button (click)="navigateToOrderForm('seller')">ORDER NOW</button>
+  </div>
+  <!-- <app-footer></app-footer> -->
+</div>

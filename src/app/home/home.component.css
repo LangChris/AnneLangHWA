@@ -1,0 +1,196 @@
+.plans {
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    background-color: #eee;
+}
+
+.plans td {
+    position: relative;
+    display: inline-block;
+    border-radius: 5px;
+    margin: 10px 15px 10px 15px;
+    padding-top: 10px;
+    width:30%;
+    height: 1200px;
+    background-color: #fff;
+    border: 2px solid #eee;
+}
+
+.plans td:hover {
+    border: 2px solid #4894a4;
+    height: 1250px;
+}
+
+.sellers-coverage-block {
+    height: auto;
+    background-color: #30333c;
+    padding: 25px;
+}
+
+.plan-table {
+    list-style: none;
+    text-align: left;
+}
+
+.plan-header {
+    color: #000;
+    font-size: 25px;
+}
+
+.plan-sub-header {
+    font-size: 12px; 
+    font-weight: bold;
+    color: #4894a4;
+    padding-bottom: 25px;
+}
+
+.plan-footer {
+    width: 100%;
+    height: 250px;
+    position: absolute;
+    bottom: 0;
+}
+
+.plan-footer span {
+    font-size: 30px;
+    font-weight: bold;
+    color: orange;
+}
+
+.plan-footer p {
+    font-size: 30px;
+    font-weight: bold;
+    color: #eb5e17;
+}
+
+.plan-footer h4 {
+    color: orange;
+}
+
+.plan-footer h5 {
+    color: #000;
+}
+
+.plan-sub-header ul {
+    list-style: none;
+    text-align: left;
+}
+
+.plan-sub-header ul li:before {
+    content: '\25CF';
+}
+
+@media screen and (max-width: 1150px) {
+    .plans td {
+        margin: 10px auto 10px auto;
+        display: block;
+        width: 95%;
+        background-color: #fff;
+        border: 2px solid #eee;
+    }
+    
+    .plans ul {
+        text-align: center;
+    }
+    
+    .plans td:hover {
+        border: 2px solid #eee;
+    }
+    
+    #gold {
+        height: 1000px;
+    }
+    
+    #platinum {
+        height: 1200px;
+    }
+    
+    #diamond {
+        height: 1300px;
+    }
+    
+    .large {
+        width: 150px;
+    }
+
+    .medium {
+        width: 70px;
+    }
+
+    .small {
+        width: 20px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    
+    #contact-info-box {
+        width: 175px;
+    }
+    
+    .contact-info {
+        font-size: 10px;
+    }
+    
+    .plans td {
+        display: block;
+        width: 95%;
+        height: 300px;
+        background-color: #fff;
+        border: 2px solid #eee;
+    }
+    
+    .plans ul {
+        display: none;
+    }
+    
+    hr {
+        display: none;
+    }
+    
+    .plan-sub-header span {
+        display: none;
+    }
+    
+    #logo {
+        width: 100px;
+    }
+    
+    #anne-logo {
+        width: 110px;
+    }
+    
+    #contact-info {
+        width: 175px;
+    }
+    
+    .sub-header {
+        font-size: 15px;
+    }
+    
+    .double-section {
+        width: 100%;
+    }
+    
+    .plans td:hover {
+        border: 2px solid #eee;
+        height: 300px;
+    }
+    
+    .double-section button {
+        margin-bottom: 10px;
+    }
+    
+    #gold {
+        height: 300px;
+    }
+    
+    #platinum {
+        height: 300px;
+    }
+    
+    #diamond {
+        height: 300px;
+    }
+}

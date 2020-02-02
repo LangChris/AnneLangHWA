@@ -1,0 +1,11 @@
+.order-form {
+    margin: 0 auto;
+    width: 50%;
+    min-width: 400px;
+    text-align: left;
+    padding-bottom: 25px;
+}
+
+.required {
+    color: #ff0000;
+}

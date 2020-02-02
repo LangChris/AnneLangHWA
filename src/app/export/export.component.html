@@ -1,0 +1,53 @@
+<p *ngIf="orders" >Orders: {{orders.length}}</p>
+
+<div *ngIf="!orders || orders.length == 0" class="centered-block">
+  <p>No orders placed yet.</p>
+</div>
+
+<div *ngIf="orders && orders.length > 0" #TABLE> 
+  <table class="table">  
+    <thead>  
+      <tr>  
+        <th>Name</th>  
+        <th>Email</th>  
+        <th>Plan</th>
+        <th>Home Type</th>
+        <th>Address</th>
+        <th>Buyer Name</th>
+        <th>Buyer Email</th>
+        <th>Seller Name</th>
+        <th>Seller Email</th>
+        <th>Close/Start Date</th>
+        <th>Optional Coverage</th>
+        <th>Hvac Coverage</th>
+        <th>Realtor Name</th>
+        <th>Realtor Email</th>
+        <th>Title Agent Email</th>
+        <th>Promo</th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      <tr *ngFor="let order of orders">  
+        <td>{{order.name}}</td>  
+        <td>{{order.email}}</td>
+        <td>{{order.plan}}</td>
+        <td>{{order.homeType}}</td>
+        <td>{{order.address.addressLine}}<br />&nbsp;{{order.address.city}},{{order.address.state}} {{order.address.zip}}</td>
+        <td>{{order.buyerName}}</td>
+        <td>{{order.buyerEmail}}</td>
+        <td>{{order.sellerName}}</td>
+        <td>{{order.sellerEmail}}</td>
+        <td>{{order.closeStartDate | date: ''}}</td>
+        <td>{{order.optionalCoverage}}</td>
+        <td>{{order.hvacCoverage}}</td>
+        <td>{{order.realtorName}}</td>
+        <td>{{order.realtorEmail}}</td>
+        <td>{{order.titleAgentEmail}}</td>
+        <td>{{order.promo}}</td>
+      </tr>  
+    </tbody>  
+  </table> 
+  <div class="centered-block top-padding">
+    <button (click)="ExportToExcel()" class="">Export To Excel</button>  
+  </div>
+</div> 

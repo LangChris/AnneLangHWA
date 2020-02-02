@@ -1,0 +1,24 @@
+.promo {
+    background-color: #eb5e17;
+    width: 99%;
+    height: auto;
+    padding: 1px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+#promo-title {
+    font-weight: bold;
+}
+
+#promo-endDate {
+    text-decoration: underline;
+}
+
+#promo-code {
+    font-weight: bold;
+}
+
+#promo-code:before {
+    content: "Use Promo Code: ";
+}
