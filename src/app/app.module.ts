@@ -11,11 +11,16 @@ import { OrderFormComponent } from './order-form/order-form.component';
 import { SellerOrderFormComponent } from './seller-order-form/seller-order-form.component';
 import { PromoComponent } from './global/promo/promo.component';
 import { FooterComponent } from './global/footer/footer.component';
-import { ExportComponent } from './export/export.component';
+import { AdminComponent } from './admin/admin.component';
 
 import { GlobalService } from './services/global.service';
-import { EmailService } from './services/email.service';
-import { ApiService } from './services/api.service';
+import { PHPService } from './services/php.service';
+import { LoginService } from './services/login.service';
+import { DatePipe } from '@angular/common';
+import { LoginComponent } from './admin/login/login.component';
+import { ViewOrdersComponent } from './admin/view-orders/view-orders.component';
+import { EditOrdersComponent } from './admin/edit-orders/edit-orders.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -32,8 +37,8 @@ const routes: Routes = [
     component: SellerOrderFormComponent
   },
   {
-    path: "export",
-    component: ExportComponent
+    path: "admin-portal",
+    component: AdminComponent
   },
   {
     path: "**",
@@ -50,7 +55,11 @@ const routes: Routes = [
     SellerOrderFormComponent,
     PromoComponent,
     FooterComponent,
-    ExportComponent
+    AdminComponent,
+    LoginComponent,
+    ViewOrdersComponent,
+    EditOrdersComponent,
+    DashboardComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -58,7 +67,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [GlobalService, EmailService, ApiService],
+  providers: [GlobalService, PHPService, LoginService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

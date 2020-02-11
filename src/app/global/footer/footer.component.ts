@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,13 +9,16 @@ import { Router } from '@angular/router';
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  showPortal: boolean;
+
+  constructor(private router: Router, public global: GlobalService) { }
 
   ngOnInit() {
+      this.showPortal = this.global.getShowPortal;
   }
 
   navigateToAdmin() {
-    this.router.navigate(['/export'])
+    this.router.navigate(['/admin-portal'])
   }
 
 }

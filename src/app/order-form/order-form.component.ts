@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
-import { EmailService } from '../services/email.service';
-import { ApiService } from '../services/api.service';
+import { PHPService } from '../services/php.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
 
@@ -15,7 +14,7 @@ export class OrderFormComponent implements OnInit {
 
   orderForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     plan: new FormControl(),
     homeType: new FormControl(),
     addressLine: new FormControl('', [Validators.maxLength(200)]),
@@ -38,40 +37,29 @@ export class OrderFormComponent implements OnInit {
     description: "Fill out the information below to place an order!"
   };
 
-  optionalCoverage = [
-    { option: "Pool/Spa Combo", price: "$190.00/yr." },
-    { option: "Additional Pool or Spa", price: "$190.00/yr." },
-    { option: "Salt Water Pool (must purchase with Pool/Spa Combo)", price: "$345.00/yr." },
-    { option: "Well Pump", price: "$100.00/yr." },
-    { option: "Stand Alone Freezer", price: "$50.00/yr." },
-    { option: "Second Refrigerator", price: "$35.00/yr." },
-    { option: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75.00/yr." },
-    { option: "External Water Line Repair", price: "$90.00/yr." },
-    { option: "External Water Line + Sewer & Septic Line Repair", price: "$195.00/yr." },
-    { option: "Washer/Dryer Package", price: "$85.00/yr." },
-    { option: "Kitchen Refrigerator w/Ice Maker", price: "$50.00/yr." },
-    { option: "Green Plus", price: "$70.00/yr." },
-    { option: "Orange Plus", price: "$100.00/yr." },
-  ];
-
   showForm = true;
   validPromo = false;
+  validateName = false;
+  validateEmail = false;
 
-  constructor(private global: GlobalService, private route: ActivatedRoute, private email: EmailService, private api: ApiService, private formBuilder: FormBuilder) {}
+  constructor(private global: GlobalService, private route: ActivatedRoute, private php: PHPService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-
+    this.global.setShowPortal(false);
+    
     this.orderForm.controls.name.valueChanges.subscribe(value => {
       if(value) {
         var name = document.getElementById('name') as HTMLInputElement;
         name.style.border = "1px solid #ccc";
+        this.validateName = false;
       }
     });
 
     this.orderForm.controls.email.valueChanges.subscribe(value => {
-      if(value) {
+      if(this.orderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
         email.style.border = "1px solid #ccc";
+        this.validateEmail = false;
       }
     });
 
@@ -108,29 +96,29 @@ export class OrderFormComponent implements OnInit {
     var plan = document.getElementById('plan') as HTMLSelectElement;
     var options = [];
 
-    for(var i = 0; i < this.optionalCoverage.length; i++) {
+    for(var i = 0; i < this.global.getOptionalCoverage.length; i++) {
         if(plan.value == this.global.getPlans.platinum.header.toLowerCase()) {
             if(i != 9 && i != 10) {
                 var option = document.createElement("option");
-                option.text = this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price;
-                option.value = this.optionalCoverage[i].option;
+                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
+                option.value = this.global.getOptionalCoverage[i].option;
                 optionalCoverageSelect.add(option);
-                options.push(this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price);
+                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
             }
         } else if(plan.value === this.global.getPlans.diamond.header.toLowerCase()) {
             if(i != 9 && i != 10 && i != 12) {
                 var option = document.createElement("option");
-                option.text = this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price;
-                option.value = this.optionalCoverage[i].option;
+                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
+                option.value = this.global.getOptionalCoverage[i].option;
                 optionalCoverageSelect.add(option);
-                options.push(this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price);
+                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
             }
         } else {
             var option = document.createElement("option");
-            option.text = this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price;
-            option.value = this.optionalCoverage[i].option;
+            option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
+            option.value = this.global.getOptionalCoverage[i].option;
             optionalCoverageSelect.add(option);
-            options.push(this.optionalCoverage[i].option + " - " + this.optionalCoverage[i].price);
+            options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
         }
     }
     
@@ -177,6 +165,8 @@ export class OrderFormComponent implements OnInit {
   }
 
   sendEmail() {
+    this.validateName = true;
+    this.validateEmail = true;
     if(this.orderForm.valid) {
       var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
       var selectedOptions = [];
@@ -194,66 +184,77 @@ export class OrderFormComponent implements OnInit {
       var homeTypeTH = document.getElementById('home-type-th') as HTMLInputElement;
       this.orderForm.controls.homeType.setValue(homeTypeSF.checked ? homeTypeSF.value : homeTypeTH.value);
 
-      return this.email.placeOrder(this.orderForm).subscribe(response => {
+      var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
+      this.orderForm.controls.promo.setValue(promoInput.value);
+
+      return this.php.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;
-        this.saveOrder();
       });
     } else {
-      if(!this.orderForm.controls.name.valid) {
-        var name = document.getElementById('name') as HTMLInputElement;
-        name.style.border = "1px solid crimson";
-        name.style.color = "crimson";
-      }
       if(!this.orderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
         email.style.border = "1px solid crimson";
-        email.style.color = "crimson";
+        var location = this.getElementLocation(email);
+        window.scrollTo(location.left, location.top);
+      }
+      if(!this.orderForm.controls.name.valid) {
+        var name = document.getElementById('name') as HTMLInputElement;
+        name.style.border = "1px solid crimson";
+        var location = this.getElementLocation(name);
+        window.scrollTo(location.left, location.top);
       }
     }
   }
 
-  saveOrder() {
-      let name = this.orderForm.controls.name.value;
-      let email = this.orderForm.controls.email.value;
-      let plan = this.orderForm.controls.plan.value.toString().toUpperCase().replace(/ /g, "_");
-      let homeType = this.orderForm.controls.homeType.value.toString().toUpperCase().replace(/ /g, "_");
-      let address = {
-        addressLine: this.orderForm.controls.addressLine.value,
-        city: this.orderForm.controls.city.value,
-        state: this.orderForm.controls.state.value,
-        zip: this.orderForm.controls.zip.value,
-      };
-      let buyerName = this.orderForm.controls.buyerName.value;
-      let buyerEmail = this.orderForm.controls.buyerEmail.value;
-      let closeStartDate = this.orderForm.controls.closeStartDate.value;
-      let optionalCoverage = this.orderForm.controls.optionalCoverage.value.join(", ");
-      let realtorName = this.orderForm.controls.realtorName.value;
-      let realtorEmail = this.orderForm.controls.realtorEmail.value;
-      let titleAgentEmail = this.orderForm.controls.titleAgentEmail.value;
-      let promo = this.orderForm.controls.promo.value;
-      let order =  {
-        "name": name,
-        "email": email,
-        "plan": plan,
-        "homeType": homeType,
-        "address": address,
-        "buyerName": buyerName,
-        "buyerEmail": buyerEmail,
-        "sellerName": null,
-        "sellerEmail": null,
-        "closeStartDate": closeStartDate,
-        "optionalCoverage": optionalCoverage,
-        "hvacCoverage": null,
-        "realtorName": realtorName,
-        "realtorEmail": realtorEmail,
-        "titleAgentEmail": titleAgentEmail,
-        "promo": promo
-      };
+  // saveOrder() {
+  //     let name = this.orderForm.controls.name.value;
+  //     let email = this.orderForm.controls.email.value;
+  //     let plan = this.orderForm.controls.plan.value.toString().toUpperCase().replace(/ /g, "_");
+  //     let homeType = this.orderForm.controls.homeType.value.toString().toUpperCase().replace(/ /g, "_").replace("/", "_");
+  //     let address = {
+  //       addressLine: this.orderForm.controls.addressLine.value,
+  //       city: this.orderForm.controls.city.value,
+  //       state: this.orderForm.controls.state.value,
+  //       zip: this.orderForm.controls.zip.value,
+  //     };
+  //     let buyerName = this.orderForm.controls.buyerName.value;
+  //     let buyerEmail = this.orderForm.controls.buyerEmail.value;
+  //     let closeStartDate = this.orderForm.controls.closeStartDate.value;
+  //     let optionalCoverage = this.orderForm.controls.optionalCoverage.value.join(", ");
+  //     let realtorName = this.orderForm.controls.realtorName.value;
+  //     let realtorEmail = this.orderForm.controls.realtorEmail.value;
+  //     let titleAgentEmail = this.orderForm.controls.titleAgentEmail.value;
+  //     let promo = this.orderForm.controls.promo.value;
+  //     let order =  {
+  //       "name": name,
+  //       "email": email,
+  //       "plan": plan,
+  //       "homeType": homeType,
+  //       "address": address,
+  //       "buyerName": buyerName,
+  //       "buyerEmail": buyerEmail,
+  //       "sellerName": null,
+  //       "sellerEmail": null,
+  //       "closeStartDate": closeStartDate,
+  //       "optionalCoverage": optionalCoverage,
+  //       "hvacCoverage": null,
+  //       "realtorName": realtorName,
+  //       "realtorEmail": realtorEmail,
+  //       "titleAgentEmail": titleAgentEmail,
+  //       "promo": promo
+  //     };
 
-      return this.api.createOrder(order).subscribe(
-        response => {},
-        error => console.log(error)
-      );
+  //     return this.api.createOrder(order).subscribe(
+  //       response => {},
+  //       error => console.log(error)
+  //     );
+  // }
+
+  getElementLocation(element) {
+    var rect = element.getBoundingClientRect(),
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
   }
 
 }

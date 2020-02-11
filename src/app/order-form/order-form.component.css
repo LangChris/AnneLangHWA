@@ -9,3 +9,7 @@
 .required {
     color: #ff0000;
 }
+
+.small-text {
+    font-size: 12px;
+}

@@ -57,6 +57,22 @@ const plans = {
   }
 };
 
+const optionalCoverage = [
+  { option: "Pool/Spa Combo", price: "$190.00/yr." },
+  { option: "Additional Pool or Spa", price: "$190.00/yr." },
+  { option: "Salt Water Pool (must purchase with Pool/Spa Combo)", price: "$345.00/yr." },
+  { option: "Well Pump", price: "$100.00/yr." },
+  { option: "Stand Alone Freezer", price: "$50.00/yr." },
+  { option: "Second Refrigerator", price: "$35.00/yr." },
+  { option: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75.00/yr." },
+  { option: "External Water Line Repair", price: "$90.00/yr." },
+  { option: "External Water Line + Sewer & Septic Line Repair", price: "$195.00/yr." },
+  { option: "Washer/Dryer Package", price: "$85.00/yr." },
+  { option: "Kitchen Refrigerator w/Ice Maker", price: "$50.00/yr." },
+  { option: "Green Plus", price: "$70.00/yr." },
+  { option: "Orange Plus", price: "$100.00/yr." },
+];
+
 const promo = {
   active: true,
   title: "$50 OFF",
@@ -69,6 +85,8 @@ const promo = {
 @Injectable()
 export class GlobalService {
 
+  showPortal: boolean = true;
+
   constructor() { }
 
   get getBrochures() {
@@ -78,9 +96,21 @@ export class GlobalService {
   get getPlans() {
     return plans;
   }
+  
+  get getOptionalCoverage() {
+    return optionalCoverage;
+  }
 
   get getPromo() {
     return promo;
+  }
+
+  get getShowPortal() {
+    return this.showPortal;
+  }
+
+  setShowPortal(showPortal: boolean) {
+    this.showPortal = showPortal;
   }
 
 }

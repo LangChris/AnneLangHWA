@@ -121,6 +121,53 @@ switch($_SERVER['REQUEST_METHOD']){
         'X-Mailer: PHP/' . phpversion();
 
         mail($email_to, $subject, $msg, $headers);
+
+        // Save to Database
+        $hostname="localhost";
+        $username="anne";
+        $password="regina23";
+        $db="annelanghwa";
+        $table="warranty_order";
+
+        $con = mysqli_connect($hostname,$username,$password,$db);
+
+        if(mysqli_connect_errno()) {
+            //error connecting
+            echo 'Error: ' . mysqli_connect_error();
+            exit();
+        }
+
+        if(mysqli_ping($con)) {
+            //connected
+
+            $query = "INSERT INTO $table VALUES(";
+            $query .= "'',";
+            $query .= "'$name',";
+            $query .= "'$email',";
+            $query .= ($plan == '' ? "NULL" : "'$plan'").",";
+            $query .= ($home_type == '' ? "NULL" : "'$home_type'").",";
+            $query .= ($address_line == '' ? "NULL" : "'$address_line'").",";
+            $query .= ($city == '' ? "NULL" : "'$city'").",";
+            $query .= ($state == '' ? "NULL" : "'$state'").",";
+            $query .= ($zip == '' ? "NULL" : "'$zip'").",";
+            $query .= "NULL,";
+            $query .= "NULL,";
+            $query .= ($seller_name == '' ? "NULL" : "'$seller_name'").",";
+            $query .= ($seller_email == '' ? "NULL" : "'$seller_email'").",";
+            $query .= ($start_date == '' ? "NULL" : "'$start_date'").",";
+            $query .= "NULL,";
+            $query .= ($hvac_coverage == '' ? "NULL" : "'$hvac_coverage'").",";
+            $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
+            $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= "NULL,";
+            $query .= "NULL)";
+
+            $result = mysqli_query($con, $query);
+
+            mysqli_close($con);
+
+        }
+
         break;
     default: //Reject any non POST or OPTIONS requests.
         header("Allow: POST", true, 405);

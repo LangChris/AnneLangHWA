@@ -136,6 +136,58 @@ switch($_SERVER['REQUEST_METHOD']){
         'X-Mailer: PHP/' . phpversion();
 
         mail($email_to, $subject, $msg, $headers);
+
+        // Save to Database
+        $hostname="localhost";
+        $username="anne";
+        $password="regina23";
+        $db="annelanghwa";
+        $table="warranty_order";
+
+        $con = mysqli_connect($hostname,$username,$password,$db);
+
+        if(mysqli_connect_errno()) {
+            //error connecting
+            echo 'Error: ' . mysqli_connect_error();
+            exit();
+        }
+
+        if(mysqli_ping($con)) {
+            //connected
+
+            $optional_coverage_string = '';
+            foreach($optional_coverage as $option) {
+                $optional_coverage_string .= $option .", ";
+            }
+            $optional_coverage_string = empty($optional_coverage_string) ? null : $optional_coverage_string;
+
+            $query = "INSERT INTO $table VALUES(";
+            $query .= "'',";
+            $query .= "'$name',";
+            $query .= "'$email',";
+            $query .= ($plan == '' ? "NULL" : "'$plan'").",";
+            $query .= ($home_type == '' ? "NULL" : "'$home_type'").",";
+            $query .= ($address_line == '' ? "NULL" : "'$address_line'").",";
+            $query .= ($city == '' ? "NULL" : "'$city'").",";
+            $query .= ($state == '' ? "NULL" : "'$state'").",";
+            $query .= ($zip == '' ? "NULL" : "'$zip'").",";
+            $query .= ($buyer_name == '' ? "NULL" : "'$buyer_name'").",";
+            $query .= ($buyer_email == '' ? "NULL" : "'$buyer_email'").",";
+            $query .= "NULL,";
+            $query .= "NULL,";
+            $query .= ($close_start_date == '' ? "NULL" : "'$close_start_date'").",";
+            $query .= ($optional_coverage_string == '' ? "NULL" : "'$optional_coverage_string'").",";
+            $query .= "NULL,";
+            $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
+            $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= ($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
+            $query .= ($promo == '' ? "NULL" : "'$promo'").")";
+                
+            $result = mysqli_query($con, $query);
+
+            mysqli_close($con);
+        }
+        
         break;
     default: //Reject any non POST or OPTIONS requests.
         header("Allow: POST", true, 405);
