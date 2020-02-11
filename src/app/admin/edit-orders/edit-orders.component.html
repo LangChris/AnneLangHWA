@@ -1,0 +1,120 @@
+<h1 class="header">Edit Order</h1>
+  
+  <div *ngIf="!admin.orders || admin.orders.length == 0" class="centered-block">
+    <p>No orders placed yet.</p>
+  </div>
+  <div *ngIf="admin.orders && admin.orders.length > 0" class="section">
+  <form *ngIf="admin.orders && admin.orders.length > 0" id="editForm" [formGroup]="editForm" novalidate (ngSubmit)="updateOrder()" >
+    <table class="order-form">
+    <tr>
+      <td>Order</td>
+      <td>
+        <select id="order-id" name="orderId" formControlName="orderId">
+          <option selected>Select Order</option>
+          <option *ngFor="let order of admin.orders; let i = index" value="{{order.id}}">{{i+1}}. {{order.name}}</option>
+        </select>
+      </td>
+    </tr>
+    <tbody *ngIf="editForm.controls.orderId.value != 'Select Order'">
+    <tr>
+      <td>Name</td>
+      <td><input type="text" class="large" id="name" name="name" formControlName="name"/></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><input type="email" class="large" id="email" name="email" formControlName="email"/></td>
+    </tr>
+    <tr>
+      <td>Plan</td>
+      <td>
+          <select id="plan" name="plan" formControlName="plan">
+              <option value="Gold">Gold</option>
+              <option value="Platinum">Platinum</option>
+              <option value="Diamond">Diamond</option>
+              <option value="Free Sellers Coverage">Free Sellers Coverage</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <td>Home Type</td>
+      <td>
+        <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType"/>Single Family<br />
+        <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+    </tr>
+    <tr>
+      <td>Address Line</td>   
+      <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
+    </tr>
+    <tr>
+      <td>City</td>   
+      <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
+    </tr>
+    <tr>
+      <td>Zip</td>   
+      <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
+    </tr>
+    <tr>
+      <td>Buyer Name</td>   
+      <td><input type="text" class="large" id="buyer-name" name="buyerName" formControlName="buyerName"/></td>   
+    </tr>
+    <tr>
+      <td>Buyer Email</td>   
+      <td><input type="email" class="large" id="buyer-email" name="buyerEmail" formControlName="buyerEmail"/></td>   
+    </tr>
+    <tr>
+      <td>Seller Name</td>   
+      <td><input type="text" class="large" id="seller-name" name="sellerName" formControlName="sellerName"/></td>   
+    </tr>
+    <tr>
+      <td>Seller Email</td>   
+      <td><input type="email" class="large" id="seller-email" name="sellerEmail" formControlName="sellerEmail"/></td>   
+    </tr>
+    <tr>
+      <td>Close/Start Date</td>   
+      <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
+    </tr>
+    <tr>
+      <td>Optional Coverage</td>
+      <td>
+          <div class="multi-select large"></div>
+          <select id="optional-coverage" name="optionalCoverage" formControlName="optionalCoverage" multiple>
+            <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <td>HVAC Coverage (+$50.00)</td>
+      <td>
+          <select id="hvac-coverage" name="hvacCoverage" formControlName="hvacCoverage">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <td>Referring Realtor Name</td>   
+      <td><input type="text" class="large" id="realtor-name" name="realtorName"  formControlName="realtorName"/></td>   
+    </tr>
+    <tr>
+      <td>Referring Realtor Email</td>   
+      <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
+    </tr>
+    <tr>
+      <td>Title Agent Email</td>   
+      <td><input type="email" class="large" id="title-agent-email" name="titleAgentEmail" formControlName="titleAgentEmail"/></td>   
+    </tr>
+    <tr>
+      <td>Promo</td>   
+      <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo"/></td>   
+    </tr>
+    </tbody>
+</table>
+  <div *ngIf="admin.showError" class="error">Error Making Changes</div>
+  <div *ngIf="admin.showSuccess" class="success">Successfully Made Changes</div>
+</form>
+</div>
+  <div class="centered-block top-padding">
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin" type="submit" form="editForm">UPDATE ORDER</button>
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin" (click)="deleteOrder();">DELETE</button>
+    <button class="top-margin" (click)="resetForm(); admin.updateDisplay(false, false, true);">DASHBOARD</button>
+  </div>

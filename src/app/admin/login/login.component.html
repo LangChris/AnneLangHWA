@@ -1,0 +1,17 @@
+<table>
+    <tbody>
+        <tr>
+        <td>Username:</td>
+        <td><input type="text" class="large" id="username" /></td>
+        </tr>
+        <tr>
+        <td>Password:</td>
+        <td><input type="password" class="large" id="password" /></td>
+        </tr>
+    </tbody>
+</table>
+<div *ngIf="login.getStatus.bad_user || login.getStatus.bad_pass" class="centered-block top-padding">
+    <div *ngIf="login.getStatus.bad_user" class="error">Invalid Username!</div>
+    <div *ngIf="login.getStatus.bad_pass" class="error">Invalid Password!</div>
+</div>
+<div class="centered-block top-padding"><button class="button" (click)="tryLogin()">SUBMIT</button></div>
