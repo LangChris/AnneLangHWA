@@ -11,7 +11,6 @@ import { PHPService } from '../services/php.service';
 export class AdminComponent implements OnInit {
 
   orders: any;
-  selectedOrder: any;
 
   display = {
     dashboard: true,
