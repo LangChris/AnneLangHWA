@@ -1,5 +1,5 @@
 # AnneLangHWA
-
+<img src="https://annelanghwa.com/assets/images/anne-logo.jpg" alt="HWA Logo" />
 _This is an online order system for HWA generated with [Angular CLI](https://github.com/angular/angular-cli) version 9_
 
 ## Features
