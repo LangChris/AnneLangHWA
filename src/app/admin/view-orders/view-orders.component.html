@@ -1,16 +1,42 @@
-<p *ngIf="admin.orders" >Orders: {{admin.orders.length}}</p>
-
 <div *ngIf="!admin.orders || admin.orders.length == 0" class="centered-block">
   <p>No orders placed yet.</p>
 </div>
 
-<div *ngIf="admin.orders && admin.orders.length > 0" #TABLE> 
-  <table class="table">  
+<div *ngIf="admin.orders && admin.orders.length > 0"> 
+  <div class="centered-block">
+    <div class="header">Orders</div>
+    <table>
+      <tr>
+        <th>Filter</th>
+        <td>
+          <select id="filter" (change)="filter()">
+            <option value="all">All Orders</option>
+            <option value="last-7-days">Last 7 Days</option>
+            <option value="last-30-days">Last 30 Days</option>
+            <option value="last-60-days">Last 60 Days</option>
+            <option value="last-90-days">Last 90 Days</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>Sort</th>
+        <td>
+          <select id="sort" (change)="sort()">
+            <option value="ASC">Oldest to Newest</option>
+            <option value="DESC">Newest to Oldest</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p>Results: {{admin.orders.length}}</p>
+  <table class="table" #TABLE>  
     <thead>  
       <tr>  
         <th>Name</th>  
         <th>Email</th>  
         <th>Plan</th>
+        <th>Years</th>
         <th>Home Type</th>
         <th>Address</th>
         <th>Buyer Name</th>
@@ -28,27 +54,28 @@
     </thead>  
     <tbody>  
       <tr *ngFor="let order of admin.orders">  
-        <td>{{order.name}}</td>  
-        <td>{{order.email}}</td>
-        <td>{{order.plan}}</td>
-        <td>{{order.home_type}}</td>
-        <td>{{order.address_line}}<br />&nbsp;{{order.city}},{{order.state}} {{order.zip}}</td>
-        <td>{{order.buyer_name}}</td>
-        <td>{{order.buyer_email}}</td>
-        <td>{{order.seller_name}}</td>
-        <td>{{order.seller_email}}</td>
-        <td>{{order.close_start_date | date: 'medium'}}</td>
-        <td>{{order.optional_coverage}}</td>
-        <td>{{order.hvac_coverage}}</td>
-        <td>{{order.realtor_name}}</td>
-        <td>{{order.realtor_email}}</td>
-        <td>{{order.title_agent_email}}</td>
-        <td>{{order.promo}}</td>
+        <td data-th="Name">{{order.name}}</td>  
+        <td data-th="Email">{{order.email}}</td>
+        <td data-th="Plan">{{formatOrder(order.plan)}}</td>
+        <td data-th="Years">{{formatOrder(order.years)}}</td>
+        <td data-th="Home Type">{{formatOrder(order.home_type)}}</td>
+        <td data-th="Address">{{formatOrder(order.address_line)}}<br />&nbsp;{{formatOrder(order.city)}},{{formatOrder(order.state)}} {{formatOrder(order.zip)}}</td>
+        <td data-th="Buyer Name">{{formatOrder(order.buyer_name)}}</td>
+        <td data-th="Buyer Email">{{formatOrder(order.buyer_email)}}</td>
+        <td data-th="Seller Name">{{formatOrder(order.seller_name)}}</td>
+        <td data-th="Seller Email">{{formatOrder(order.seller_email)}}</td>
+        <td data-th="Close/Start Date">{{formatOrder(order.close_start_date)}}</td>
+        <td data-th="Optional Coverage">{{formatOrder(order.optional_coverage)}}</td>
+        <td data-th="Hvac Coverage">{{formatOrder(order.hvac_coverage)}}</td>
+        <td data-th="Realtor Name">{{formatOrder(order.realtor_name)}}</td>
+        <td data-th="Realtor Email">{{formatOrder(order.realtor_email)}}</td>
+        <td data-th="Title Agent Email">{{formatOrder(order.title_agent_email)}}</td>
+        <td data-th="Promo">{{formatOrder(order.promo)}}</td>
       </tr>  
     </tbody>  
   </table> 
   <div class="centered-block top-padding">
-    <button (click)="ExportToExcel()" class="">EXPORT</button>  
-    <button class="top-margin" (click)="admin.updateDisplay(false, false, true);">DASHBOARD</button>
+    <button class="export" (click)="ExportToExcel()"></button>  
+    <button class="top-margin home" (click)="admin.updateDisplay(false, false, true);"></button>
   </div>
 </div> 

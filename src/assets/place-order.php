@@ -16,6 +16,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $email = $params->email;
         $name = $params->name;
         $plan = $params->plan;
+        $years = $params->years;
         $home_type = $params->homeType;
         $address_line = $params->addressLine;
         $city = $params->city;
@@ -29,6 +30,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $realtor_email = $params->realtorEmail;
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
+        $created_date = $params->createdDate;
 
         function clean_string($string) {
             $bad = array("content-type","bcc:","to:","cc:","href");
@@ -63,6 +65,10 @@ switch($_SERVER['REQUEST_METHOD']){
                 <tr>
                     <td class='header'>Plan:</td>
                     <td>".clean_string($plan)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Years:</td>
+                    <td>".clean_string($years)."</td>
                 </tr>
                 <tr>
                     <td class='header'>Home Type:</td>
@@ -135,7 +141,7 @@ switch($_SERVER['REQUEST_METHOD']){
         'Reply-To: '.$email."\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
-        mail($email_to, $subject, $msg, $headers);
+        $mail_response = mail($email_to, $subject, $msg, $headers);
 
         // Save to Database
         $hostname="localhost";
@@ -159,13 +165,14 @@ switch($_SERVER['REQUEST_METHOD']){
             foreach($optional_coverage as $option) {
                 $optional_coverage_string .= $option .", ";
             }
-            $optional_coverage_string = empty($optional_coverage_string) ? null : $optional_coverage_string;
+            $optional_coverage_string = empty($optional_coverage_string) ? null : substr($optional_coverage_string, 0, -2);
 
             $query = "INSERT INTO $table VALUES(";
             $query .= "'',";
             $query .= "'$name',";
             $query .= "'$email',";
             $query .= ($plan == '' ? "NULL" : "'$plan'").",";
+            $query .= ($years == '' ? "NULL" : "'$years'").",";
             $query .= ($home_type == '' ? "NULL" : "'$home_type'").",";
             $query .= ($address_line == '' ? "NULL" : "'$address_line'").",";
             $query .= ($city == '' ? "NULL" : "'$city'").",";
@@ -181,7 +188,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
             $query .= ($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
-            $query .= ($promo == '' ? "NULL" : "'$promo'").")";
+            $query .= ($promo == '' ? "NULL" : "'$promo'").",";
+            $query .= "'$created_date')";
                 
             $result = mysqli_query($con, $query);
 

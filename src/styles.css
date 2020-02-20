@@ -52,6 +52,10 @@ p {
     margin: 0 auto;
 }
 
+.double-section button {
+    margin: 5px;
+}
+
 .large {
     width: 200px;
 }
@@ -76,6 +80,7 @@ button {
 
 button:hover {
     cursor: pointer;
+    background-color: orange;
 }
 
 .button {
@@ -90,10 +95,54 @@ button:hover {
 
 .button:hover {
     cursor: pointer;
+    background-color: orange;
 }
 
 .extra-padding {
     padding: 25px;
+}
+
+.edit:before {
+    content: "\00270F";
+    font-size: 20px;
+}
+
+.home:before {
+    content: "\01F3E0";
+    font-size: 20px;
+}
+
+.email:before {
+    content: "\2709";
+    font-size: 20px;
+}
+
+.telephone:before {
+    content: "\2706";
+    font-size: 20px;
+}
+
+.list:before {
+    content: "\002630";
+    font-size: 20px;
+}
+
+.check:before {
+    content: "\2714";
+    color: green;
+    font-size: 20px;
+}
+
+.x:before {
+    content: "\2718";
+    color: crimson;
+    font-size: 20px;
+}
+
+.export:before {
+    content: "\2913";
+    color: green;
+    font-size: 20px;
 }
 
 @media screen and (max-width: 1150px) {

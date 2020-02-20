@@ -27,7 +27,8 @@ switch($_SERVER['REQUEST_METHOD']){
         $hvac_coverage = $params->hvacCoverage;
         $realtor_name = $params->realtorName;
         $realtor_email = $params->realtorEmail;
-
+        $created_date = $params->createdDate;
+        
         function clean_string($string) {
             $bad = array("content-type","bcc:","to:","cc:","href");
             return str_replace($bad,"",$string);
@@ -120,7 +121,7 @@ switch($_SERVER['REQUEST_METHOD']){
         'Reply-To: '.$email."\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
-        mail($email_to, $subject, $msg, $headers);
+        $mail_response = mail($email_to, $subject, $msg, $headers);
 
         // Save to Database
         $hostname="localhost";
@@ -145,6 +146,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "'$name',";
             $query .= "'$email',";
             $query .= ($plan == '' ? "NULL" : "'$plan'").",";
+            $query .= "NULL,";
             $query .= ($home_type == '' ? "NULL" : "'$home_type'").",";
             $query .= ($address_line == '' ? "NULL" : "'$address_line'").",";
             $query .= ($city == '' ? "NULL" : "'$city'").",";
@@ -160,7 +162,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
             $query .= "NULL,";
-            $query .= "NULL)";
+            $query .= "NULL,";
+            $query .= "'$created_date')";
 
             $result = mysqli_query($con, $query);
 

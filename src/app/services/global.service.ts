@@ -10,6 +10,7 @@ const plans = {
       header: "Gold",
       price: 450.00,
       discount: "-$20 Townhome/Condo/Mobile Home Discount",
+      townhomeDiscount: 20.00,
       options: [
               " Unknown Pre-existing Conditions",
               " Unknown Insufficient Maintenance",
@@ -38,6 +39,7 @@ const plans = {
       header: "Platinum",
       price: 550.00,
       discount: "-$30 Townhome/Condo/Mobile Home Discount",
+      townhomeDiscount: 30.00,
       options: [
               " Kitchen Refrigerator w/ Ice Maker",
               " Washer/Dryer Package",
@@ -51,6 +53,7 @@ const plans = {
       header: "Diamond",
       price: 590.00,
       discount: "-$30 Townhome/Condo/Mobile Home Discount",
+      townhomeDiscount: 30.00,
       options: [
               " Orange Plus"
       ]
@@ -79,7 +82,7 @@ const promo = {
   subtitle: "New Plan Purchases Through",
   endDate: "3/31/2020",
   code: "HWA50",
-  amount: 50
+  amount: 50.00
 };
 
 @Injectable()

@@ -22,3 +22,7 @@
 #promo-code:before {
     content: "Use Promo Code: ";
 }
+
+span {
+    margin: 2px;
+}

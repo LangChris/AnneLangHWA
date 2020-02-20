@@ -6,22 +6,9 @@
     padding-bottom: 25px;
 }
 
-table {
-    width: auto;
-    margin: 0 auto;
-    text-align: left;
-}
-
-table th {
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
-}
-
-table td {
-    padding: 10px;
-    font-weight: 300;
-    font-style: oblique;
+button {
+    margin: 5px;
+    width: 25%;
 }
 
 .top-padding {

@@ -36,6 +36,16 @@
       </td>
     </tr>
     <tr>
+      <td>Years</td>
+      <td>
+        <select id="years" name="years" formControlName="years">
+          <option value="13 Months" selected>13 Months</option>
+          <option value="2 Years">2 Years</option>
+          <option value="3 Years">3 Years</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
       <td>Home Type</td>
       <td>
         <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType"/>Single Family<br />
@@ -77,7 +87,7 @@
       <td>Optional Coverage</td>
       <td>
           <div class="multi-select large"></div>
-          <select id="optional-coverage" name="optionalCoverage" formControlName="optionalCoverage" multiple>
+          <select id="optional-coverage" name="optionalCoverage" formControlName="optionalCoverage" multiple hidden>
             <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
           </select>  
       </td>
@@ -107,6 +117,10 @@
       <td>Promo</td>   
       <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo"/></td>   
     </tr>
+    <tr>
+      <td>Order Placed Date</td>   
+      <td><input type="date" class="large" id="created-date" name="createdDate" formControlName="createdDate" disabled/></td>    
+    </tr>
     </tbody>
 </table>
   <div *ngIf="admin.showError" class="error">Error Making Changes</div>
@@ -114,7 +128,7 @@
 </form>
 </div>
   <div class="centered-block top-padding">
-    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin" type="submit" form="editForm">UPDATE ORDER</button>
-    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin" (click)="deleteOrder();">DELETE</button>
-    <button class="top-margin" (click)="resetForm(); admin.updateDisplay(false, false, true);">DASHBOARD</button>
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin check" type="submit" form="editForm"></button>
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder();"></button>
+    <button class="top-margin home" (click)="resetForm(); admin.updateDisplay(false, false, true);"></button>
   </div>

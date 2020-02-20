@@ -17,6 +17,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $email = $params->email;
         $name = $params->name;
         $plan = $params->plan;
+        $years = $params->years;
         $home_type = $params->homeType;
         $address_line = $params->addressLine;
         $city = $params->city;
@@ -56,12 +57,13 @@ switch($_SERVER['REQUEST_METHOD']){
             foreach($optional_coverage as $option) {
                 $optional_coverage_string .= $option .", ";
             }
-            $optional_coverage_string = empty($optional_coverage_string) ? null : $optional_coverage_string;
+            $optional_coverage_string = empty($optional_coverage_string) ? null : substr($optional_coverage_string, 0, -2);
 
             $query = "UPDATE $table SET ";
             $query .= "name = '$name',";
             $query .= "email = '$email',";
             $query .= "plan = ".($plan == '' ? "NULL" : "'$plan'").",";
+            $query .= "years = ".($years == '' ? "NULL" : "'$years'").",";
             $query .= "home_type = ".($home_type == '' ? "NULL" : "'$home_type'").",";
             $query .= "address_line = ".($address_line == '' ? "NULL" : "'$address_line'").",";
             $query .= "city = ".($city == '' ? "NULL" : "'$city'").",";

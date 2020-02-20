@@ -129,9 +129,9 @@ export class HomeComponent implements OnInit {
 
   navigateToOrderForm(plan: string) {
     switch(plan) {
-      case "gold": this.router.navigate(['/order-form', { plan: "gold"}]); break;
-      case "platinum": this.router.navigate(['/order-form', { plan: "platinum"}]); break;
-      case "diamond": this.router.navigate(['/order-form', { plan: "diamond"}]); break;
+      case "gold": this.router.navigate(['/order-form', { plan: "Gold"}]); break;
+      case "platinum": this.router.navigate(['/order-form', { plan: "Platinum"}]); break;
+      case "diamond": this.router.navigate(['/order-form', { plan: "Diamond"}]); break;
       case "seller": this.router.navigate(['/seller-order-form']); break;
     }
   }

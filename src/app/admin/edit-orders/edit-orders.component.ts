@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { DatePipe } from '@angular/common';
 import { GlobalService } from '../../services/global.service';
 import { PHPService } from '../../services/php.service';
+import * as MultiSelect from '../../../assets/multi-select-umd';
 
 @Component({
   selector: 'edit-orders',
@@ -17,6 +18,7 @@ export class EditOrdersComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     plan: new FormControl('Select One'),
+    years: new FormControl(),
     homeType: new FormControl(),
     addressLine: new FormControl('', [Validators.maxLength(200)]),
     city: new FormControl('', [Validators.maxLength(50)]),
@@ -32,8 +34,11 @@ export class EditOrdersComponent implements OnInit {
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
     titleAgentEmail: new FormControl(),
-    promo: new FormControl()
+    promo: new FormControl(),
+    createdDate: new FormControl()
   });
+
+  multiSelect = null;
 
   constructor(private global: GlobalService, private php: PHPService, public admin: AdminComponent, private datePipe: DatePipe) { }
 
@@ -51,6 +56,7 @@ export class EditOrdersComponent implements OnInit {
           this.editForm.controls.name.setValue(this.admin.orders[i]['name']);
           this.editForm.controls.email.setValue(this.admin.orders[i]['email']);
           this.editForm.controls.plan.setValue(this.admin.orders[i]['plan']);
+          this.editForm.controls.years.setValue(this.admin.orders[i]['years']);
           this.editForm.controls.homeType.setValue(this.admin.orders[i]['home_type']);
           this.editForm.controls.addressLine.setValue(this.admin.orders[i]['address_line']);
           this.editForm.controls.city.setValue(this.admin.orders[i]['city']);
@@ -61,17 +67,43 @@ export class EditOrdersComponent implements OnInit {
           this.editForm.controls.sellerName.setValue(this.admin.orders[i]['seller_name']);
           this.editForm.controls.sellerEmail.setValue(this.admin.orders[i]['seller_email']);
           this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(this.admin.orders[i]['close_start_date'], 'yyyy-MM-dd'));
+          let options = [];
+          let selectedOptions = [];
+          for(var option = 0; option < this.global.getOptionalCoverage.length; option++) {
+            options.push(this.global.getOptionalCoverage[option].option);
+          }
           if(this.admin.orders[i]['optional_coverage'] != null) {
+            let currentSelection = this.admin.orders[i]['optional_coverage'].substring(0, this.admin.orders[i]['optional_coverage'].lastIndexOf(",")).split(", ");
+            this.editForm.controls.optionalCoverage.setValue(currentSelection);
             var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
             for(var j = 0; j < optionalCoverageSelect.options.length; j++) {
-                optionalCoverageSelect.options[j].selected = this.admin.orders[i]['optional_coverage'].split(", ").indexOf(optionalCoverageSelect.options[j].text) >= 0;
+                optionalCoverageSelect.options[j].selected = currentSelection.indexOf(optionalCoverageSelect.options[j].text) >= 0;
+                if(optionalCoverageSelect.options[j].selected) {
+                  selectedOptions.push(optionalCoverageSelect.options[j].text);
+                }
             }
           }
+          if(this.multiSelect == null) {
+           this.multiSelect = new (MultiSelect as any)('.multi-select', {
+              items: options,
+              current: selectedOptions
+            });
+          } else {
+            this.multiSelect.options.current = selectedOptions;
+          }
+          
+          this.multiSelect.on('change', function (e) {
+              var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+              for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+                  optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+              }
+          });
           this.editForm.controls.hvacCoverage.setValue(this.admin.orders[i]['hvac_coverage']);
           this.editForm.controls.realtorName.setValue(this.admin.orders[i]['realtor_name']);
           this.editForm.controls.realtorEmail.setValue(this.admin.orders[i]['realtor_email']);
           this.editForm.controls.titleAgentEmail.setValue(this.admin.orders[i]['title_agent_email']);
           this.editForm.controls.promo.setValue(this.admin.orders[i]['promo']);
+          this.editForm.controls.createdDate.setValue(this.admin.orders[i]['created_date']);
         }
       }
     }, 100);
@@ -94,6 +126,16 @@ export class EditOrdersComponent implements OnInit {
   }
 
   updateOrder() {
+    var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+    var selectedOptions = [];
+    for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+      if(optionalCoverageSelect.options[i].selected) {
+        selectedOptions.push(optionalCoverageSelect.options[i].text);
+      }
+    }
+
+    this.editForm.controls.optionalCoverage.setValue(selectedOptions);
+
     return this.php.updateOrder(this.editForm).subscribe(
       response => {
         this.admin.showSuccess = true;

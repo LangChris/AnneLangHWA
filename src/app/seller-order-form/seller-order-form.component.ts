@@ -26,7 +26,8 @@ export class SellerOrderFormComponent implements OnInit {
     startDate: new FormControl(),
     hvacCoverage: new FormControl(),
     realtorName: new FormControl(),
-    realtorEmail: new FormControl()
+    realtorEmail: new FormControl(),
+    createdDate: new FormControl()
   }); 
 
   pageProperties = {
@@ -88,6 +89,8 @@ export class SellerOrderFormComponent implements OnInit {
       var hvacCoverage = document.getElementById('hvac-coverage') as HTMLSelectElement;
       this.sellerOrderForm.controls.hvacCoverage.setValue(hvacCoverage.value);
 
+      this.sellerOrderForm.controls.createdDate.setValue(new Date());
+
       return this.php.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;
       });
@@ -106,47 +109,6 @@ export class SellerOrderFormComponent implements OnInit {
       }
     }
   }
-
-  // saveOrder() {
-  //   let name = this.sellerOrderForm.controls.name.value;
-  //   let email = this.sellerOrderForm.controls.email.value;
-  //   let plan = this.sellerOrderForm.controls.plan.value.toString().toUpperCase().replace(/ /g, "_");
-  //   let homeType = this.sellerOrderForm.controls.homeType.value.toString().toUpperCase().replace(/ /g, "_").replace("/", "_");
-  //   let address = {
-  //     addressLine: this.sellerOrderForm.controls.addressLine.value,
-  //     city: this.sellerOrderForm.controls.city.value,
-  //     state: this.sellerOrderForm.controls.state.value,
-  //     zip: this.sellerOrderForm.controls.zip.value,
-  //   };
-  //   let sellerName = this.sellerOrderForm.controls.sellerName.value;
-  //   let sellerEmail = this.sellerOrderForm.controls.sellerEmail.value;
-  //   let startDate = this.sellerOrderForm.controls.startDate.value;
-  //   let hvacCoverage = this.sellerOrderForm.controls.hvacCoverage.value;
-  //   let realtorName = this.sellerOrderForm.controls.realtorName.value;
-  //   let realtorEmail = this.sellerOrderForm.controls.realtorEmail.value;
-  //   let order =  {
-  //     "name": name,
-  //     "email": email,
-  //     "plan": plan,
-  //     "homeType": homeType,
-  //     "address": address,
-  //     "buyerName": null,
-  //     "buyerEmail": null,
-  //     "sellerName": sellerName,
-  //     "sellerEmail": sellerEmail,
-  //     "closeStartDate": startDate,
-  //     "optionalCoverage": null,
-  //     "hvacCoverage": hvacCoverage,
-  //     "realtorName": realtorName,
-  //     "realtorEmail": realtorEmail,
-  //     "titleAgentEmail": null,
-  //     "promo": null
-  //   };
-  //   return this.api.createOrder(order).subscribe(
-  //     response => {},
-  //     error => console.log(error)
-  //   );
-  // }
 
   getElementLocation(element) {
     var rect = element.getBoundingClientRect(),

@@ -16,6 +16,7 @@ export class OrderFormComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     plan: new FormControl(),
+    years: new FormControl('13 Months'),
     homeType: new FormControl(),
     addressLine: new FormControl('', [Validators.maxLength(200)]),
     city: new FormControl('', [Validators.maxLength(50)]),
@@ -28,7 +29,8 @@ export class OrderFormComponent implements OnInit {
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
     titleAgentEmail: new FormControl(),
-    promo: new FormControl()
+    promo: new FormControl(),
+    createdDate: new FormControl()
   }); 
 
   pageProperties = {
@@ -41,6 +43,8 @@ export class OrderFormComponent implements OnInit {
   validPromo = false;
   validateName = false;
   validateEmail = false;
+
+  total: number = 0;
 
   constructor(private global: GlobalService, private route: ActivatedRoute, private php: PHPService, private formBuilder: FormBuilder) {}
 
@@ -63,16 +67,29 @@ export class OrderFormComponent implements OnInit {
       }
     });
 
+    this.orderForm.controls.plan.valueChanges.subscribe(value => {
+      this.updateOrderTotal();
+    });
+
+    this.orderForm.controls.years.valueChanges.subscribe(value => {
+      this.updateOrderTotal();
+    });
+
+    this.orderForm.controls.homeType.valueChanges.subscribe(value => {
+      this.updateOrderTotal();
+    });
+
     if(this.showForm) {
       setTimeout(()=>{
 
         let selectedPlan = this.route.snapshot.paramMap.get('plan');
         var plan = document.getElementById('plan') as HTMLSelectElement;
         if(selectedPlan) {
-          plan.value = selectedPlan.toLowerCase();
+          plan.value = selectedPlan;
         } else {
           plan.selectedIndex = 0;
         }
+        
 
         var homeType = document.getElementById('home-type-sf') as HTMLInputElement;
         homeType.checked = true;
@@ -82,6 +99,8 @@ export class OrderFormComponent implements OnInit {
           promoInput.value = this.global.getPromo.code;
           this.updatePromoStatus(null);
         }
+
+        this.updateOrderTotal();
 
         this.updateOptionalCoverageSelect();
       }, 100);
@@ -139,7 +158,6 @@ export class OrderFormComponent implements OnInit {
       if(!this.global.getPromo.active) {
         this.validPromo = true;
       }
-
       var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
       var promoInputValue = promoInput.value;
       var promoStatus = document.getElementById('promo-status');
@@ -160,6 +178,7 @@ export class OrderFormComponent implements OnInit {
           promoInput.style.border = "1px solid #ccc";
           this.validPromo = true;
       }
+      this.updateOrderTotal();
     }, 100);
     
   }
@@ -187,6 +206,8 @@ export class OrderFormComponent implements OnInit {
       var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
       this.orderForm.controls.promo.setValue(promoInput.value);
 
+      this.orderForm.controls.createdDate.setValue(new Date());
+
       return this.php.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;
       });
@@ -206,50 +227,6 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
-  // saveOrder() {
-  //     let name = this.orderForm.controls.name.value;
-  //     let email = this.orderForm.controls.email.value;
-  //     let plan = this.orderForm.controls.plan.value.toString().toUpperCase().replace(/ /g, "_");
-  //     let homeType = this.orderForm.controls.homeType.value.toString().toUpperCase().replace(/ /g, "_").replace("/", "_");
-  //     let address = {
-  //       addressLine: this.orderForm.controls.addressLine.value,
-  //       city: this.orderForm.controls.city.value,
-  //       state: this.orderForm.controls.state.value,
-  //       zip: this.orderForm.controls.zip.value,
-  //     };
-  //     let buyerName = this.orderForm.controls.buyerName.value;
-  //     let buyerEmail = this.orderForm.controls.buyerEmail.value;
-  //     let closeStartDate = this.orderForm.controls.closeStartDate.value;
-  //     let optionalCoverage = this.orderForm.controls.optionalCoverage.value.join(", ");
-  //     let realtorName = this.orderForm.controls.realtorName.value;
-  //     let realtorEmail = this.orderForm.controls.realtorEmail.value;
-  //     let titleAgentEmail = this.orderForm.controls.titleAgentEmail.value;
-  //     let promo = this.orderForm.controls.promo.value;
-  //     let order =  {
-  //       "name": name,
-  //       "email": email,
-  //       "plan": plan,
-  //       "homeType": homeType,
-  //       "address": address,
-  //       "buyerName": buyerName,
-  //       "buyerEmail": buyerEmail,
-  //       "sellerName": null,
-  //       "sellerEmail": null,
-  //       "closeStartDate": closeStartDate,
-  //       "optionalCoverage": optionalCoverage,
-  //       "hvacCoverage": null,
-  //       "realtorName": realtorName,
-  //       "realtorEmail": realtorEmail,
-  //       "titleAgentEmail": titleAgentEmail,
-  //       "promo": promo
-  //     };
-
-  //     return this.api.createOrder(order).subscribe(
-  //       response => {},
-  //       error => console.log(error)
-  //     );
-  // }
-
   getElementLocation(element) {
     var rect = element.getBoundingClientRect(),
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
@@ -257,4 +234,45 @@ export class OrderFormComponent implements OnInit {
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
   }
 
+  updateOrderTotal() {
+    this.total = 0;
+    let plan = document.getElementById('plan') as HTMLSelectElement;
+    let homeTypeTH = document.getElementById('home-type-th') as HTMLInputElement;
+    let isTownhome = homeTypeTH.checked;
+ 
+    switch(plan.value) {
+      case "Gold": {
+        this.total += (isTownhome) ? 
+        (this.global.getPlans.gold.price - this.global.getPlans.gold.townhomeDiscount) :
+        this.global.getPlans.gold.price; 
+        break;
+      }
+      case "Platinum": {
+        this.total += (isTownhome) ? 
+        (this.global.getPlans.platinum.price - this.global.getPlans.platinum.townhomeDiscount) :
+        this.global.getPlans.platinum.price; 
+        break;
+      }
+      case "Diamond": {
+        this.total += (isTownhome) ? 
+        (this.global.getPlans.diamond.price - this.global.getPlans.diamond.townhomeDiscount) :
+        this.global.getPlans.diamond.price; 
+        break;
+      }
+    }
+    let years = this.orderForm.controls.years.value;
+
+    if(years == "2 Years") {
+      let discountYear = this.total - (this.total * 0.10);
+      this.total += discountYear;
+    }
+    if(years == "3 Years") {
+      let discountYear = this.total - (this.total * 0.10);
+      this.total += (discountYear * 2);
+    }
+
+    if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '') {
+      this.total -= this.global.getPromo.amount;
+    }
+  }
 }

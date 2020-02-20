@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { GlobalService } from '../services/global.service';
 import { PHPService } from '../services/php.service'; 
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin',
@@ -21,8 +22,10 @@ export class AdminComponent implements OnInit {
   showError: boolean = false;
   showSuccess: boolean = false;
 
+  sortDirection = 'ASC'; // Oldest to Newest
 
-  constructor(private php: PHPService, public login: LoginService, private global: GlobalService) { }
+
+  constructor(private php: PHPService, public login: LoginService, private global: GlobalService, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -32,10 +35,52 @@ export class AdminComponent implements OnInit {
     return this.php.getOrders().subscribe(
       data => { 
         this.orders = data;
-        this.orders.sort((a,b) => a.id.localeCompare(b.id));
+        for(var i = 0; i < this.orders.length; i++) {
+          this.orders[i].close_start_date = this.datePipe.transform(this.orders[i].close_start_date, "MM/dd/yyyy");
+        }
+        this.sortOrders(this.sortDirection);
       },
       error => console.log(error)
       );
+  }
+
+  setOrders(daysBack: number) {
+    this.php.getOrders().subscribe(
+      data => { 
+        this.orders = data;
+        for(var i = 0; i < this.orders.length; i++) {
+          this.orders[i].close_start_date = this.datePipe.transform(this.orders[i].close_start_date, "MM/dd/yyyy");
+        }
+        this.sortOrders(this.sortDirection);
+
+        let filteredOrders = [];
+        var dateOffset = (24*60*60*1000) * daysBack; //30 days
+        var endDate = new Date();
+        var startDate = new Date();
+        startDate.setTime(startDate.getTime() - dateOffset);
+        for(var i = 0; i < this.orders.length; i++) {
+          var createdDate = new Date(this.orders[i].created_date);
+          if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
+            filteredOrders.push(this.orders[i]);
+          }
+        }
+        this.orders = filteredOrders;
+
+      },
+      error => console.log(error)
+      );
+  }
+
+  sortOrders(direction: string) {
+    this.sortDirection = direction;
+    switch(this.sortDirection) {
+      case "ASC": this.orders.sort((a,b) => a.id.localeCompare(b.id)); break;
+      case "DESC": {
+        this.orders.sort((a,b) => a.id.localeCompare(b.id));
+        this.orders = this.orders.reverse();
+        break;
+      }
+    }
   }
 
   updateDisplay(view: boolean, edit: boolean, dashboard: boolean) {
@@ -47,21 +92,14 @@ export class AdminComponent implements OnInit {
     this.display.dashboard = dashboard;
   }
 
-  updateSort(sort) {
-    if (sort.classList.contains('no-sort')) {
-      sort.classList.remove('no-sort');
-      sort.classList.add('asc');
-      this.orders.sort((a,b) => a.name.localeCompare(b.name));
-    } else if (sort.classList.contains('asc')) {
-      sort.classList.remove('asc');
-      sort.classList.add('desc');
-      this.orders.reverse();
-    } else if (sort.classList.contains('desc')) {
-      sort.classList.remove('desc');
-      sort.classList.add('no-sort');
-      this.orders.sort((a,b) => a.id.localeCompare(b.id));
+  filterOrders(filter: any) {
+    switch(filter) {
+      case "all": this.getOrders(); break;
+      case "last-7-days": this.setOrders(7); break;
+      case "last-30-days": this.setOrders(30); break;
+      case "last-60-days": this.setOrders(60); break;
+      case "last-90-days": this.setOrders(90); break;
     }
-    console.log(this.orders);
   }
 
 }
