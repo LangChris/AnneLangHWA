@@ -24,6 +24,8 @@ export class AdminComponent implements OnInit {
 
   sortDirection = 'ASC'; // Oldest to Newest
 
+  testing = false;
+
 
   constructor(private php: PHPService, public login: LoginService, private global: GlobalService, private datePipe: DatePipe) { }
 
@@ -40,8 +42,10 @@ export class AdminComponent implements OnInit {
         }
         this.sortOrders(this.sortDirection);
       },
-      error => console.log(error)
-      );
+      error => {
+        console.log(error);
+        this.setTestData();
+      });
   }
 
   setOrders(daysBack: number) {
@@ -100,6 +104,64 @@ export class AdminComponent implements OnInit {
       case "last-60-days": this.setOrders(60); break;
       case "last-90-days": this.setOrders(90); break;
     }
+  }
+
+  setTestData() {
+    this.testing = true;
+    let testData = [
+      {
+        id: "17",
+        name: "Test Name 1",
+        email: "testemail@gmail.com",
+        plan: "Gold",
+        years: "2 Years",
+        home_type: "Single Family Home",
+        address_line: "123 Main St.",
+        city: "Fairfax",
+        state: "VA",
+        zip: 22033,
+        buyer_name: "Test Buyer 1",
+        buyer_email: "testbuyer@gmail.com",
+        seller_name: null,
+        seller_email: null,
+        close_start_date: this.datePipe.transform(new Date(), "MM/dd/yyyy"),
+        optional_coverage: "Pool/Spa Combo, Well Pump, ",
+        hvac_coverage: null,
+        realtor_name: "Test Realtor Name",
+        realtor_email: "testrealtor@gmail.com",
+        title_agent_email: "titleagent@gmail.com",
+        promo: "HWA50",
+        entered: 1,
+        created_date: new Date()
+      },
+      {
+        id: "6",
+        name: "Test Name 2",
+        email: "testemail@gmail.com",
+        plan: "Free Sellers Coverage",
+        years: "13 Months",
+        home_type: "Townhome/Condo",
+        address_line: "123 Main St.",
+        city: "Fairfax",
+        state: "VA",
+        zip: 22033,
+        buyer_name: null,
+        buyer_email: null,
+        seller_name: "Test Seller 2",
+        seller_email: "testseller@gmail.com",
+        close_start_date: this.datePipe.transform(new Date() , "MM/dd/yyyy"),
+        optional_coverage: null,
+        hvac_coverage: "No",
+        realtor_name: "Test Realtor Name",
+        realtor_email: "testrealtor@gmail.com",
+        title_agent_email: null,
+        promo: null,
+        entered: 0,
+        created_date: new Date()
+      }
+    ];
+
+    this.orders = testData;
   }
 
 }
