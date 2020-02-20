@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AdminComponent } from '../admin.component';
+import { PHPService } from '../../services/php.service';
 import * as XLSX from 'xlsx';
+import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'view-orders',
@@ -10,9 +12,17 @@ import * as XLSX from 'xlsx';
 export class ViewOrdersComponent implements OnInit {
   @ViewChild('TABLE') TABLE: ElementRef;  
 
-  constructor(public admin: AdminComponent) { }
+  constructor(public admin: AdminComponent, private php: PHPService) { }
 
   ngOnInit() {
+    setTimeout(()=>{
+      for(var i = 0; i < this.admin.orders.length; i++) {
+        if(this.admin.orders[i]['entered'] == 1) {
+          let enterOrder = document.getElementById('order-entered-' + this.admin.orders[i]['id']);
+          enterOrder.style.display = "block";
+        }
+      }
+    }, 100);
   }
 
   filter() {
@@ -34,9 +44,53 @@ export class ViewOrdersComponent implements OnInit {
 
   formatOrder(value: any) {
     if(value) {
+      if(value.toString().substring(value.length - 2) == ", ") {
+        value = value.toString().substring(0, value.length - 2);
+      }
       return value;
     }
     return "--";
+  }
+
+  showOrderEntered(show: boolean, id: any) {
+    let enterOrder = document.getElementById('order-entered-' + id);
+    for(var i = 0; i < this.admin.orders.length; i++) {
+      if(this.admin.orders[i]['id'] == id) {
+        if(this.admin.orders[i]['entered'] == 1) {
+          return;
+        }
+      }
+    }
+    if(show) {
+      enterOrder.style.display = "block";
+    } else {
+      enterOrder.style.display = "none";
+    }
+  }
+
+  orderEntered(id: any) {
+    let index;
+    for(var i = 0; i < this.admin.orders.length; i++) {
+      if(this.admin.orders[i]['id'] == id && this.admin.orders[i]['entered'] == 0) {
+        index = i;
+        if(!this.admin.testing) {
+          this.php.enterOrder(id).subscribe(
+            response => {
+              this.admin.orders[index]['entered'] = 1;
+              let enterOrder = document.getElementById('order-entered-' + id);
+              enterOrder.style.display = "block";
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        } else {
+          this.admin.orders[index]['entered'] = 1;
+          let enterOrder = document.getElementById('order-entered-' + id);
+          enterOrder.style.display = "block";
+        }
+      }
+    }
   }
 
 }

@@ -163,6 +163,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
             $query .= "NULL,";
             $query .= "NULL,";
+            $query .= "0,";
             $query .= "'$created_date')";
 
             $result = mysqli_query($con, $query);

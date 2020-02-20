@@ -7,7 +7,8 @@ const endpoints = {
   sellerOrder: "/assets/place-seller-order.php",
   getOrders: "/assets/get-orders.php",
   updateOrder: "/assets/update-order.php",
-  deleteOrder: "/assets/delete-order.php"
+  deleteOrder: "/assets/delete-order.php",
+  enterOrder: "/assets/enter-order.php"
 };
 
 @Injectable()
@@ -35,9 +36,14 @@ export class PHPService {
     return this.http.put(endpoints.updateOrder, formGroup.value );
   }
 
+  // Enter Order
+  enterOrder(id: any) {
+    return this.http.put(endpoints.enterOrder, id );
+  }
+
   // Delete Order
-  deleteOrder(formGroup: FormGroup) {
-    return this.http.post(endpoints.deleteOrder, formGroup.controls.orderId.value );
+  deleteOrder(id: any) {
+    return this.http.post(endpoints.deleteOrder, id );
   }
 
 }

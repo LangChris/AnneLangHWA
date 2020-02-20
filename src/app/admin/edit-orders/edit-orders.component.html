@@ -129,6 +129,6 @@
 </div>
   <div class="centered-block top-padding">
     <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin check" type="submit" form="editForm"></button>
-    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder();"></button>
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder(editForm.controls.orderId.value);"></button>
     <button class="top-margin home" (click)="resetForm(); admin.updateDisplay(false, false, true);"></button>
   </div>

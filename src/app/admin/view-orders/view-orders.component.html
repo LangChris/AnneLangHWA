@@ -53,8 +53,11 @@
       </tr>  
     </thead>  
     <tbody>  
-      <tr *ngFor="let order of admin.orders">  
-        <td data-th="Name">{{order.name}}</td>  
+      <tr *ngFor="let order of admin.orders" id="{{order.id}}" (mouseenter)="showOrderEntered(true, order.id)" (mouseleave)="showOrderEntered(false, order.id)" >  
+        <td data-th="Name">
+          <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.id}}" class="check order-entered" (click)="orderEntered(order.id)" ></span></div>
+          <div class="bottom-wrapper">{{order.name}}</div>
+        </td>  
         <td data-th="Email">{{order.email}}</td>
         <td data-th="Plan">{{formatOrder(order.plan)}}</td>
         <td data-th="Years">{{formatOrder(order.years)}}</td>

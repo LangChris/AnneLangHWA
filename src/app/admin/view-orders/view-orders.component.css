@@ -34,9 +34,32 @@ table td {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.table tbody tr:hover {
+    background-color: rgba(235, 94, 23, 0.9);
+}
+
 button {
     margin: 5px;
     width: 25%;
+}
+
+.order-entered {
+    float: none;
+}
+
+.order-entered:hover {
+    cursor: pointer;
+}
+
+.top-wrapper {
+    display: block;
+    height: auto;
+    text-align: left;
+}
+
+.bottom-wrapper {
+    display: block;
+    height: auto;
 }
 
 @media (max-width: 800px) {
@@ -61,4 +84,9 @@ button {
         content: attr(data-th) ": ";
         font-weight: bold;
     }
+
+    .order-entered {
+        float: right;
+    }
+
 }

@@ -103,7 +103,7 @@ export class EditOrdersComponent implements OnInit {
           this.editForm.controls.realtorEmail.setValue(this.admin.orders[i]['realtor_email']);
           this.editForm.controls.titleAgentEmail.setValue(this.admin.orders[i]['title_agent_email']);
           this.editForm.controls.promo.setValue(this.admin.orders[i]['promo']);
-          this.editForm.controls.createdDate.setValue(this.admin.orders[i]['created_date']);
+          this.editForm.controls.createdDate.setValue(this.datePipe.transform(this.admin.orders[i]['created_date'], 'yyyy-MM-dd'));
         }
       }
     }, 100);
@@ -146,8 +146,8 @@ export class EditOrdersComponent implements OnInit {
     );
   }
 
-  deleteOrder() {
-    return this.php.deleteOrder(this.editForm).subscribe(
+  deleteOrder(id) {
+    return this.php.deleteOrder(id).subscribe(
       response => {
         this.resetForm();
         this.admin.showSuccess = true;
