@@ -16,6 +16,7 @@ export class SellerOrderFormComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     plan: new FormControl(),
+    years: new FormControl('13 Months'),
     homeType: new FormControl(),
     addressLine: new FormControl(),
     city: new FormControl(),

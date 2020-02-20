@@ -16,6 +16,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $email = $params->email;
         $name = $params->name;
         $plan = $params->plan;
+        $years = $params->years;
         $home_type = $params->homeType;
         $address_line = $params->addressLine;
         $city = $params->city;
@@ -62,6 +63,10 @@ switch($_SERVER['REQUEST_METHOD']){
                 <tr>
                     <td class='header'>Plan:</td>
                     <td>".clean_string($plan)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Years:</td>
+                    <td>".clean_string($years)."</td>
                 </tr>
                 <tr>
                     <td class='header'>Home Type:</td>
@@ -146,7 +151,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "'$name',";
             $query .= "'$email',";
             $query .= ($plan == '' ? "NULL" : "'$plan'").",";
-            $query .= "NULL,";
+            $query .= "'$years',";
             $query .= ($home_type == '' ? "NULL" : "'$home_type'").",";
             $query .= ($address_line == '' ? "NULL" : "'$address_line'").",";
             $query .= ($city == '' ? "NULL" : "'$city'").",";
