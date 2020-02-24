@@ -17,3 +17,8 @@
 .order-total {
     color: #eb5e17;
 }
+
+.small-btn {
+    width: 30px;
+    height: 30px;
+}

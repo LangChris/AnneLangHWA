@@ -34,6 +34,7 @@ export class AdminComponent implements OnInit {
   }
 
   getOrders() {
+    if(!this.testing) {
     return this.php.getOrders().subscribe(
       data => { 
         this.orders = data;
@@ -44,35 +45,53 @@ export class AdminComponent implements OnInit {
       },
       error => {
         console.log(error);
-        this.setTestData();
       });
+    } else {
+      this.setTestData();
+      this.sortOrders(this.sortDirection);
+    }
   }
 
   setOrders(daysBack: number) {
-    this.php.getOrders().subscribe(
-      data => { 
-        this.orders = data;
-        for(var i = 0; i < this.orders.length; i++) {
-          this.orders[i].close_start_date = this.datePipe.transform(this.orders[i].close_start_date, "MM/dd/yyyy");
-        }
-        this.sortOrders(this.sortDirection);
-
-        let filteredOrders = [];
-        var dateOffset = (24*60*60*1000) * daysBack; //30 days
-        var endDate = new Date();
-        var startDate = new Date();
-        startDate.setTime(startDate.getTime() - dateOffset);
-        for(var i = 0; i < this.orders.length; i++) {
-          var createdDate = new Date(this.orders[i].created_date);
-          if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
-            filteredOrders.push(this.orders[i]);
+    if(!this.testing) {
+      return this.php.getOrders().subscribe(
+        data => { 
+          this.orders = data;
+          for(var i = 0; i < this.orders.length; i++) {
+            this.orders[i].close_start_date = this.datePipe.transform(this.orders[i].close_start_date, "MM/dd/yyyy");
           }
+          this.sortOrders(this.sortDirection);
+          let filteredOrders = [];
+          var dateOffset = (24*60*60*1000) * daysBack; //30 days
+          var endDate = new Date();
+          var startDate = new Date();
+          startDate.setTime(startDate.getTime() - dateOffset);
+          for(var i = 0; i < this.orders.length; i++) {
+            var createdDate = new Date(this.orders[i].created_date);
+            if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
+              filteredOrders.push(this.orders[i]);
+            }
+          }
+          this.orders = filteredOrders;
+        },
+        error => {
+          console.log(error);
+      });
+    } else {
+      this.setTestData();
+      let filteredOrders = [];
+      var dateOffset = (24*60*60*1000) * daysBack; //30 days
+      var endDate = new Date();
+      var startDate = new Date();
+      startDate.setTime(startDate.getTime() - dateOffset);
+      for(var i = 0; i < this.orders.length; i++) {
+        var createdDate = new Date(this.orders[i].created_date);
+        if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
+          filteredOrders.push(this.orders[i]);
         }
-        this.orders = filteredOrders;
-
-      },
-      error => console.log(error)
-      );
+      }
+      this.orders = filteredOrders;
+    }
   }
 
   sortOrders(direction: string) {
@@ -87,6 +106,40 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  filterByTimeline(timeline: string) {
+    switch(timeline) {
+      case "all": this.getOrders(); break;
+      case "last-7-days": this.setOrders(7); break;
+      case "last-30-days": this.setOrders(30); break;
+      case "last-60-days": this.setOrders(60); break;
+      case "last-90-days": this.setOrders(90); break;
+    }
+  }
+
+  filterByPlan(plan: string) {
+    if(plan != "all") {
+      let filteredOrders = [];
+      for(var i = 0; i < this.orders.length; i++) {
+        if(this.orders[i]["plan"] == plan) {
+          filteredOrders.push(this.orders[i]);
+        }
+      }
+      this.orders = filteredOrders;
+    }
+  }
+
+  filterByHomeType(homeType: string) {
+    if(homeType != "all") {
+      let filteredOrders = [];
+      for(var i = 0; i < this.orders.length; i++) {
+        if(this.orders[i]["home_type"] == homeType) {
+          filteredOrders.push(this.orders[i]);
+        }
+      }
+      this.orders = filteredOrders;
+    }
+  }
+
   updateDisplay(view: boolean, edit: boolean, dashboard: boolean) {
     this.showError = false;
     this.showSuccess = false;
@@ -96,18 +149,16 @@ export class AdminComponent implements OnInit {
     this.display.dashboard = dashboard;
   }
 
-  filterOrders(filter: any) {
-    switch(filter) {
-      case "all": this.getOrders(); break;
-      case "last-7-days": this.setOrders(7); break;
-      case "last-30-days": this.setOrders(30); break;
-      case "last-60-days": this.setOrders(60); break;
-      case "last-90-days": this.setOrders(90); break;
-    }
+  filterOrders(sort: string, timeline: string, plan: string, homeType: string) {
+    this.filterByTimeline(timeline);
+    setTimeout(()=>{
+      this.filterByPlan(plan);
+      this.filterByHomeType(homeType);
+      this.sortOrders(sort);
+    },100);
   }
 
   setTestData() {
-    this.testing = true;
     let testData = [
       {
         id: "17",
@@ -132,7 +183,7 @@ export class AdminComponent implements OnInit {
         title_agent_email: "titleagent@gmail.com",
         promo: "HWA50",
         entered: 1,
-        created_date: new Date()
+        created_date: this.datePipe.transform(new Date("12/10/2019"), "MM/dd/yyyy")
       },
       {
         id: "6",
@@ -157,7 +208,7 @@ export class AdminComponent implements OnInit {
         title_agent_email: null,
         promo: null,
         entered: 0,
-        created_date: new Date()
+        created_date: this.datePipe.transform(new Date("02/20/2020"), "MM/dd/yyyy")
       }
     ];
 

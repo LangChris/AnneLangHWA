@@ -109,9 +109,9 @@ export class EditOrdersComponent implements OnInit {
     }, 100);
     });
 
-    setTimeout(()=>{
-      this.resetForm();
-    }, 100);
+    // setTimeout(()=>{
+    //   this.resetForm();
+    // }, 100);
 
   }
 

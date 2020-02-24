@@ -1,35 +1,59 @@
-<div *ngIf="!admin.orders || admin.orders.length == 0" class="centered-block">
+<div class="filter-box">
+  <div class="header">Orders</div>
+
+  <div class="sort">
+    <span>Sort</span>
+    <select id="sort" (change)="filter()">
+      <option value="ASC">Oldest to Newest</option>
+      <option value="DESC">Newest to Oldest</option>
+    </select>
+  </div>
+  <span id="filter-dropdown" (click)="toggleFilters()">Filters</span>
+  <div *ngIf="showFilters" class="filters">
+    <div class="filter">
+      <span>Timeline</span>
+      <select id="timeline" (change)="filter()">
+        <option value="all">All Orders</option>
+        <option value="last-7-days">Last 7 Days</option>
+        <option value="last-30-days">Last 30 Days</option>
+        <option value="last-60-days">Last 60 Days</option>
+        <option value="last-90-days">Last 90 Days</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <span>Plan</span>
+      <select id="plan" (change)="filter()">
+        <option value="all">All Plans</option>
+        <option value="Gold">Gold</option>
+        <option value="Platinum">Platinum</option>
+        <option value="Diamond">Diamond</option>
+        <option value="Free Sellers Coverage">Free Sellers Coverage</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <span>HomeType</span>
+      <select id="home-type" (change)="filter()">
+        <option value="all">All Homes</option>
+        <option value="Single Family Home">Single Family Home</option>
+        <option value="Townhome/Condo">Townhome/Condo</option>
+      </select>
+    </div>
+  
+    <div class="filename">
+      <span>Filename</span>
+      <input type="text" id="filename" value="{{filename}}" (keydown)="updateFilename($event)" (paste)="updateFilename($event)"/><p>.{{extension}}</p>
+    </div>
+
+  </div>
+
+</div>
+<div *ngIf="!admin.orders || admin.orders.length == 0" class="centered-block top-margin">
   <p>No orders placed yet.</p>
 </div>
-
 <div *ngIf="admin.orders && admin.orders.length > 0"> 
-  <div class="centered-block">
-    <div class="header">Orders</div>
-    <table>
-      <tr>
-        <th>Filter</th>
-        <td>
-          <select id="filter" (change)="filter()">
-            <option value="all">All Orders</option>
-            <option value="last-7-days">Last 7 Days</option>
-            <option value="last-30-days">Last 30 Days</option>
-            <option value="last-60-days">Last 60 Days</option>
-            <option value="last-90-days">Last 90 Days</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>Sort</th>
-        <td>
-          <select id="sort" (change)="sort()">
-            <option value="ASC">Oldest to Newest</option>
-            <option value="DESC">Newest to Oldest</option>
-          </select>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <p>Results: {{admin.orders.length}}</p>
+  <p class="top-margin">Results: {{admin.orders.length}}</p>
   <table class="table" #TABLE>  
     <thead>  
       <tr>  

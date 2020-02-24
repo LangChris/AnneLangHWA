@@ -145,6 +145,16 @@ button:hover {
     font-size: 20px;
 }
 
+.add:before {
+    content: "\002B";
+    font-size: 20px;
+}
+
+.minus:before {
+    content: "\2212";
+    font-size: 20px;
+}
+
 @media screen and (max-width: 1150px) {
     
     .large {
