@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
-import { PHPService } from '../services/php.service';
+import { DatabaseService } from '../services/database.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
 
@@ -46,7 +46,7 @@ export class OrderFormComponent implements OnInit {
 
   total: number = 0;
 
-  constructor(private global: GlobalService, private route: ActivatedRoute, private php: PHPService, private formBuilder: FormBuilder) {}
+  constructor(private global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -208,7 +208,7 @@ export class OrderFormComponent implements OnInit {
 
       this.orderForm.controls.createdDate.setValue(new Date());
 
-      return this.php.placeOrder(this.orderForm).subscribe(response => {
+      return this.database.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;
       });
     } else {

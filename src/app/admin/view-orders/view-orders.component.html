@@ -40,6 +40,33 @@
         <option value="Townhome/Condo">Townhome/Condo</option>
       </select>
     </div>
+
+    <div class="filter">
+      <span>Entered</span>
+      <select id="entered" (change)="filter()">
+        <option value="all">All Orders</option>
+        <option value="entered">Entered</option>
+        <option value="not-entered">Not Entered</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <span>Years</span>
+      <select id="years" (change)="filter()">
+        <option value="all">All Years</option>
+        <option value="13 Months">13 Months</option>
+        <option value="2 Years">2 Years</option>
+        <option value="3 Years">3 Years</option>
+      </select>
+    </div>
+
+    <div class="filter">
+      <span>Realtor</span>
+      <select id="realtor" (change)="filter()">
+        <option value="all">All Realtors</option>
+        <option *ngFor="let realtor of admin.realtors" value="{{realtor}}">{{realtor}}</option>
+      </select>
+    </div>
   
     <div class="filename">
       <span>Filename</span>
@@ -53,7 +80,7 @@
   <p>No orders placed yet.</p>
 </div>
 <div *ngIf="admin.orders && admin.orders.length > 0"> 
-  <p class="top-margin">Results: {{admin.orders.length}}</p>
+  <p class="top-margin">Results: {{admin.orders.length}} ({{enteredOrders.length}} entered)</p>
   <table class="table" #TABLE>  
     <thead>  
       <tr>  

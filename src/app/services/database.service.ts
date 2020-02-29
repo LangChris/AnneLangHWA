@@ -3,16 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 
 const endpoints = {
-  order: "/assets/place-order.php",
-  sellerOrder: "/assets/place-seller-order.php",
-  getOrders: "/assets/get-orders.php",
-  updateOrder: "/assets/update-order.php",
-  deleteOrder: "/assets/delete-order.php",
-  enterOrder: "/assets/enter-order.php"
+  order: "/assets/database/place-order.php",
+  sellerOrder: "/assets/database/place-seller-order.php",
+  getOrders: "/assets/database/get-orders.php",
+  updateOrder: "/assets/database/update-order.php",
+  deleteOrder: "/assets/database/delete-order.php",
+  enterOrder: "/assets/database/enter-order.php"
 };
 
 @Injectable()
-export class PHPService {
+export class DatabaseService {
 
   constructor(private http: HttpClient) { }
 

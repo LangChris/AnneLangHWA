@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
+
 @Component({
   selector: 'app-promo',
   templateUrl: './promo.component.html',

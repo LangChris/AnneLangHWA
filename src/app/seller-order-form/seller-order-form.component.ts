@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PHPService } from '../services/php.service';
-import { ApiService } from '../services/api.service';
+import { DatabaseService } from '../services/database.service';
 import { GlobalService } from '../services/global.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
@@ -41,7 +40,7 @@ export class SellerOrderFormComponent implements OnInit {
   validateName = false;
   validateEmail = false;
 
-  constructor(private php: PHPService, private global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
+  constructor(private database: DatabaseService, private global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -92,7 +91,7 @@ export class SellerOrderFormComponent implements OnInit {
 
       this.sellerOrderForm.controls.createdDate.setValue(new Date());
 
-      return this.php.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
+      return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;
       });
     } else {

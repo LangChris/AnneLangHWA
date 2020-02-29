@@ -3,7 +3,7 @@ import { AdminComponent } from '../admin.component';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import { DatePipe } from '@angular/common';
 import { GlobalService } from '../../services/global.service';
-import { PHPService } from '../../services/php.service';
+import { DatabaseService } from '../../services/database.service';
 import * as MultiSelect from '../../../assets/multi-select-umd';
 
 @Component({
@@ -40,12 +40,14 @@ export class EditOrdersComponent implements OnInit {
 
   multiSelect = null;
 
-  constructor(private global: GlobalService, private php: PHPService, public admin: AdminComponent, private datePipe: DatePipe) { }
+  constructor(private global: GlobalService, private database: DatabaseService, public admin: AdminComponent, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.global.setShowPortal(false);
 
     this.editForm.controls.orderId.valueChanges.subscribe(value => {
+      let table = document.getElementsByTagName('table');
+      table[0].style.width = "auto";
       setTimeout(()=>{
       if(this.editForm.controls.orderId.value != 'Select Order') {
         this.admin.showSuccess = false;
@@ -136,7 +138,7 @@ export class EditOrdersComponent implements OnInit {
 
     this.editForm.controls.optionalCoverage.setValue(selectedOptions);
 
-    return this.php.updateOrder(this.editForm).subscribe(
+    return this.database.updateOrder(this.editForm).subscribe(
       response => {
         this.admin.showSuccess = true;
       },
@@ -147,7 +149,7 @@ export class EditOrdersComponent implements OnInit {
   }
 
   deleteOrder(id) {
-    return this.php.deleteOrder(id).subscribe(
+    return this.database.deleteOrder(id).subscribe(
       response => {
         this.resetForm();
         this.admin.showSuccess = true;

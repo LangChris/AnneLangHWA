@@ -1,7 +1,8 @@
-.order-form {
+.edit-form {
     margin: 0 auto;
     text-align: left;
     padding-bottom: 25px;
+    width: auto;
 }
 
 button {

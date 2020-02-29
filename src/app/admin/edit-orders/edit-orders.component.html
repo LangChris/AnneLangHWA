@@ -5,7 +5,7 @@
   </div>
   <div *ngIf="admin.orders && admin.orders.length > 0" class="section">
   <form *ngIf="admin.orders && admin.orders.length > 0" id="editForm" [formGroup]="editForm" novalidate (ngSubmit)="updateOrder()" >
-    <table class="order-form">
+    <table class="edit-form">
     <tr>
       <td>Order</td>
       <td>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AdminComponent } from '../admin.component';
-import { PHPService } from '../../services/php.service';
+import { DatabaseService } from '../../services/database.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -11,23 +11,17 @@ import * as XLSX from 'xlsx';
 export class ViewOrdersComponent implements OnInit {
   @ViewChild('TABLE') TABLE: ElementRef;  
 
-  constructor(public admin: AdminComponent, private php: PHPService) { }
+  constructor(public admin: AdminComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
   filename: string = "Orders";
   extension: string = "xlsx";
+  enteredOrders = [];
 
   ngOnInit() {
     let sort = document.getElementById('sort') as HTMLSelectElement;
-    sort.selectedIndex = sort.options[0].value == this.admin.sortDirection ? 0 : 1;
-    setTimeout(()=>{
-      for(var i = 0; i < this.admin.orders.length; i++) {
-        if(this.admin.orders[i]['entered'] == 1) {
-          let enterOrder = document.getElementById('order-entered-' + this.admin.orders[i]['id']);
-          enterOrder.style.display = "block";
-        }
-      }
-    }, 100);
+    sort.selectedIndex = sort.options[0].value == this.admin.filter.sort ? 0 : 1;
+    this.updateEnteredOrders();
   }
 
   updateFilename(event) {
@@ -46,12 +40,17 @@ export class ViewOrdersComponent implements OnInit {
     let timeline = document.getElementById('timeline') as HTMLSelectElement;
     let plan = document.getElementById('plan') as HTMLSelectElement;
     let homeType = document.getElementById('home-type') as HTMLSelectElement;
+    let entered = document.getElementById('entered') as HTMLSelectElement;
+    let years = document.getElementById('years') as HTMLSelectElement;
+    let realtor = document.getElementById('realtor') as HTMLSelectElement;
 
     if(this.showFilters) {
-      this.admin.filterOrders(sort.value, timeline.value, plan.value, homeType.value);
+      this.admin.filterOrders(sort.value, timeline.value, plan.value, homeType.value, entered.value, years.value, realtor.value);
     } else {
-      this.admin.filterOrders(sort.value, "all", "all", "all");
+      this.admin.filterOrders(sort.value, "all", "all", "all", "all", "all", "all");
     }
+
+    this.updateEnteredOrders();
   }
 
   ExportToExcel() {  
@@ -93,11 +92,12 @@ export class ViewOrdersComponent implements OnInit {
       if(this.admin.orders[i]['id'] == id && this.admin.orders[i]['entered'] == 0) {
         index = i;
         if(!this.admin.testing) {
-          this.php.enterOrder(id).subscribe(
+          this.database.enterOrder(id).subscribe(
             response => {
               this.admin.orders[index]['entered'] = 1;
               let enterOrder = document.getElementById('order-entered-' + id);
               enterOrder.style.display = "block";
+              this.enteredOrders.push(this.admin.orders[index]);
             },
             error => {
               console.log(error);
@@ -107,9 +107,23 @@ export class ViewOrdersComponent implements OnInit {
           this.admin.orders[index]['entered'] = 1;
           let enterOrder = document.getElementById('order-entered-' + id);
           enterOrder.style.display = "block";
+          this.enteredOrders.push(this.admin.orders[index]);
         }
       }
     }
+  }
+
+  updateEnteredOrders() {
+    setTimeout(()=>{
+      this.enteredOrders = [];
+      for(var i = 0; i < this.admin.orders.length; i++) {
+        if(this.admin.orders[i]['entered'] == 1) {
+          let enterOrder = document.getElementById('order-entered-' + this.admin.orders[i]['id']);
+          enterOrder.style.display = "block";
+          this.enteredOrders.push(this.admin.orders[i]);
+        }
+      }
+    }, 200);
   }
 
 }

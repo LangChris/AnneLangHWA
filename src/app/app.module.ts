@@ -14,7 +14,7 @@ import { FooterComponent } from './global/footer/footer.component';
 import { AdminComponent } from './admin/admin.component';
 
 import { GlobalService } from './services/global.service';
-import { PHPService } from './services/php.service';
+import { DatabaseService } from './services/database.service';
 import { LoginService } from './services/login.service';
 import { DatePipe } from '@angular/common';
 import { LoginComponent } from './admin/login/login.component';
@@ -67,7 +67,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [GlobalService, PHPService, LoginService, DatePipe],
+  providers: [GlobalService, DatabaseService, LoginService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
