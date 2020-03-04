@@ -109,37 +109,17 @@ export class OrderFormComponent implements OnInit {
   }
 
   updateOptionalCoverageSelect() {
-
     var optionalCoverageSelect = document.getElementById("optional-coverage") as HTMLSelectElement;
-    optionalCoverageSelect.options.length = 1;
+    optionalCoverageSelect.options.length = 0;
     
-    var plan = document.getElementById('plan') as HTMLSelectElement;
     var options = [];
 
     for(var i = 0; i < this.global.getOptionalCoverage.length; i++) {
-        if(plan.value == this.global.getPlans.platinum.header.toLowerCase()) {
-            if(i != 9 && i != 10) {
-                var option = document.createElement("option");
-                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-                option.value = this.global.getOptionalCoverage[i].option;
-                optionalCoverageSelect.add(option);
-                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-            }
-        } else if(plan.value === this.global.getPlans.diamond.header.toLowerCase()) {
-            if(i != 9 && i != 10 && i != 12) {
-                var option = document.createElement("option");
-                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-                option.value = this.global.getOptionalCoverage[i].option;
-                optionalCoverageSelect.add(option);
-                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-            }
-        } else {
-            var option = document.createElement("option");
-            option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-            option.value = this.global.getOptionalCoverage[i].option;
-            optionalCoverageSelect.add(option);
-            options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-        }
+      var option = document.createElement("option");
+      option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
+      option.value = this.global.getOptionalCoverage[i].option;
+      optionalCoverageSelect.add(option);
+      options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
     }
     
     var multiSelect = new (MultiSelect as any)('.multi-select', {

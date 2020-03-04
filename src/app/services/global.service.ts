@@ -96,7 +96,7 @@ export class GlobalService {
         for(let i = 0; i < data.length; i++) {
           let option = {
             option: data[i].coverage_option,
-            price: data[i].price
+            price: '$' + data[i].price + '/yr.'
           };
           this.optionalCoverage.push(option);
         }

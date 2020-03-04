@@ -75,16 +75,17 @@ export class EditOrdersComponent implements OnInit {
             options.push(this.global.getOptionalCoverage[option].option);
           }
           if(this.admin.orders[i]['optional_coverage'] != null) {
-            let currentSelection = this.admin.orders[i]['optional_coverage'].substring(0, this.admin.orders[i]['optional_coverage'].lastIndexOf(",")).split(", ");
-            this.editForm.controls.optionalCoverage.setValue(currentSelection);
+            selectedOptions = this.admin.orders[i]['optional_coverage'].split(", ");
+            this.editForm.controls.optionalCoverage.setValue(selectedOptions);
             var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
             for(var j = 0; j < optionalCoverageSelect.options.length; j++) {
-                optionalCoverageSelect.options[j].selected = currentSelection.indexOf(optionalCoverageSelect.options[j].text) >= 0;
+                optionalCoverageSelect.options[j].selected = selectedOptions.indexOf(optionalCoverageSelect.options[j].text) >= 0;
                 if(optionalCoverageSelect.options[j].selected) {
                   selectedOptions.push(optionalCoverageSelect.options[j].text);
                 }
             }
           }
+
           if(this.multiSelect == null) {
            this.multiSelect = new (MultiSelect as any)('.multi-select', {
               items: options,
@@ -97,7 +98,7 @@ export class EditOrdersComponent implements OnInit {
           this.multiSelect.on('change', function (e) {
               var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
               for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
-                  optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+                  optionalCoverageSelect.options[i].selected = this.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
               }
           });
           this.editForm.controls.hvacCoverage.setValue(this.admin.orders[i]['hvac_coverage']);
@@ -110,10 +111,6 @@ export class EditOrdersComponent implements OnInit {
       }
     }, 100);
     });
-
-    // setTimeout(()=>{
-    //   this.resetForm();
-    // }, 100);
 
   }
 
