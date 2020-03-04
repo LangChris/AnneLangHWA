@@ -1,5 +1,5 @@
-<div class="promo" id="promo" *ngIf="promo.active">
-  <h1 id="promo-title">${{promo.price}} OFF</h1>
-  <span>New Plan Purchases Through</span> <span id="promo-endDate">{{promo.endDate}}</span>
-  <h4 id="promo-code">Use Promo Code: {{promo.code}}</h4>
+<div class="promo" id="promo" *ngIf="global.promo.active">
+  <h1 id="promo-title">${{global.promo.amount}} OFF</h1>
+  <span>New Plan Purchases Through</span> <span id="promo-endDate">{{global.promo.endDate}}</span>
+  <h4 id="promo-code">Use Promo Code: {{global.promo.code}}</h4>
 </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from  '../services/database.service';
+import { DatePipe } from '@angular/common';
 
 const brochures = {
   english: "/assets/brochures/NA15%202018%20BRO%20v1.pdf",
@@ -98,7 +99,7 @@ export class GlobalService {
     code: null
   };
 
-  constructor(private database: DatabaseService) { }
+  constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
     return brochures;
@@ -122,7 +123,7 @@ export class GlobalService {
         let promo = {
           active: response[0].active,
           amount: response[0].amount,
-          endDate: response[0].end_date,
+          endDate: this.datePipe.transform(response[0].end_date, "MM/dd/yyyy"),
           code: response[0].code
         };
         this.promo = promo;

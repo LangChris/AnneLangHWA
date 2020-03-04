@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
     this.updateGoldOptions();
     this.updatePlatinumOptions();
     this.updateDiamondOptions();
-    //this.updatePromo();
     this.global.setShowPortal(true);
   }
 
@@ -102,22 +101,6 @@ export class HomeComponent implements OnInit {
       for(i = 0; i < this.global.getPlans.diamond.options.length; i++) {
           tableExtra.innerHTML += "<li>&#10004;" + this.global.getPlans.diamond.options[i] + "</li>";
       }
-  }
-
-  updatePromo() {
-    if (this.global.getPromo.active) {
-        var title = document.getElementById('promo-title');
-        var subtitle = document.getElementById('promo-subtitle');
-        var endDate = document.getElementById('promo-endDate');
-        var code = document.getElementById('promo-code');
-        
-        title.innerHTML = this.global.getPromo.title;
-        subtitle.innerHTML = this.global.getPromo.subtitle;
-        endDate.innerHTML = this.global.getPromo.endDate;
-        code.innerHTML = this.global.getPromo.code;
-    } else {
-        document.getElementById('promo').style.display = 'none';
-    }
   }
 
   navigateToBrochure(language: string) {

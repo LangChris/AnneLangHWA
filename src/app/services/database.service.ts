@@ -8,7 +8,10 @@ const endpoints = {
   getOrders: "/assets/database/get-orders.php",
   updateOrder: "/assets/database/update-order.php",
   deleteOrder: "/assets/database/delete-order.php",
-  enterOrder: "/assets/database/enter-order.php"
+  enterOrder: "/assets/database/enter-order.php",
+  getPromo: "/assets/database/get-promo.php",
+  getPlans: "/assets/database/get-plans.php",
+  getPlanOptions: "/assets/database/get-plan-options.php"
 };
 
 @Injectable()
@@ -44,6 +47,21 @@ export class DatabaseService {
   // Delete Order
   deleteOrder(id: any) {
     return this.http.post(endpoints.deleteOrder, id );
+  }
+
+  // Get Promo
+  getPromo() {
+    return this.http.get(endpoints.getPromo);
+  }
+
+  // Get Plans
+  getPlans() {
+    return this.http.get(endpoints.getPlans);
+  }
+
+  // Get Plan Options
+  getPlanOptions() {
+    return this.http.get(endpoints.getPlanOptions);
   }
 
 }

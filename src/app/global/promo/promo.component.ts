@@ -8,7 +8,7 @@ import { GlobalService } from '../../services/global.service';
 })
 export class PromoComponent implements OnInit {
 
-  constructor(private global: GlobalService) { }
+  constructor(public global: GlobalService) { }
 
   ngOnInit() {
     this.global.updatePromo();
