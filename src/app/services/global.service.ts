@@ -99,6 +99,27 @@ export class GlobalService {
     code: null
   };
 
+  plans = {
+    gold: {
+        header: null,
+        price: 0,
+        townhomeDiscount: 0,
+        options: []
+    },
+    platinum: {
+        header: null,
+        price: 0,
+        townhomeDiscount: 0,
+        options: []
+    },
+    diamond: {
+        header: null,
+        price: 0,
+        townhomeDiscount: 0,
+        options: []
+    }
+  };
+
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
@@ -107,6 +128,24 @@ export class GlobalService {
 
   get getPlans() {
     return plans;
+  }
+
+  updatePlans() {
+    this.database.getPlans().subscribe(
+      response => {
+        
+      },
+      error => console.log(error)
+    );
+  }
+
+  updatePlanOptions() {
+    this.database.getPlanOptions().subscribe(
+      response => {
+        
+      },
+      error => console.log(error)
+    );
   }
   
   get getOptionalCoverage() {
@@ -120,13 +159,10 @@ export class GlobalService {
   updatePromo() {
     this.database.getPromo().subscribe(
       response => {
-        let promo = {
-          active: response[0].active,
-          amount: response[0].amount,
-          endDate: this.datePipe.transform(response[0].end_date, "MM/dd/yyyy"),
-          code: response[0].code
-        };
-        this.promo = promo;
+        this.promo.active = response[0].active;
+        this.promo.amount = response[0].amount;
+        this.promo.endDate = this.datePipe.transform(response[0].end_date, "MM/dd/yyyy");
+        this.promo.code = response[0].code;
       },
       error => console.log(error)
     );
