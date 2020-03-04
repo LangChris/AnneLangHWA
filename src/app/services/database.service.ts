@@ -11,7 +11,8 @@ const endpoints = {
   enterOrder: "/assets/database/enter-order.php",
   getPromo: "/assets/database/get-promo.php",
   getPlans: "/assets/database/get-plans.php",
-  getPlanOptions: "/assets/database/get-plan-options.php"
+  getPlanOptions: "/assets/database/get-plan-options.php",
+  getOptionalCoverage: "/assets/database/get-optional-coverage.php"
 };
 
 @Injectable()
@@ -62,6 +63,11 @@ export class DatabaseService {
   // Get Plan Options
   getPlanOptions() {
     return this.http.get(endpoints.getPlanOptions);
+  }
+
+  // Get Optional Coverage
+  getOptionalCoverage() {
+    return this.http.get(endpoints.getOptionalCoverage);
   }
 
 }

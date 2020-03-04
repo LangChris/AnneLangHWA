@@ -7,86 +7,6 @@ const brochures = {
   spanish: "/assets/brochures/NA15%202018%20BRO%20V1%20SP.PDF"
 };
 
-const plans = {
-  gold: {
-      header: "Gold",
-      price: 450.00,
-      discount: "-$20 Townhome/Condo/Mobile Home Discount",
-      townhomeDiscount: 20.00,
-      options: [
-              " Unknown Pre-existing Conditions",
-              " Unknown Insufficient Maintenance",
-              " Heating System/Furnace",
-              " Air Conditioning System/Cooler",
-              " Ductwork",
-              " Plumbing System",
-              " Stoppages/Clogs",
-              " Permanent Sump Pump",
-              " Water Heater including Tankless",
-              " Instant Hot Water Dispenser",
-              " Whirlpool Bath Tub",
-              " Electrical System",
-              " Ceiling Fans and Exhaust Fans",
-              " Door Bells, Burglar & Fire Alarm Systems",
-              " Central Vacuum",
-              " Dishwasher",
-              " Garbage Disposal",
-              " Built-in Microwave",
-              " Range/Oven/Cooktop",
-              " Trash Compactor",
-              " Garage Door Opener"
-      ]
-  },
-  platinum: {
-      header: "Platinum",
-      price: 550.00,
-      discount: "-$30 Townhome/Condo/Mobile Home Discount",
-      townhomeDiscount: 30.00,
-      options: [
-              " Kitchen Refrigerator w/ Ice Maker",
-              " Washer/Dryer Package",
-              " Telephone Line Coverage",
-              " Re-Key",
-              " SEER/R-410A Modifications",
-              " Premium Coverage"
-      ]
-  },
-  diamond: {
-      header: "Diamond",
-      price: 590.00,
-      discount: "-$30 Townhome/Condo/Mobile Home Discount",
-      townhomeDiscount: 30.00,
-      options: [
-              " Orange Plus"
-      ]
-  }
-};
-
-const optionalCoverage = [
-  { option: "Pool/Spa Combo", price: "$190.00/yr." },
-  { option: "Additional Pool or Spa", price: "$190.00/yr." },
-  { option: "Salt Water Pool (must purchase with Pool/Spa Combo)", price: "$345.00/yr." },
-  { option: "Well Pump", price: "$100.00/yr." },
-  { option: "Stand Alone Freezer", price: "$50.00/yr." },
-  { option: "Second Refrigerator", price: "$35.00/yr." },
-  { option: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75.00/yr." },
-  { option: "External Water Line Repair", price: "$90.00/yr." },
-  { option: "External Water Line + Sewer & Septic Line Repair", price: "$195.00/yr." },
-  { option: "Washer/Dryer Package", price: "$85.00/yr." },
-  { option: "Kitchen Refrigerator w/Ice Maker", price: "$50.00/yr." },
-  { option: "Green Plus", price: "$70.00/yr." },
-  { option: "Orange Plus", price: "$100.00/yr." },
-];
-
-const promo = {
-  active: true,
-  title: "$50 OFF",
-  subtitle: "New Plan Purchases Through",
-  endDate: "3/31/2020",
-  code: "HWA50",
-  amount: 50.00
-};
-
 @Injectable()
 export class GlobalService {
 
@@ -120,6 +40,8 @@ export class GlobalService {
     }
   };
 
+  optionalCoverage = [];
+
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
@@ -127,13 +49,23 @@ export class GlobalService {
   }
 
   get getPlans() {
-    return plans;
+    return this.plans;
   }
 
   updatePlans() {
     this.database.getPlans().subscribe(
       response => {
-        
+        this.plans.gold.header = response[0].name;
+        this.plans.gold.price = response[0].price;
+        this.plans.gold.townhomeDiscount = response[0].townhome_discount;
+
+        this.plans.platinum.header = response[1].name;
+        this.plans.platinum.price = response[1].price;
+        this.plans.platinum.townhomeDiscount = response[1].townhome_discount;
+
+        this.plans.diamond.header = response[2].name;
+        this.plans.diamond.price = response[2].price;
+        this.plans.diamond.townhomeDiscount = response[2].townhome_discount;
       },
       error => console.log(error)
     );
@@ -142,14 +74,39 @@ export class GlobalService {
   updatePlanOptions() {
     this.database.getPlanOptions().subscribe(
       response => {
-        
+        let data: any;
+        data = response;
+        for(let i = 0; i < data.length; i++) {
+          switch(data[i].plan) {
+            case "Gold": this.plans.gold.options.push(" " + data[i].plan_option); break;
+            case "Platinum": this.plans.platinum.options.push(" " + data[i].plan_option); break;
+            case "Diamond": this.plans.diamond.options.push(" " + data[i].plan_option); break;
+          }
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  updateOptionalCoverage() {
+    this.database.getOptionalCoverage().subscribe(
+      response => {
+        let data: any;
+        data = response;
+        for(let i = 0; i < data.length; i++) {
+          let option = {
+            option: data[i].coverage_option,
+            price: data[i].price
+          };
+          this.optionalCoverage.push(option);
+        }
       },
       error => console.log(error)
     );
   }
   
   get getOptionalCoverage() {
-    return optionalCoverage;
+    return this.optionalCoverage;
   }
 
   get getPromo() {
