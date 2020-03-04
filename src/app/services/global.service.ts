@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DatabaseService } from  '../services/database.service';
 
 const brochures = {
   english: "/assets/brochures/NA15%202018%20BRO%20v1.pdf",
@@ -90,7 +91,14 @@ export class GlobalService {
 
   showPortal: boolean = true;
 
-  constructor() { }
+  promo = {
+    active: false,
+    amount: 0,
+    endDate: null,
+    code: null
+  };
+
+  constructor(private database: DatabaseService) { }
 
   get getBrochures() {
     return brochures;
@@ -105,7 +113,16 @@ export class GlobalService {
   }
 
   get getPromo() {
-    return promo;
+    return this.promo;
+  }
+
+  updatePromo() {
+    this.database.getOrders().subscribe(
+      data => {
+        
+      },
+      error => console.log(error)
+    );
   }
 
   get getShowPortal() {

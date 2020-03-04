@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     this.updateGoldOptions();
     this.updatePlatinumOptions();
     this.updateDiamondOptions();
-    this.updatePromo();
+    //this.updatePromo();
     this.global.setShowPortal(true);
   }
 
