@@ -100,6 +100,7 @@ export class OrderFormComponent implements OnInit {
           this.updatePromoStatus(null);
         }
 
+        this.total = 0;
         this.updateOrderTotal();
 
         this.updateOptionalCoverageSelect();
@@ -235,26 +236,26 @@ export class OrderFormComponent implements OnInit {
   }
 
   updateOrderTotal() {
-    this.total = 0;
+    let total = 0;
     let plan = document.getElementById('plan') as HTMLSelectElement;
     let homeTypeTH = document.getElementById('home-type-th') as HTMLInputElement;
     let isTownhome = homeTypeTH.checked;
  
     switch(plan.value) {
       case "Gold": {
-        this.total += (isTownhome) ? 
+        total += (isTownhome) ? 
         (this.global.getPlans.gold.price - this.global.getPlans.gold.townhomeDiscount) :
         this.global.getPlans.gold.price; 
         break;
       }
       case "Platinum": {
-        this.total += (isTownhome) ? 
+        total += (isTownhome) ? 
         (this.global.getPlans.platinum.price - this.global.getPlans.platinum.townhomeDiscount) :
         this.global.getPlans.platinum.price; 
         break;
       }
       case "Diamond": {
-        this.total += (isTownhome) ? 
+        total += (isTownhome) ? 
         (this.global.getPlans.diamond.price - this.global.getPlans.diamond.townhomeDiscount) :
         this.global.getPlans.diamond.price; 
         break;
@@ -264,15 +265,17 @@ export class OrderFormComponent implements OnInit {
 
     if(years == "2 Years") {
       let discountYear = this.total - (this.total * 0.10);
-      this.total += discountYear;
+      total += discountYear;
     }
     if(years == "3 Years") {
       let discountYear = this.total - (this.total * 0.10);
-      this.total += (discountYear * 2);
+      total += (discountYear * 2);
     }
 
     if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '') {
-      this.total -= this.global.getPromo.amount;
+      total -= this.global.getPromo.amount;
     }
+
+    this.total = total;
   }
 }
