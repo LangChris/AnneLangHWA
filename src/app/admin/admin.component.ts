@@ -30,7 +30,7 @@ export class AdminComponent implements OnInit {
     entered: 'all',
     years: 'all',
     realtor: 'all',
-    sort: 'ASC'
+    sort: this.global.getGeneralSettings.defaultSortOrder
   };
 
   testing = false;

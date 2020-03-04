@@ -10,6 +10,7 @@ import { GlobalService } from '../../services/global.service';
 export class FooterComponent implements OnInit {
 
   showPortal: boolean;
+  year: number = new Date().getFullYear();
 
   constructor(private router: Router, public global: GlobalService) { }
 

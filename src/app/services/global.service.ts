@@ -42,6 +42,17 @@ export class GlobalService {
 
   optionalCoverage = [];
 
+  generalSettings = {
+    phoneNumber: '',
+    email: '',
+    owner: '',
+    webpageTitle: '',
+    webpageSubTitle: '',
+    webpageDescription: '',
+    defaultSortOrder: '',
+    defaultFilename: ''
+  };
+
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
@@ -116,10 +127,19 @@ export class GlobalService {
   updatePromo() {
     this.database.getPromo().subscribe(
       response => {
-        this.promo.active = response[0].active;
-        this.promo.amount = response[0].amount;
-        this.promo.endDate = this.datePipe.transform(response[0].end_date, "MM/dd/yyyy");
-        this.promo.code = response[0].code;
+        let data: any;
+        data = response;
+        for(let i = 0; i < data.length; i++) {
+          let today = new Date();
+          let endDate = new Date(data[i].end_date);
+          let valid = today < endDate;
+          if(data[i].active && valid) {
+            this.promo.active = data[i].active;
+            this.promo.amount = data[i].amount;
+            this.promo.endDate = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
+            this.promo.code = data[i].code;
+          }
+        }
       },
       error => console.log(error)
     );
@@ -131,6 +151,26 @@ export class GlobalService {
 
   setShowPortal(showPortal: boolean) {
     this.showPortal = showPortal;
+  }
+
+  get getGeneralSettings() {
+    return this.generalSettings;
+  }
+
+  updateGeneralSettings() {
+    this.database.getGeneralSettings().subscribe(
+      response => {
+        this.generalSettings.phoneNumber = response[0].phone_number;
+        this.generalSettings.email = response[0].email;
+        this.generalSettings.owner = response[0].owner;
+        this.generalSettings.webpageTitle = response[0].webpage_title;
+        this.generalSettings.webpageSubTitle = response[0].webpage_subtitle;
+        this.generalSettings.webpageDescription = response[0].webpage_description;
+        this.generalSettings.defaultSortOrder = response[0].default_sort_order;
+        this.generalSettings.defaultFilename = response[0].default_filename;
+      },
+      error => console.log(error)
+    );
   }
 
 }

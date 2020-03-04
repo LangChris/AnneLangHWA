@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AdminComponent } from '../admin.component';
 import { DatabaseService } from '../../services/database.service';
+import { GlobalService } from '../../services/global.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -11,10 +12,10 @@ import * as XLSX from 'xlsx';
 export class ViewOrdersComponent implements OnInit {
   @ViewChild('TABLE') TABLE: ElementRef;  
 
-  constructor(public admin: AdminComponent, private database: DatabaseService) { }
+  constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = "Orders";
+  filename: string = this.global.getGeneralSettings.defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 
