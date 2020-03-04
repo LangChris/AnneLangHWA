@@ -117,9 +117,15 @@ export class GlobalService {
   }
 
   updatePromo() {
-    this.database.getOrders().subscribe(
-      data => {
-        
+    this.database.getPromo().subscribe(
+      response => {
+        let promo = {
+          active: response[0].active,
+          amount: response[0].amount,
+          endDate: response[0].end_date,
+          code: response[0].code
+        };
+        this.promo = promo;
       },
       error => console.log(error)
     );
