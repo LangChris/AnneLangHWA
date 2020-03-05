@@ -12,4 +12,5 @@
   - View Orders Table
   - Edit Orders Table With Function(s) `Update, Delete`
   - Export to Excel
+  - Settings
 
