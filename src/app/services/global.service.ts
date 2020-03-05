@@ -50,7 +50,8 @@ export class GlobalService {
     webpageSubTitle: '',
     webpageDescription: '',
     defaultSortOrder: '',
-    defaultFilename: ''
+    defaultFilename: '',
+    sendEmail: true
   };
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
@@ -168,6 +169,7 @@ export class GlobalService {
         this.generalSettings.webpageDescription = response[0].webpage_description;
         this.generalSettings.defaultSortOrder = response[0].default_sort_order;
         this.generalSettings.defaultFilename = response[0].default_filename;
+        this.generalSettings.sendEmail = response[0].send_email;
       },
       error => console.log(error)
     );

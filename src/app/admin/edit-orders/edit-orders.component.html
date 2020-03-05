@@ -1,4 +1,4 @@
-<h1 class="header">Edit Order</h1>
+<h1 class="header">Edit Order &#9999;</h1>
   
   <div *ngIf="!admin.orders || admin.orders.length == 0" class="centered-block">
     <p>No orders placed yet.</p>
@@ -130,5 +130,5 @@
   <div class="centered-block top-padding">
     <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin check" type="submit" form="editForm"></button>
     <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder(editForm.controls.orderId.value);"></button>
-    <button class="top-margin home" (click)="resetForm(); admin.updateDisplay(false, false, true);"></button>
+    <button class="top-margin home" (click)="resetForm(); admin.updateDisplay('DASHBOARD');"></button>
   </div>

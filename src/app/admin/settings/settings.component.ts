@@ -1,0 +1,47 @@
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../../services/global.service';
+import { AdminComponent } from '../admin.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
+import { DatabaseService } from '../../services/database.service';
+
+@Component({
+  selector: 'settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.css']
+})
+export class SettingsComponent implements OnInit {
+
+  settingsForm = new FormGroup({
+    title: new FormControl(this.global.getGeneralSettings.webpageTitle, [Validators.required]),
+    subtitle: new FormControl(this.global.getGeneralSettings.webpageSubTitle, [Validators.required]),
+    description: new FormControl(this.global.getGeneralSettings.webpageDescription, [Validators.required]),
+    email: new FormControl(this.global.getGeneralSettings.email, [Validators.required]),
+    phone: new FormControl(this.global.getGeneralSettings.phoneNumber, [Validators.required]),
+    owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),
+    defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
+    defaultFilename: new FormControl(this.global.getGeneralSettings.defaultFilename, [Validators.required]),
+    sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required])
+  });
+
+  constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
+
+  ngOnInit(): void {
+    this.settingsForm.valueChanges.subscribe(response => {
+      this.admin.showSuccess = false;
+      this.admin.showError = false;
+    });
+  }
+
+  updateSettings() {
+    return this.database.saveGeneralSettings(this.settingsForm).subscribe(
+      response => {
+        this.admin.showSuccess = true;
+        this.global.updateGeneralSettings();
+      },
+      error => {
+        this.admin.showError = true;
+      }
+    );
+  }
+
+}

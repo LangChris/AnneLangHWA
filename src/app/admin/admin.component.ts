@@ -14,11 +14,7 @@ export class AdminComponent implements OnInit {
   orders: any;
   realtors = [];
 
-  display = {
-    dashboard: true,
-    view: false,
-    edit: false
-  };
+  display = 'DASHBOARD';
 
   showError: boolean = false;
   showSuccess: boolean = false;
@@ -210,13 +206,11 @@ export class AdminComponent implements OnInit {
     this.orders = filteredOrders;
   }
 
-  updateDisplay(view: boolean, edit: boolean, dashboard: boolean) {
+  updateDisplay(display: string) {
     this.showError = false;
     this.showSuccess = false;
 
-    this.display.view = view;
-    this.display.edit = edit;
-    this.display.dashboard = dashboard;
+    this.display = display;
   }
 
   filterOrders(sort: string, timeline: string, plan: string, homeType: string, entered: string, years: string, realtor: string) {

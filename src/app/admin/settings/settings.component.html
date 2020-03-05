@@ -1,0 +1,62 @@
+<div class="settings-box">
+    <div class="header">Settings &#9881;</div>
+
+    <form id="settingsForm" [formGroup]="settingsForm" novalidate (ngSubmit)="updateSettings()" >
+    <table class="settings-table">
+        <tr>
+            <th>Title</th>
+            <td><input type="text" id="title" class="large" name="title" formControlName="title" /></td>
+        </tr>
+        <tr>
+            <th>Sub Title</th>
+            <td><input type="text" id="sub-title" class="large" name="subtitle" formControlName="subtitle" /></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><textarea id="description" rows=10 cols=30 class="large" name="description" formControlName="description" ></textarea></td>
+        </tr>
+        <tr>
+            <th>Owner</th>
+            <td><input type="text" id="owner" class="small" name="owner" formControlName="owner" /></td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td><input type="tel" id="phone-number" class="small" name="phone" formControlName="phone" /></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" id="email" class="small" name="email" formControlName="email" /></td>
+        </tr>
+        <tr>
+            <th>Default Sort</th>
+            <td>
+                <select id="sort" class="small" name="defaultSort" formControlName="defaultSort">
+                    <option value="ASC">Oldest to Newest</option>
+                    <option value="DESC">Newest to Oldest</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Default Filename</th>
+            <td><input type="text" id="filename" class="small" name="defaultFilename" formControlName="defaultFilename" /></td>
+        </tr>
+        <tr>
+            <th>Receive Order Emails</th>
+            <td>
+                <label class="switch">
+                    <input type="checkbox" name="sendEmail" formControlName="sendEmail" checked="{{global.getGeneralSettings.sendEmail}}">
+                    <span class="slider round"></span>
+                </label>
+            </td>
+        </tr>
+    </table>
+        <div *ngIf="admin.showError" class="error">Error Making Changes</div>
+        <div *ngIf="admin.showSuccess" class="success">Successfully Made Changes</div>
+    </form>
+    <div class="centered-block top-padding bottom-padding">
+        <button class="top-margin check" type="submit" form="settingsForm"></button>
+    </div>
+</div>
+<div class="centered-block top-padding">
+    <button class="top-margin home" (click)="admin.updateDisplay('DASHBOARD');"></button>
+</div>

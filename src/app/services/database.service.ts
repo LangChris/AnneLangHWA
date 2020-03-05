@@ -13,7 +13,8 @@ const endpoints = {
   getPlans: "/assets/database/get-plans.php",
   getPlanOptions: "/assets/database/get-plan-options.php",
   getOptionalCoverage: "/assets/database/get-optional-coverage.php",
-  getGeneralSettings: "/assets/database/get-general-settings.php"
+  getGeneralSettings: "/assets/database/get-general-settings.php",
+  updateGeneralSettings: "/assets/database/update-general-settings.php"
 };
 
 @Injectable()
@@ -74,6 +75,11 @@ export class DatabaseService {
   // Get General Settings
   getGeneralSettings() {
     return this.http.get(endpoints.getGeneralSettings);
+  }
+
+  // Save General Settings
+  saveGeneralSettings(formGroup: FormGroup) {
+    return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
   }
 
 }
