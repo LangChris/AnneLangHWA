@@ -41,13 +41,34 @@
             <td><input type="text" id="filename" class="small" name="defaultFilename" formControlName="defaultFilename" /></td>
         </tr>
         <tr>
-            <th>Receive Order Emails</th>
+            <th>Receive Emails</th>
             <td>
                 <label class="switch">
-                    <input type="checkbox" name="sendEmail" formControlName="sendEmail" checked="{{global.getGeneralSettings.sendEmail}}">
+                    <input type="checkbox" name="sendEmail" formControlName="sendEmail">
                     <span class="slider round"></span>
                 </label>
             </td>
+        </tr>
+        <tr>
+            <th>Promo</th>
+            <td>
+                <label class="switch">
+                    <input type="checkbox" name="promoActive" formControlName="promoActive">
+                    <span class="slider round"></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><input type="text" class="small" name="promoAmount" formControlName="promoAmount" /></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><input type="text" class="small" name="promoCode" formControlName="promoCode" /></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><input type="date" class="small" name="promoEndDate" formControlName="promoEndDate" /></td>
         </tr>
     </table>
         <div *ngIf="admin.showError" class="error">Error Making Changes</div>

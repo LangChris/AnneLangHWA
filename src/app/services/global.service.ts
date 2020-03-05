@@ -16,6 +16,7 @@ export class GlobalService {
     active: false,
     amount: 0,
     endDate: null,
+    endDateString: null,
     code: null
   };
 
@@ -137,7 +138,8 @@ export class GlobalService {
           if(data[i].active && valid) {
             this.promo.active = data[i].active;
             this.promo.amount = data[i].amount;
-            this.promo.endDate = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
+            this.promo.endDate = data[i].end_date;
+            this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
             this.promo.code = data[i].code;
           }
         }

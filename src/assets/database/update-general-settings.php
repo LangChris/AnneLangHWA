@@ -22,6 +22,10 @@ switch($_SERVER['REQUEST_METHOD']){
         $default_sort = $params->defaultSort;
         $default_filename = $params->defaultFilename;
         $send_email = $params->sendEmail;
+        $active = $params->promoActive;
+        $amount = $params->promoAmount;
+        $code = $params->promoCode;
+        $end_date = $params->promoEndDate;
 
         // Update to Database
         $hostname="localhost";
@@ -51,6 +55,16 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "default_sort_order = '$default_sort',";
             $query .= "default_filename = '$default_filename',";
             $query .= "send_email = '$send_email'";
+                
+            $result = mysqli_query($con, $query);
+
+            $table="promo";
+
+            $query = "UPDATE $table SET ";
+            $query .= "active = '$active',";
+            $query .= "amount = '$amount',";
+            $query .= "code = '$code',";
+            $query .= "end_date = '$end_date'";
                 
             $result = mysqli_query($con, $query);
 

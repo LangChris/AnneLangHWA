@@ -98,11 +98,11 @@ button {
   }
   
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: rgba(18, 151, 58, 1.0);
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px rgba(18, 151, 58, 1.0);
   }
   
   input:checked + .slider:before {
@@ -119,3 +119,14 @@ button {
   .slider.round:before {
     border-radius: 50%;
   }
+
+  @media screen and (max-width: 800px) {
+    
+    .large {
+        width: 150px;
+    }
+
+    .small {
+        width: 150px;
+    }
+}

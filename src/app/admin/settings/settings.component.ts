@@ -20,7 +20,11 @@ export class SettingsComponent implements OnInit {
     owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),
     defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
     defaultFilename: new FormControl(this.global.getGeneralSettings.defaultFilename, [Validators.required]),
-    sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required])
+    sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required]),
+    promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
+    promoAmount: new FormControl(this.global.getPromo.amount, [Validators.required]),
+    promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
+    promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required])
   });
 
   constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
@@ -37,6 +41,7 @@ export class SettingsComponent implements OnInit {
       response => {
         this.admin.showSuccess = true;
         this.global.updateGeneralSettings();
+        this.global.updatePromo();
       },
       error => {
         this.admin.showError = true;
