@@ -34,6 +34,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
         $created_date = $params->createdDate;
+        $send_email = $params->sendEmail;
 
         function clean_string($string) {
             $bad = array("content-type","bcc:","to:","cc:","href");
@@ -156,7 +157,9 @@ switch($_SERVER['REQUEST_METHOD']){
         'Reply-To: '.$email."\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
-        $mail_response = mail($email_to, $subject, $msg, $headers);
+        if($send_email) {
+            $mail_response = mail($email_to, $subject, $msg, $headers);
+        }
 
         // Save to Database
         $hostname="localhost";

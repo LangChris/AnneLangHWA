@@ -30,7 +30,8 @@ export class SellerOrderFormComponent implements OnInit {
     realtorEmail: new FormControl(),
     realtorCompany: new FormControl(),
     realtorZip: new FormControl(),
-    createdDate: new FormControl()
+    createdDate: new FormControl(),
+    sendEmail: new FormControl()
   }); 
 
   pageProperties = {
@@ -88,7 +89,7 @@ export class SellerOrderFormComponent implements OnInit {
     }
   }
 
-  sendEmail() {
+  submitOrder() {
     this.validateName = true;
     this.validateEmail = true;
     if(this.sellerOrderForm.valid) {
@@ -103,6 +104,7 @@ export class SellerOrderFormComponent implements OnInit {
       this.sellerOrderForm.controls.hvacCoverage.setValue(hvacCoverage.value);
 
       this.sellerOrderForm.controls.createdDate.setValue(new Date());
+      this.sellerOrderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
 
       return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;

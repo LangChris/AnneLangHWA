@@ -5,7 +5,7 @@
   <app-promo *ngIf="showForm"></app-promo>
   <div class="section" *ngIf="!showForm">Thank you. I will be in touch with you very soon!</div>
   <div class="section" *ngIf="showForm">
-      <form id="orderForm" [formGroup]="orderForm" novalidate (ngSubmit)="sendEmail()" >
+      <form id="orderForm" [formGroup]="orderForm" novalidate (ngSubmit)="submitOrder()" >
       <table class="order-form">
         
           <tr>

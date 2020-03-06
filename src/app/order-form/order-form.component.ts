@@ -33,7 +33,8 @@ export class OrderFormComponent implements OnInit {
     realtorZip: new FormControl(),
     titleAgentEmail: new FormControl(),
     promo: new FormControl(),
-    createdDate: new FormControl()
+    createdDate: new FormControl(),
+    sendEmail: new FormControl()
   }); 
 
   pageProperties = {
@@ -171,7 +172,7 @@ export class OrderFormComponent implements OnInit {
     
   }
 
-  sendEmail() {
+  submitOrder() {
     this.validateName = true;
     this.validateEmail = true;
     if(this.orderForm.valid) {
@@ -195,6 +196,7 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.promo.setValue(promoInput.value);
 
       this.orderForm.controls.createdDate.setValue(new Date());
+      this.orderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
 
       return this.database.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;
