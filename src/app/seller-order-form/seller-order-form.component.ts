@@ -43,6 +43,8 @@ export class SellerOrderFormComponent implements OnInit {
   validateName = false;
   validateEmail = false;
 
+  total = 'FREE';
+
   constructor(private database: DatabaseService, private global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -61,6 +63,14 @@ export class SellerOrderFormComponent implements OnInit {
         var email = document.getElementById('email') as HTMLInputElement;
         email.style.border = "1px solid #ccc";
         this.validateEmail = false;
+      }
+    });
+
+    this.sellerOrderForm.controls.hvacCoverage.valueChanges.subscribe(value => {
+      if(this.sellerOrderForm.controls.hvacCoverage.value == 'Yes') {
+        this.total = '50';
+      } else {
+        this.total = 'FREE';
       }
     });
 
