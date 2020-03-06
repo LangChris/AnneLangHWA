@@ -68,7 +68,7 @@ export class SellerOrderFormComponent implements OnInit {
 
     this.sellerOrderForm.controls.hvacCoverage.valueChanges.subscribe(value => {
       if(this.sellerOrderForm.controls.hvacCoverage.value == 'Yes') {
-        this.total = '50';
+        this.total = '$50';
       } else {
         this.total = 'FREE';
       }
