@@ -25,13 +25,17 @@ switch($_SERVER['REQUEST_METHOD']){
         $zip = $params->zip;
         $buyer_name = $params->buyerName;
         $buyer_email = $params->buyerEmail;
+        $buyer_phone = $params->buyerPhone;
         $seller_name = $params->sellerName;
         $seller_email = $params->sellerEmail;
+        $seller_phone = $params->sellerPhone;
         $close_start_date = $params->closeStartDate;
         $optional_coverage = $params->optionalCoverage;
         $hvac_coverage = $params->hvacCoverage;
         $realtor_name = $params->realtorName;
         $realtor_email = $params->realtorEmail;
+        $realtor_company = $params->realtorCompany;
+        $realtor_zip = $params->realtorZip;
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
 
@@ -71,13 +75,17 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "zip = ".($zip == '' ? "NULL" : "'$zip'").",";
             $query .= "buyer_name = ".($buyer_name == '' ? "NULL" : "'$buyer_name'").",";
             $query .= "buyer_email = ".($buyer_email == '' ? "NULL" : "'$buyer_email'").",";
+            $query .= "buyer_phone = ".($buyer_phone == '' ? "NULL" : "'$buyer_phone'").",";
             $query .= "seller_name = ".($seller_name == '' ? "NULL" : "'$seller_name'").",";
             $query .= "seller_email = ".($seller_email == '' ? "NULL" : "'$seller_email'").",";
+            $query .= "seller_phone = ".($seller_phone == '' ? "NULL" : "'$seller_phone'").",";
             $query .= "close_start_date = ".($close_start_date == '' ? "NULL" : "'$close_start_date'").",";
             $query .= "optional_coverage = ".($optional_coverage_string == '' ? "NULL" : "'$optional_coverage_string'").",";
             $query .= "hvac_coverage = ".($hvac_coverage == '' ? "NULL" : "'$hvac_coverage'").",";
             $query .= "realtor_name = ".($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= "realtor_email = ".($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= "realtor_company = ".($realtor_company == '' ? "NULL" : "'$realtor_company'").",";
+            $query .= "realtor_zip = ".($realtor_zip == '' ? "NULL" : "'$realtor_zip'").",";
             $query .= "title_agent_email = ".($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
             $query .= "promo = ".($promo == '' ? "NULL" : "'$promo'");
             $query .= " WHERE id = '$id'";

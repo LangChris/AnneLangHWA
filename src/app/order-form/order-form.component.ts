@@ -24,10 +24,13 @@ export class OrderFormComponent implements OnInit {
     zip: new FormControl('', [Validators.maxLength(5)]),
     buyerName: new FormControl(),
     buyerEmail: new FormControl(),
+    buyerPhone: new FormControl(),
     closeStartDate: new FormControl(),
     optionalCoverage: new FormControl([]),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
+    realtorCompany: new FormControl(),
+    realtorZip: new FormControl(),
     titleAgentEmail: new FormControl(),
     promo: new FormControl(),
     createdDate: new FormControl()

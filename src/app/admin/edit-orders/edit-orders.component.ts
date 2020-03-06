@@ -26,13 +26,17 @@ export class EditOrdersComponent implements OnInit {
     zip: new FormControl('', [Validators.maxLength(5)]),
     buyerName: new FormControl(),
     buyerEmail: new FormControl(),
+    buyerPhone: new FormControl(),
     sellerName: new FormControl(),
     sellerEmail: new FormControl(),
+    sellerPhone: new FormControl(),
     closeStartDate: new FormControl(),
     optionalCoverage: new FormControl([]),
     hvacCoverage: new FormControl('No'),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
+    realtorCompany: new FormControl(),
+    realtorZip: new FormControl(),
     titleAgentEmail: new FormControl(),
     promo: new FormControl(),
     createdDate: new FormControl()
@@ -66,8 +70,10 @@ export class EditOrdersComponent implements OnInit {
           this.editForm.controls.zip.setValue(this.admin.orders[i]['zip']);
           this.editForm.controls.buyerName.setValue(this.admin.orders[i]['buyer_name']);
           this.editForm.controls.buyerEmail.setValue(this.admin.orders[i]['buyer_email']);
+          this.editForm.controls.buyerPhone.setValue(this.admin.orders[i]['buyer_phone']);
           this.editForm.controls.sellerName.setValue(this.admin.orders[i]['seller_name']);
           this.editForm.controls.sellerEmail.setValue(this.admin.orders[i]['seller_email']);
+          this.editForm.controls.sellerPhone.setValue(this.admin.orders[i]['seller_phone']);
           this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(this.admin.orders[i]['close_start_date'], 'yyyy-MM-dd'));
           let options = [];
           let selectedOptions = [];
@@ -104,6 +110,8 @@ export class EditOrdersComponent implements OnInit {
           this.editForm.controls.hvacCoverage.setValue(this.admin.orders[i]['hvac_coverage']);
           this.editForm.controls.realtorName.setValue(this.admin.orders[i]['realtor_name']);
           this.editForm.controls.realtorEmail.setValue(this.admin.orders[i]['realtor_email']);
+          this.editForm.controls.realtorCompany.setValue(this.admin.orders[i]['realtor_company']);
+          this.editForm.controls.realtorZip.setValue(this.admin.orders[i]['realtor_zip']);
           this.editForm.controls.titleAgentEmail.setValue(this.admin.orders[i]['title_agent_email']);
           this.editForm.controls.promo.setValue(this.admin.orders[i]['promo']);
           this.editForm.controls.createdDate.setValue(this.datePipe.transform(this.admin.orders[i]['created_date'], 'yyyy-MM-dd'));

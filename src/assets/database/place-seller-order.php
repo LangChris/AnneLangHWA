@@ -24,10 +24,13 @@ switch($_SERVER['REQUEST_METHOD']){
         $zip = $params->zip;
         $seller_name = $params->sellerName;
         $seller_email = $params->sellerEmail;
+        $seller_phone = $params->sellerPhone;
         $start_date = $params->startDate;
         $hvac_coverage = $params->hvacCoverage;
         $realtor_name = $params->realtorName;
         $realtor_email = $params->realtorEmail;
+        $realtor_company = $params->realtorCompany;
+        $realtor_zip = $params->realtorZip;
         $created_date = $params->createdDate;
         
         function clean_string($string) {
@@ -97,6 +100,10 @@ switch($_SERVER['REQUEST_METHOD']){
                     <td>".clean_string($seller_email)."</td>
                 </tr>
                 <tr>
+                    <td class='header'>Seller Phone:</td>
+                    <td>".clean_string($seller_phone)."</td>
+                </tr>
+                <tr>
                     <td class='header'>Start Date:</td>
                     <td>".clean_string($start_date)."</td>
                 </tr>
@@ -111,6 +118,14 @@ switch($_SERVER['REQUEST_METHOD']){
                 <tr>
                     <td class='header'>Referring Realtor Email:</td>
                     <td>".clean_string($realtor_email)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Referring Realtor Company:</td>
+                    <td>".clean_string($realtor_company)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Referring Realtor Zip:</td>
+                    <td>".clean_string($realtor_zip)."</td>
                 </tr>
             </table>
         </body>
@@ -159,13 +174,17 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($zip == '' ? "NULL" : "'$zip'").",";
             $query .= "NULL,";
             $query .= "NULL,";
+            $query .= "NULL,";
             $query .= ($seller_name == '' ? "NULL" : "'$seller_name'").",";
             $query .= ($seller_email == '' ? "NULL" : "'$seller_email'").",";
+            $query .= ($seller_phone == '' ? "NULL" : "'$seller_phone'").",";
             $query .= ($start_date == '' ? "NULL" : "'$start_date'").",";
             $query .= "NULL,";
             $query .= ($hvac_coverage == '' ? "NULL" : "'$hvac_coverage'").",";
             $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= ($realtor_company == '' ? "NULL" : "'$realtor_company'").",";
+            $query .= ($realtor_zip == '' ? "NULL" : "'$realtor_zip'").",";
             $query .= "NULL,";
             $query .= "NULL,";
             $query .= "0,";

@@ -24,10 +24,13 @@ switch($_SERVER['REQUEST_METHOD']){
         $zip = $params->zip;
         $buyer_name = $params->buyerName;
         $buyer_email = $params->buyerEmail;
+        $buyer_phone = $params->buyerPhone;
         $close_start_date = $params->closeStartDate;
         $optional_coverage = $params->optionalCoverage;
         $realtor_name = $params->realtorName;
         $realtor_email = $params->realtorEmail;
+        $realtor_company = $params->realtorCompany;
+        $realtor_zip = $params->realtorZip;
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
         $created_date = $params->createdDate;
@@ -99,6 +102,10 @@ switch($_SERVER['REQUEST_METHOD']){
                     <td>".clean_string($buyer_email)."</td>
                 </tr>
                 <tr>
+                    <td class='header'>Buyer Phone:</td>
+                    <td>".clean_string($buyer_phone)."</td>
+                </tr>
+                <tr>
                     <td class='header'>Close/Start Date:</td>
                     <td>".clean_string($close_start_date)."</td>
                 </tr>";
@@ -118,6 +125,14 @@ switch($_SERVER['REQUEST_METHOD']){
                 <tr>
                     <td class='header'>Referring Realtor Email:</td>
                     <td>".clean_string($realtor_email)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Referring Realtor Company:</td>
+                    <td>".clean_string($realtor_company)."</td>
+                </tr>
+                <tr>
+                    <td class='header'>Referring Realtor Zip:</td>
+                    <td>".clean_string($realtor_zip)."</td>
                 </tr>
                 <tr>
                     <td class='header'>Title Agent Email:</td>
@@ -180,6 +195,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($zip == '' ? "NULL" : "'$zip'").",";
             $query .= ($buyer_name == '' ? "NULL" : "'$buyer_name'").",";
             $query .= ($buyer_email == '' ? "NULL" : "'$buyer_email'").",";
+            $query .= ($buyer_phone == '' ? "NULL" : "'$buyer_phone'").",";
+            $query .= "NULL,";
             $query .= "NULL,";
             $query .= "NULL,";
             $query .= ($close_start_date == '' ? "NULL" : "'$close_start_date'").",";
@@ -187,6 +204,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "NULL,";
             $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= ($realtor_company == '' ? "NULL" : "'$realtor_company'").",";
+            $query .= ($realtor_zip == '' ? "NULL" : "'$realtor_zip'").",";
             $query .= ($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
             $query .= ($promo == '' ? "NULL" : "'$promo'").",";
             $query .= "0,";

@@ -118,6 +118,15 @@ button:hover {
     padding: 25px;
 }
 
+.group-header {
+    text-align: left;
+    text-decoration: underline;
+}
+
+.group-label:before {
+    content: "-- ";
+}
+
 .settings:before {
     content: "\2699";
     font-size: 20px;

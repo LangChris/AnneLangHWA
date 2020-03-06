@@ -7,98 +7,113 @@
   <div class="section" *ngIf="showForm">
       <form id="orderForm" [formGroup]="orderForm" novalidate (ngSubmit)="sendEmail()" >
       <table class="order-form">
-      <tr>
-        <td class="required">Your Name*</td>
-        <td>
-          <input type="text" class="large" id="name" name="name" formControlName="name"/>
-          <span *ngIf="validateName && !orderForm.controls.name.valid" class="required small-text" ><br /> Name is Required!</span>
-        </td>
-      </tr>
-      <tr>
-        <td class="required">Your Email*</td>
-        <td>
-          <input type="email" class="large" id="email" name="email" formControlName="email"/>
-          <span *ngIf="validateEmail && !orderForm.controls.email.valid" class="required small-text" ><br /> Email is Invalid!</span>
-        </td>
-      </tr>
-      <tr>
-        <td>Plan</td>
-        <td>
-            <select id="plan" name="plan" formControlName="plan">
-                <option selected>Select One</option>
-                <option value="Gold">Gold</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Diamond">Diamond</option>
-            </select>  
-        </td>
-      </tr>
-      <tr>
-        <td>Years</td>
-        <td>
-          <select id="years" name="years" formControlName="years">
-            <option value="13 Months" selected>13 Months</option>
-            <option value="2 Years">2 Years</option>
-            <option value="3 Years">3 Years</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>Home Type</td>
-        <td>
-          <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType" checked/>Single Family<br />
-          <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
-      </tr>
-      <tr>
-        <td>Address Line</td>   
-        <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
-      </tr>
-      <tr>
-        <td>City</td>   
-        <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
-      </tr>
-      <tr>
-        <td>Zip</td>   
-        <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
-      </tr>
-      <tr>
-        <td>Buyer Name</td>   
-        <td><input type="text" class="large" id="buyer-name" name="buyerName" formControlName="buyerName"/></td>   
-      </tr>
-      <tr>
-        <td>Buyer Email</td>   
-        <td><input type="email" class="large" id="buyer-email" name="buyerEmail" formControlName="buyerEmail"/></td>   
-      </tr>
-      <tr>
-        <td>Close/Start Date</td>   
-        <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
-      </tr>
-      <tr>
-        <td>Optional Coverage</td>
-        <td>
-            <div class="multi-select large"></div>
-            <select id="optional-coverage" name="optionalCoverage" formControlName="optionalCoverage" multiple hidden></select>  
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><span class="small-text">* Additional fees apply</span></td>
-      </tr>
-      <tr>
-        <td>Referring Realtor Name</td>   
-        <td><input type="text" class="large" id="realtor-name" name="realtorName" formControlName="realtorName"/></td>   
-      </tr>
-      <tr>
-        <td>Referring Realtor Email</td>   
-        <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
-      </tr>
-      <tr>
-        <td>Title Agent Email</td>   
-        <td><input type="email" class="large" id="title-agent-email" name="titleAgentEmail" formControlName="titleAgentEmail"/></td>   
-      </tr>
-      <tr>
-        <td>Promo</td>   
-        <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo" (keydown)="updatePromoStatus($event)" (paste)="updatePromoStatus($event)"/><span id="promo-status"></span></td>   
-      </tr>
+        
+          <tr>
+            <th class="required">Your Name*</th>
+            <td>
+              <input type="text" class="large" id="name" name="name" formControlName="name"/>
+              <span *ngIf="validateName && !orderForm.controls.name.valid" class="required small-text" ><br /> Name is Required!</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="required">Your Email*</th>
+            <td>
+              <input type="email" class="large" id="email" name="email" formControlName="email"/>
+              <span *ngIf="validateEmail && !orderForm.controls.email.valid" class="required small-text" ><br /> Email is Invalid!</span>
+            </td>
+          </tr>
+          <tr>
+            <th>Plan</th>
+            <td>
+                <select id="plan" name="plan" formControlName="plan">
+                    <option selected>Select One</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Platinum">Platinum</option>
+                    <option value="Diamond">Diamond</option>
+                </select>  
+            </td>
+          </tr>
+          <tr>
+            <th>Years</th>
+            <td>
+              <select id="years" name="years" formControlName="years">
+                <option value="13 Months" selected>13 Months</option>
+                <option value="2 Years">2 Years</option>
+                <option value="3 Years">3 Years</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>Optional Coverage</th>
+            <td>
+                <div class="multi-select large"></div>
+                <select id="optional-coverage" name="optionalCoverage" formControlName="optionalCoverage" multiple hidden></select>  
+            </td>
+          </tr>
+          <tr>
+            <th>Close/Start Date</th>   
+            <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
+          </tr>
+          <tr>
+            <th>Home Type</th>
+            <td>
+              <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType" checked/>Single Family<br />
+              <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+          </tr>
+          <tr>
+            <th>Address Line</th>   
+            <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
+          </tr>
+          <tr>
+            <th>City</th>   
+            <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
+          </tr>
+          <tr>
+            <th>Zip</th>   
+            <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
+          </tr>
+          <tr>
+            <th class="group-header">Buyer</th>
+          </tr>
+          <tr>
+            <th class="group-label">Name</th>   
+            <td><input type="text" class="large" id="buyer-name" name="buyerName" formControlName="buyerName"/></td>   
+          </tr>
+          <tr>
+            <th class="group-label">Email</th>   
+            <td><input type="email" class="large" id="buyer-email" name="buyerEmail" formControlName="buyerEmail"/></td>   
+          </tr>
+          <tr>
+            <th class="group-label">Phone</th>   
+            <td><input type="tel" class="large" id="buyer-phone" name="buyerPhone" formControlName="buyerPhone"/></td>   
+          </tr>
+        <tr>
+          <th class="group-header">Referring Realtor</th>
+        </tr>
+        <tr>
+          <th class="group-label">Name</th>   
+          <td><input type="text" class="large" id="realtor-name" name="realtorName" formControlName="realtorName"/></td>   
+        </tr>
+        <tr>
+          <th class="group-label">Email</th>   
+          <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
+        </tr>
+        <tr>
+          <th class="group-label">Company</th>   
+          <td><input type="text" class="large" id="realtor-company" name="realtorCompany" formControlName="realtorCompany"/></td>   
+        </tr>
+        <tr>
+          <th class="group-label">Office Zip</th>   
+          <td><input type="text" class="medium" id="realtor-zip" name="realtorZip" maxlength="5" formControlName="realtorZip"/></td>   
+        </tr>
+        <tr>
+          <th>Title Agent Email</th>   
+          <td><input type="email" class="large" id="title-agent-email" name="titleAgentEmail" formControlName="titleAgentEmail"/></td>   
+        </tr>
+        <tr>
+          <th>Promo</th>   
+          <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo" (keydown)="updatePromoStatus($event)" (paste)="updatePromoStatus($event)"/><span id="promo-status"></span></td>   
+        </tr>
   </table>
     <div class="header order-total">Order Total: ${{total}}</div>
     <button class="top-margin" type="submit" form="orderForm">PLACE ORDER</button>

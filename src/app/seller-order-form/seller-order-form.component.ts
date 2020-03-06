@@ -23,10 +23,13 @@ export class SellerOrderFormComponent implements OnInit {
     zip: new FormControl(),
     sellerName: new FormControl(),
     sellerEmail: new FormControl(),
+    sellerPhone: new FormControl(),
     startDate: new FormControl(),
     hvacCoverage: new FormControl(),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
+    realtorCompany: new FormControl(),
+    realtorZip: new FormControl(),
     createdDate: new FormControl()
   }); 
 

@@ -62,7 +62,7 @@ export class ViewOrdersComponent implements OnInit {
   }  
 
   formatOrder(value: any) {
-    if(value) {
+    if(value && value != 0) {
       if(value.toString().substring(value.length - 2) == ", ") {
         value = value.toString().substring(0, value.length - 2);
       }
