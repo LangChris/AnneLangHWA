@@ -46,6 +46,8 @@ export class OrderFormComponent implements OnInit {
 
   total: number = 0;
 
+  multiSelect: any;
+
   constructor(private global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -122,16 +124,19 @@ export class OrderFormComponent implements OnInit {
       options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
     }
     
-    var multiSelect = new (MultiSelect as any)('.multi-select', {
+    this.multiSelect = new (MultiSelect as any)('.multi-select', {
     items: options,
     current: null,
     });
-    multiSelect.on('change', function (e) {
-        var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
-        for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
-            optionalCoverageSelect.options[i].selected = multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
-        }
-    });
+    this.multiSelect.on('change', this.multiSelectChange.bind(this));
+  }
+
+  multiSelectChange(e) {
+    var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+    for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+    }
+    this.updateOrderTotal();
   }
 
   updatePromoStatus(event) {
@@ -255,6 +260,15 @@ export class OrderFormComponent implements OnInit {
     if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '') {
       total -= this.global.getPromo.amount;
     }
+
+    var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        if(optionalCoverageSelect.options[i].selected) {
+          let option = optionalCoverageSelect.options[i].text;
+          let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
+          total += +price;
+        }
+      }
 
     this.total = total;
   }
