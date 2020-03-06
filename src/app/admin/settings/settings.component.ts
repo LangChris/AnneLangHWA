@@ -21,6 +21,9 @@ export class SettingsComponent implements OnInit {
     defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
     defaultFilename: new FormControl(this.global.getGeneralSettings.defaultFilename, [Validators.required]),
     sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required]),
+    planOne: new FormControl(this.global.getPlans.gold.header, [Validators.required]),
+    planTwo: new FormControl(this.global.getPlans.platinum.header, [Validators.required]),
+    planThree: new FormControl(this.global.getPlans.diamond.header, [Validators.required]),
     promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
     promoAmount: new FormControl(this.global.getPromo.amount, [Validators.required]),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
@@ -36,17 +39,26 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  promoDisabled() {
+    return this.settingsForm.controls.promoActive.value ? false : true;
+  }
+
   updateSettings() {
-    return this.database.saveGeneralSettings(this.settingsForm).subscribe(
-      response => {
-        this.admin.showSuccess = true;
-        this.global.updateGeneralSettings();
-        this.global.updatePromo();
-      },
-      error => {
-        this.admin.showError = true;
-      }
-    );
+    if(this.settingsForm.valid) {
+      return this.database.saveGeneralSettings(this.settingsForm).subscribe(
+        response => {
+          this.admin.showSuccess = true;
+          this.global.updateGeneralSettings();
+          this.global.updatePlans();
+          this.global.updatePromo();
+        },
+        error => {
+          this.admin.showError = true;
+        }
+      );
+    } else {
+      this.admin.showError = true;
+    }
   }
 
 }

@@ -26,6 +26,9 @@ switch($_SERVER['REQUEST_METHOD']){
         $amount = $params->promoAmount;
         $code = $params->promoCode;
         $end_date = $params->promoEndDate;
+        $plan_one = $params->planOne;
+        $plan_two = $params->planTwo;
+        $plan_three = $params->planThree;
 
         // Update to Database
         $hostname="localhost";
@@ -65,6 +68,23 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "amount = '$amount',";
             $query .= "code = '$code',";
             $query .= "end_date = '$end_date'";
+                
+            $result = mysqli_query($con, $query);
+
+            $table="plan";
+
+            $query = "UPDATE $table SET ";
+            $query .= "name = '$plan_one' WHERE id = 1";
+                
+            $result = mysqli_query($con, $query);
+
+            $query = "UPDATE $table SET ";
+            $query .= "name = '$plan_two' WHERE id = 2";
+                
+            $result = mysqli_query($con, $query);
+
+            $query = "UPDATE $table SET ";
+            $query .= "name = '$plan_three' WHERE id = 3";
                 
             $result = mysqli_query($con, $query);
 

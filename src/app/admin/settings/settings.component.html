@@ -50,6 +50,18 @@
             </td>
         </tr>
         <tr>
+            <th>Plans</th>
+            <td><input type="text" class="small" name="planOne" formControlName="planOne" /></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><input type="text" class="small" name="planTwo" formControlName="planTwo" /></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><input type="text" class="small" name="planThree" formControlName="planThree" /></td>
+        </tr>
+        <tr>
             <th>Promo</th>
             <td>
                 <label class="switch">
@@ -74,10 +86,8 @@
         <div *ngIf="admin.showError" class="error">Error Making Changes</div>
         <div *ngIf="admin.showSuccess" class="success">Successfully Made Changes</div>
     </form>
-    <div class="centered-block top-padding bottom-padding">
-        <button class="top-margin check" type="submit" form="settingsForm"></button>
-    </div>
 </div>
 <div class="centered-block top-padding">
+    <button class="top-margin check" type="submit" form="settingsForm"></button>
     <button class="top-margin home" (click)="admin.updateDisplay('DASHBOARD');"></button>
 </div>

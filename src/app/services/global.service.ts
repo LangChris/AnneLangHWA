@@ -132,16 +132,11 @@ export class GlobalService {
         let data: any;
         data = response;
         for(let i = 0; i < data.length; i++) {
-          let today = new Date();
-          let endDate = new Date(data[i].end_date);
-          let valid = today < endDate;
-          if(data[i].active && valid) {
-            this.promo.active = data[i].active;
-            this.promo.amount = data[i].amount;
-            this.promo.endDate = data[i].end_date;
-            this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
-            this.promo.code = data[i].code;
-          }
+          this.promo.active = data[i].active == "1" ? true : false;
+          this.promo.amount = data[i].amount;
+          this.promo.endDate = data[i].end_date;
+          this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
+          this.promo.code = data[i].code;
         }
       },
       error => console.log(error)
@@ -171,7 +166,7 @@ export class GlobalService {
         this.generalSettings.webpageDescription = response[0].webpage_description;
         this.generalSettings.defaultSortOrder = response[0].default_sort_order;
         this.generalSettings.defaultFilename = response[0].default_filename;
-        this.generalSettings.sendEmail = response[0].send_email;
+        this.generalSettings.sendEmail = response[0].send_email == "1" ? true : false;
       },
       error => console.log(error)
     );
