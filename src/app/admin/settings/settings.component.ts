@@ -54,6 +54,13 @@ export class SettingsComponent implements OnInit {
 
   updateSettings() {
     if(this.settingsForm.valid) {
+
+      if(this.settingsForm.controls.promoType.value == "Money Off") {
+        this.settingsForm.controls.promoGift.setValue('');
+      } else if(this.settingsForm.controls.promoType.value == "Free Gift") {
+        this.settingsForm.controls.promoAmount.setValue('');
+      }
+
       return this.database.saveGeneralSettings(this.settingsForm).subscribe(
         response => {
           this.admin.showSuccess = true;

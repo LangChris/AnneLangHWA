@@ -58,19 +58,22 @@
             </td>
         </tr>
         <tr>
-            <th>Plans</th>
+            <th class="group-header">Plans</th>
+        </tr>
+        <tr>
+            <th class="group-label">#1</th>
             <td><input type="text" class="small" name="planOne" formControlName="planOne" /></td>
         </tr>
         <tr>
-            <th></th>
+            <th class="group-label">#2</th>
             <td><input type="text" class="small" name="planTwo" formControlName="planTwo" /></td>
         </tr>
         <tr>
-            <th></th>
+            <th class="group-label">#3</th>
             <td><input type="text" class="small" name="planThree" formControlName="planThree" /></td>
         </tr>
         <tr>
-            <th>Promo</th>
+            <th class="group-header">Promo</th>
             <td>
                 <div class="on-off-switch">  
                     <input type="checkbox" value="None" id="promo-active" name="promoActive" formControlName="promoActive" />
@@ -79,7 +82,7 @@
             </td>
         </tr>
         <tr>
-            <th></th>
+            <th class="group-label">Type</th>
             <td>
                 <select class="small" id="promo-type" name="promoType" formControlName="promoType" >
                     <option value="Money Off">Money Off</option>
@@ -88,19 +91,19 @@
             </td>
         </tr>
         <tr *ngIf="showPromoType('Free Gift')">
-            <th></th>
+            <th class="group-label">Gift</th>
             <td><input type="text" class="small" name="promoGift" formControlName="promoGift" /></td>
         </tr>
         <tr *ngIf="showPromoType('Money Off')">
-            <th></th>
+            <th class="group-label">Amount</th>
             <td><input type="text" class="small" name="promoAmount" formControlName="promoAmount" /></td>
         </tr>
         <tr>
-            <th></th>
+            <th class="group-label">Code</th>
             <td><input type="text" class="small" name="promoCode" formControlName="promoCode" /></td>
         </tr>
         <tr>
-            <th></th>
+            <th class="group-label">End Date</th>
             <td><input type="date" class="small" name="promoEndDate" formControlName="promoEndDate" /></td>
         </tr>
     </table>
