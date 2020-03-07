@@ -21,4 +21,8 @@ export class PromoComponent implements OnInit {
     return valid ? true : false;
   }
 
+  displayPromoType(type: string) {
+    return this.global.getPromo.type == type ? true : false;
+  }
+
 }

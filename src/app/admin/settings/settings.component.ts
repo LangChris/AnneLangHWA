@@ -27,6 +27,8 @@ export class SettingsComponent implements OnInit {
     planTwo: new FormControl(this.global.getPlans.platinum.header, [Validators.required]),
     planThree: new FormControl(this.global.getPlans.diamond.header, [Validators.required]),
     promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
+    promoType: new FormControl(this.global.getPromo.type, [Validators.required]),
+    promoGift: new FormControl(this.global.getPromo.gift, [Validators.required]),
     promoAmount: new FormControl(this.global.getPromo.amount, [Validators.required]),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required])
@@ -39,6 +41,11 @@ export class SettingsComponent implements OnInit {
       this.admin.showSuccess = false;
       this.admin.showError = false;
     });
+  }
+
+  showPromoType(type: string) {
+    let promoType = document.getElementById('promo-type') as HTMLSelectElement;
+    return promoType.value == type ? true : false;
   }
 
   promoDisabled() {

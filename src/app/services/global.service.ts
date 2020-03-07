@@ -15,6 +15,8 @@ export class GlobalService {
   promo = {
     active: false,
     amount: 0,
+    type: '',
+    gift: '',
     endDate: null,
     endDateString: null,
     code: null
@@ -155,6 +157,8 @@ export class GlobalService {
         for(let i = 0; i < data.length; i++) {
           this.promo.active = data[i].active == "1" ? true : false;
           this.promo.amount = data[i].amount;
+          this.promo.type = data[i].type;
+          this.promo.gift = data[i].gift;
           this.promo.endDate = data[i].end_date;
           this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
           this.promo.code = data[i].code;

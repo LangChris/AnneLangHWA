@@ -80,6 +80,19 @@
         </tr>
         <tr>
             <th></th>
+            <td>
+                <select class="small" id="promo-type" name="promoType" formControlName="promoType" >
+                    <option value="Money Off">Money Off</option>
+                    <option value="Free Gift">Free Gift</option>
+                </select>
+            </td>
+        </tr>
+        <tr *ngIf="showPromoType('Free Gift')">
+            <th></th>
+            <td><input type="text" class="small" name="promoGift" formControlName="promoGift" /></td>
+        </tr>
+        <tr *ngIf="showPromoType('Money Off')">
+            <th></th>
             <td><input type="text" class="small" name="promoAmount" formControlName="promoAmount" /></td>
         </tr>
         <tr>

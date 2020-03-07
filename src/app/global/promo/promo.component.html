@@ -1,5 +1,6 @@
 <div class="promo" id="promo" *ngIf="displayPromo()">
-  <h1 id="promo-title">${{global.getPromo.amount}} OFF</h1>
+  <h1 *ngIf="displayPromoType('Money Off')" id="promo-title">${{global.getPromo.amount}} OFF</h1>
+  <h1 *ngIf="displayPromoType('Free Gift')" id="promo-title">Free Gift: {{global.getPromo.gift}}</h1>
   <span>New Plan Purchases Through</span> <span id="promo-endDate">{{global.getPromo.endDateString}}</span>
   <h4 id="promo-code">Use Promo Code: {{global.getPromo.code}}</h4>
 </div>
