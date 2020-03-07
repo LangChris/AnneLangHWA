@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
@@ -49,7 +49,6 @@ export class OrderFormComponent implements OnInit {
   total: number = 0;
 
   optionalCoverageMultiSelect: any;
-  specialRequestMultiSelect: any;
 
   constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
@@ -109,7 +108,6 @@ export class OrderFormComponent implements OnInit {
 
         this.updateOptionalCoverageSelect();
 
-        this.updateSpecialRequestSelect();
       }, 100);
     }
   }
@@ -133,21 +131,6 @@ export class OrderFormComponent implements OnInit {
     current: null,
     });
     this.optionalCoverageMultiSelect.on('change', this.optionalCoverageChange.bind(this));
-  }
-
-  updateSpecialRequestSelect() {
-    var specialRequestSelect = document.getElementById("special-request") as HTMLSelectElement;
-    specialRequestSelect.options.length = 0;
-    
-    var options = [];
-
-    for(var i = 0; i < this.global.getSpecialRequest.length; i++) {
-      var option = document.createElement("option");
-      option.text = this.global.getSpecialRequest[i];
-      option.value = this.global.getSpecialRequest[i];
-      specialRequestSelect.add(option);
-      options.push(this.global.getSpecialRequest[i]);
-    }
   }
 
   optionalCoverageChange(e) {
@@ -201,14 +184,15 @@ export class OrderFormComponent implements OnInit {
       }
       this.orderForm.controls.optionalCoverage.setValue(selectedOptions);
 
-      var specialRequestSelect = document.getElementById('special-request') as HTMLSelectElement;
-      selectedOptions = [];
-      for(var i = 0; i < specialRequestSelect.options.length; i++) {
-        if(specialRequestSelect.options[i].selected) {
-          selectedOptions.push(specialRequestSelect.options[i].value);
+      let selectedSpecialRequests = [];
+      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+        var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+        if(specialRequest.checked) {
+          selectedSpecialRequests.push(this.global.getSpecialRequest[i]);
         }
-      } 
-      this.orderForm.controls.specialRequest.setValue(selectedOptions);
+      }
+      
+      this.orderForm.controls.specialRequest.setValue(selectedSpecialRequests);
       var plan = document.getElementById('plan') as HTMLSelectElement;
       this.orderForm.controls.plan.setValue(plan.value);
 

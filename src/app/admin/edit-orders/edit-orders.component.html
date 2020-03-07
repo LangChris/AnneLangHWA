@@ -143,11 +143,15 @@
       <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo"/></td>   
     </tr>
     <tr>
-      <th>Special Request</th>
+      <th class="group-header">Special Request(Quote Needed)</th>
+    </tr>
+    <tr *ngFor="let request of global.getSpecialRequest; let i = index">
+      <th class="group-label">{{request}}</th>
       <td>
-          <select id="special-request" class="large" name="specialRequest" formControlName="specialRequest" multiple>
-            <option *ngFor="let request of global.getSpecialRequest" value="{{request}}">{{request}}</option>
-          </select>  
+        <div class="green-checkbox">
+          <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}"/>
+          <label for="special-request-{{i}}"></label>
+        </div>
       </td>
     </tr>
     <tr>

@@ -110,22 +110,16 @@ export class EditOrdersComponent implements OnInit {
               }
           });
 
-          let requests = [];
-          let selectedRequests = [];
-          for(var request = 0; request < this.global.getSpecialRequest.length; request++) {
-            requests.push(this.global.getSpecialRequest[request]);
-          }
           if(this.admin.orders[i]['special_request'] != null) {
-            selectedRequests = this.admin.orders[i]['special_request'].split(", ");
-            this.editForm.controls.specialRequest.setValue(selectedRequests);
-            var specialRequestSelect = document.getElementById('special-request') as HTMLSelectElement;
-            specialRequestSelect.options.length = 0;
-            for(var j = 0; j < specialRequestSelect.options.length; j++) {
-              specialRequestSelect.options[j].selected = selectedRequests.indexOf(specialRequestSelect.options[j].text) >= 0;
-                if(specialRequestSelect.options[j].selected) {
-                  selectedRequests.push(specialRequestSelect.options[j].text);
-                }
+            let selectedRequests = this.admin.orders[i]['special_request'].split(", ");
+            for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+              var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+              let index = selectedRequests.indexOf(this.global.getSpecialRequest[i]);
+              if(index >= 0) {
+                specialRequest.checked = true;
+              }
             }
+            this.editForm.controls.specialRequest.setValue(selectedRequests);
           }
 
           this.editForm.controls.hvacCoverage.setValue(this.admin.orders[i]['hvac_coverage']);
@@ -164,15 +158,15 @@ export class EditOrdersComponent implements OnInit {
 
     this.editForm.controls.optionalCoverage.setValue(selectedOptions);
 
-    var specialRequestSelect = document.getElementById('special-request') as HTMLSelectElement;
-    selectedOptions = [];
-    for(var i = 0; i < specialRequestSelect.options.length; i++) {
-      if(specialRequestSelect.options[i].selected) {
-        selectedOptions.push(specialRequestSelect.options[i].text);
+    let selectedRequests = [];
+    for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+      var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+      if(specialRequest.checked) {
+        selectedRequests.push(this.global.getSpecialRequest[i]);
       }
     }
 
-    this.editForm.controls.specialRequest.setValue(selectedOptions);
+    this.editForm.controls.specialRequest.setValue(selectedRequests);
 
     return this.database.updateOrder(this.editForm).subscribe(
       response => {

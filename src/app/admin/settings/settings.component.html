@@ -51,10 +51,10 @@
         <tr>
             <th>Receive Emails</th>
             <td>
-                <label class="switch">
-                    <input type="checkbox" name="sendEmail" formControlName="sendEmail">
-                    <span class="slider round"></span>
-                </label>
+                <div class="on-off-switch">  
+                    <input type="checkbox" value="None" id="send-email" name="sendEmail" formControlName="sendEmail" />
+                    <label for="send-email"></label>
+                </div>
             </td>
         </tr>
         <tr>
@@ -72,10 +72,10 @@
         <tr>
             <th>Promo</th>
             <td>
-                <label class="switch">
-                    <input type="checkbox" name="promoActive" formControlName="promoActive">
-                    <span class="slider round"></span>
-                </label>
+                <div class="on-off-switch">  
+                    <input type="checkbox" value="None" id="promo-active" name="promoActive" formControlName="promoActive" />
+                    <label for="promo-active"></label>
+                </div>
             </td>
         </tr>
         <tr>

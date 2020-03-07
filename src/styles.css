@@ -185,6 +185,153 @@ button:hover {
     font-size: 20px;
 }
 
+/* .roundedOne */
+.green-checkbox {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    margin: 20px auto;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);  
+  }
+
+  .green-checkbox input[type=checkbox] {
+    visibility: hidden;
+  }  
+
+  .green-checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+  }
+
+  .green-checkbox label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    background: linear-gradient(top, #222 0%, #45484d 100%);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+  }
+
+  .green-checkbox label:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background: #27ae60;
+    background: linear-gradient(top, #27ae60 0%, darken(#27ae60, 20%) 100%);
+    opacity: 0;
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .green-checkbox label:hover::after {
+    opacity: 0.3;
+  }
+  /* end .roundedOne */
+
+.checkbox {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    margin: 5px auto;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5); 
+    float: left;
+  }
+
+  .checkbox input[type=checkbox] {
+    visibility: hidden;
+  }  
+
+  .checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+  } 
+
+  .checkbox label {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    cursor: pointer;
+    background: linear-gradient(top, #222 0%, #45484d 100%);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+  }
+
+  .checkbox label:after {
+    content: '';
+    width: 9px;
+    height: 5px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    border: 3px solid #fcfff4;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    transform: rotate(-45deg);
+  }
+
+  .checkbox label:hover::after {
+    opacity: 0.3;
+  }
+
+.on-off-switch {
+    width: 80px;
+    height: 26px;
+    background: #333;
+    margin: 20px auto;
+    position: relative;
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2); 
+    float: left;
+  }
+
+  .on-off-switch input[type=checkbox] {
+    visibility: hidden;
+  }   
+
+  .on-off-switch input[type=checkbox]:checked + label {
+    left: 43px;
+  }
+
+  .on-off-switch:before {
+    content: 'ON';
+    color: #27ae60;
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+  }
+
+  .on-off-switch label {
+    display: block;
+    width: 34px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+  }
+
 @media screen and (max-width: 1150px) {
     
     .large {
