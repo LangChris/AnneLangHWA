@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../services/global.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public global: GlobalService, private router: Router) { }
+  constructor(public global: GlobalService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
     this.global.updatePlans();
@@ -17,6 +18,9 @@ export class HomeComponent implements OnInit {
     this.global.updateOptionalCoverage();
     this.global.updateSpecialRequest();
     this.global.updateGeneralSettings();
+    setTimeout(()=>{
+      this.titleService.setTitle(this.global.getGeneralSettings.webpageTitle);
+    },200);
     this.global.setShowPortal(true);
   }
 
