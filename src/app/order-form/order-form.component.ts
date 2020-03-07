@@ -41,12 +41,6 @@ export class OrderFormComponent implements OnInit {
     orderTotal: new FormControl()
   }); 
 
-  pageProperties = {
-    header: "HWA - Your Home Warranty Partner",
-    subheader: "Give your clients the best with the only 13-month home warranty.",
-    description: "Fill out the information below to place an order!"
-  };
-
   showForm = true;
   validPromo = false;
   validateName = false;
@@ -57,7 +51,7 @@ export class OrderFormComponent implements OnInit {
   optionalCoverageMultiSelect: any;
   specialRequestMultiSelect: any;
 
-  constructor(private global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);

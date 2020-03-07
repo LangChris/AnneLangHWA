@@ -16,6 +16,8 @@ switch($_SERVER['REQUEST_METHOD']){
         $title = $params->title;
         $subtitle = $params->subtitle;
         $description = $params->description;
+        $order_description = $params->orderDescription;
+        $order_message = $params->orderMessage;
         $owner = $params->owner;
         $phone = $params->phone;
         $email = $params->email;
@@ -52,6 +54,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "webpage_title = '$title',";
             $query .= "webpage_subtitle = '$subtitle',";
             $query .= "webpage_description = '$description',";
+            $query .= "order_description = '$order_description',";
+            $query .= "order_message = '$order_message',";
             $query .= "owner = '$owner',";
             $query .= "email = '$email',";
             $query .= "phone_number = '$phone',";

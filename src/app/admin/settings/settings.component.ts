@@ -15,6 +15,8 @@ export class SettingsComponent implements OnInit {
     title: new FormControl(this.global.getGeneralSettings.webpageTitle, [Validators.required]),
     subtitle: new FormControl(this.global.getGeneralSettings.webpageSubTitle, [Validators.required]),
     description: new FormControl(this.global.getGeneralSettings.webpageDescription, [Validators.required]),
+    orderDescription: new FormControl(this.global.getGeneralSettings.orderDescription, [Validators.required]),
+    orderMessage: new FormControl(this.global.getGeneralSettings.orderMessage, [Validators.required]),
     email: new FormControl(this.global.getGeneralSettings.email, [Validators.required]),
     phone: new FormControl(this.global.getGeneralSettings.phoneNumber, [Validators.required]),
     owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),

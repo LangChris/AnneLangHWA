@@ -11,12 +11,6 @@ export class HomeComponent implements OnInit {
 
   constructor(public global: GlobalService, private router: Router) { }
 
-  pageProperties = {
-    header: "HWA - Your Home Warranty Partner",
-    subheader: "Give your clients the best with the only 13-month home warranty.",
-    description: "Welcome to my information page!  HWA offers coverage for the appliances and systems in your home whether you are purchasing a resale home, or currently own a home and want coverage.  This coverage is specifically designed for our Realtor partners and their clients.  View plans, get information and place an order here..."
-  };
-
   ngOnInit() {
     this.global.updatePlans();
     this.global.updatePlanOptions();

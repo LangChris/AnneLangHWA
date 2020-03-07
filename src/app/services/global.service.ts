@@ -51,6 +51,8 @@ export class GlobalService {
     owner: '',
     webpageTitle: '',
     webpageSubTitle: '',
+    orderDescription: '',
+    orderMessage: '',
     webpageDescription: '',
     defaultSortOrder: '',
     defaultFilename: '',
@@ -183,6 +185,8 @@ export class GlobalService {
         this.generalSettings.webpageTitle = response[0].webpage_title;
         this.generalSettings.webpageSubTitle = response[0].webpage_subtitle;
         this.generalSettings.webpageDescription = response[0].webpage_description;
+        this.generalSettings.orderDescription = response[0].order_description;
+        this.generalSettings.orderMessage = response[0].order_message;
         this.generalSettings.defaultSortOrder = response[0].default_sort_order;
         this.generalSettings.defaultFilename = response[0].default_filename;
         this.generalSettings.sendEmail = response[0].send_email == "1" ? true : false;

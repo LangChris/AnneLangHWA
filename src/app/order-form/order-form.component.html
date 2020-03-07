@@ -1,9 +1,9 @@
 <div class="centered-block">
-  <div class="header">{{pageProperties.header}}</div>
-  <div class="sub-header">{{pageProperties.subheader}}</div>
-  <p *ngIf="showForm">{{pageProperties.description}}</p>
+  <div class="header">{{global.getGeneralSettings.webpageTitle}}</div>
+  <div class="sub-header">{{global.getGeneralSettings.webpageSubTitle}}</div>
+  <p *ngIf="showForm">{{global.getGeneralSettings.orderDescription}}</p>
   <app-promo *ngIf="showForm"></app-promo>
-  <div class="section" *ngIf="!showForm">Thank you. I will be in touch with you very soon!</div>
+  <div class="section" *ngIf="!showForm">{{global.getGeneralSettings.orderMessage}}</div>
   <div class="section" *ngIf="showForm">
       <form id="orderForm" [formGroup]="orderForm" novalidate (ngSubmit)="submitOrder()" >
       <table class="order-form">
@@ -117,7 +117,7 @@
         <tr>
           <th>Special Request(Quote Needed)</th>
           <td>
-              <select id="special-request" class="medium" name="specialRequest" formControlName="specialRequest" multiple></select>  
+              <select id="special-request" class="large" name="specialRequest" formControlName="specialRequest" multiple></select>  
           </td>
         </tr>
   </table>
