@@ -46,10 +46,6 @@
       </td>
     </tr>
     <tr>
-      <th>Close/Start Date</th>   
-      <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
-    </tr>
-    <tr>
       <th>Optional Coverage</th>
       <td>
           <div class="multi-select large"></div>
@@ -66,6 +62,10 @@
               <option value="Yes">Yes</option>
           </select>  
       </td>
+    </tr>
+    <tr>
+      <th>Close/Start Date</th>   
+      <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
     </tr>
     <tr>
       <th>Home Type</th>
@@ -141,6 +141,14 @@
     <tr>
       <th>Promo</th>   
       <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo"/></td>   
+    </tr>
+    <tr>
+      <th>Special Request</th>
+      <td>
+          <select id="special-request" class="medium" name="specialRequest" formControlName="specialRequest" multiple>
+            <option *ngFor="let request of global.getSpecialRequest" value="{{request}}">{{request}}</option>
+          </select>  
+      </td>
     </tr>
     <tr>
       <th>Order Placed Date</th>   

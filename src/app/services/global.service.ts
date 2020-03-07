@@ -43,6 +43,8 @@ export class GlobalService {
 
   optionalCoverage = [];
 
+  specialRequest = [];
+
   generalSettings = {
     phoneNumber: '',
     email: '',
@@ -120,6 +122,23 @@ export class GlobalService {
   
   get getOptionalCoverage() {
     return this.optionalCoverage;
+  }
+
+  updateSpecialRequest() {
+    this.database.getSpecialRequest().subscribe(
+      response => {
+        let data: any;
+        data = response;
+        for(let i = 0; i < data.length; i++) {
+          this.specialRequest.push(data[i].request);
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  get getSpecialRequest() {
+    return this.specialRequest;
   }
 
   get getPromo() {

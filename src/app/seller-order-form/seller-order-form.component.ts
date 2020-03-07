@@ -31,7 +31,10 @@ export class SellerOrderFormComponent implements OnInit {
     realtorCompany: new FormControl(),
     realtorZip: new FormControl(),
     createdDate: new FormControl(),
-    sendEmail: new FormControl()
+    sendEmail: new FormControl(),
+    adminName: new FormControl(),
+    adminEmail: new FormControl(),
+    orderTotal: new FormControl()
   }); 
 
   pageProperties = {
@@ -105,6 +108,9 @@ export class SellerOrderFormComponent implements OnInit {
 
       this.sellerOrderForm.controls.createdDate.setValue(new Date());
       this.sellerOrderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
+      this.sellerOrderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
+      this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.sellerOrderForm.controls.orderTotal.setValue(this.total);
 
       return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;

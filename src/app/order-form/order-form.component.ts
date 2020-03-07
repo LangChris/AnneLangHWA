@@ -33,8 +33,12 @@ export class OrderFormComponent implements OnInit {
     realtorZip: new FormControl(),
     titleAgentEmail: new FormControl(),
     promo: new FormControl(),
+    specialRequest: new FormControl(),
     createdDate: new FormControl(),
-    sendEmail: new FormControl()
+    sendEmail: new FormControl(),
+    adminName: new FormControl(),
+    adminEmail: new FormControl(),
+    orderTotal: new FormControl()
   }); 
 
   pageProperties = {
@@ -50,7 +54,8 @@ export class OrderFormComponent implements OnInit {
 
   total: number = 0;
 
-  multiSelect: any;
+  optionalCoverageMultiSelect: any;
+  specialRequestMultiSelect: any;
 
   constructor(private global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
@@ -109,6 +114,8 @@ export class OrderFormComponent implements OnInit {
         this.updateOrderTotal();
 
         this.updateOptionalCoverageSelect();
+
+        this.updateSpecialRequestSelect();
       }, 100);
     }
   }
@@ -127,17 +134,32 @@ export class OrderFormComponent implements OnInit {
       options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
     }
     
-    this.multiSelect = new (MultiSelect as any)('.multi-select', {
+    this.optionalCoverageMultiSelect = new (MultiSelect as any)('.multi-select', {
     items: options,
     current: null,
     });
-    this.multiSelect.on('change', this.multiSelectChange.bind(this));
+    this.optionalCoverageMultiSelect.on('change', this.optionalCoverageChange.bind(this));
   }
 
-  multiSelectChange(e) {
+  updateSpecialRequestSelect() {
+    var specialRequestSelect = document.getElementById("special-request") as HTMLSelectElement;
+    specialRequestSelect.options.length = 0;
+    
+    var options = [];
+
+    for(var i = 0; i < this.global.getSpecialRequest.length; i++) {
+      var option = document.createElement("option");
+      option.text = this.global.getSpecialRequest[i];
+      option.value = this.global.getSpecialRequest[i];
+      specialRequestSelect.add(option);
+      options.push(this.global.getSpecialRequest[i]);
+    }
+  }
+
+  optionalCoverageChange(e) {
     var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
     for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
-        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+        optionalCoverageSelect.options[i].selected = this.optionalCoverageMultiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
     }
     this.updateOrderTotal();
   }
@@ -183,8 +205,16 @@ export class OrderFormComponent implements OnInit {
           selectedOptions.push(optionalCoverageSelect.options[i].value);
         }
       }
-      
       this.orderForm.controls.optionalCoverage.setValue(selectedOptions);
+
+      var specialRequestSelect = document.getElementById('special-request') as HTMLSelectElement;
+      selectedOptions = [];
+      for(var i = 0; i < specialRequestSelect.options.length; i++) {
+        if(specialRequestSelect.options[i].selected) {
+          selectedOptions.push(specialRequestSelect.options[i].value);
+        }
+      } 
+      this.orderForm.controls.specialRequest.setValue(selectedOptions);
       var plan = document.getElementById('plan') as HTMLSelectElement;
       this.orderForm.controls.plan.setValue(plan.value);
 
@@ -197,6 +227,9 @@ export class OrderFormComponent implements OnInit {
 
       this.orderForm.controls.createdDate.setValue(new Date());
       this.orderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
+      this.orderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
+      this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
       return this.database.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;

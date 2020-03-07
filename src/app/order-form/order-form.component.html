@@ -114,6 +114,12 @@
           <th>Promo</th>   
           <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo" (keydown)="updatePromoStatus($event)" (paste)="updatePromoStatus($event)"/><span id="promo-status"></span></td>   
         </tr>
+        <tr>
+          <th>Special Request(Quote Needed)</th>
+          <td>
+              <select id="special-request" class="medium" name="specialRequest" formControlName="specialRequest" multiple></select>  
+          </td>
+        </tr>
   </table>
     <div class="header order-total">Order Total: ${{total}}</div>
     <button class="top-margin" type="submit" form="orderForm">PLACE ORDER</button>

@@ -38,6 +38,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $realtor_zip = $params->realtorZip;
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
+        $special_request = $params->specialRequest;
 
         // Update to Database
         $hostname="localhost";
@@ -63,6 +64,12 @@ switch($_SERVER['REQUEST_METHOD']){
             }
             $optional_coverage_string = empty($optional_coverage_string) ? null : substr($optional_coverage_string, 0, -2);
 
+            $special_request_string = '';
+            foreach($special_request as $request) {
+                $special_request_string .= $request .", ";
+            }
+            $special_request_string = empty($special_request_string) ? null : substr($special_request_string, 0, -2);
+
             $query = "UPDATE $table SET ";
             $query .= "name = '$name',";
             $query .= "email = '$email',";
@@ -87,7 +94,8 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "realtor_company = ".($realtor_company == '' ? "NULL" : "'$realtor_company'").",";
             $query .= "realtor_zip = ".($realtor_zip == '' ? "NULL" : "'$realtor_zip'").",";
             $query .= "title_agent_email = ".($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
-            $query .= "promo = ".($promo == '' ? "NULL" : "'$promo'");
+            $query .= "promo = ".($promo == '' ? "NULL" : "'$promo'").",";
+            $query .= "special_request = ".($special_request_string == '' ? "NULL" : "'$special_request_string'");
             $query .= " WHERE id = '$id'";
                 
             $result = mysqli_query($con, $query);

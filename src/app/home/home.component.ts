@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
     this.global.updatePlans();
     this.global.updatePlanOptions();
     this.global.updateOptionalCoverage();
+    this.global.updateSpecialRequest();
     this.global.updateGeneralSettings();
     this.global.setShowPortal(true);
   }

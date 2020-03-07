@@ -13,6 +13,7 @@ const endpoints = {
   getPlans: "/assets/database/get-plans.php",
   getPlanOptions: "/assets/database/get-plan-options.php",
   getOptionalCoverage: "/assets/database/get-optional-coverage.php",
+  getSpecialRequest: "/assets/database/get-special-request.php",
   getGeneralSettings: "/assets/database/get-general-settings.php",
   updateGeneralSettings: "/assets/database/update-general-settings.php"
 };
@@ -70,6 +71,11 @@ export class DatabaseService {
   // Get Optional Coverage
   getOptionalCoverage() {
     return this.http.get(endpoints.getOptionalCoverage);
+  }
+
+  // Get Special Request
+  getSpecialRequest() {
+    return this.http.get(endpoints.getSpecialRequest);
   }
 
   // Get General Settings
