@@ -92,7 +92,7 @@ export class ViewOrdersComponent implements OnInit {
     for(var i = 0; i < this.admin.orders.length; i++) {
       if(this.admin.orders[i]['id'] == id && this.admin.orders[i]['entered'] == 0) {
         index = i;
-        if(!this.admin.testing) {
+        if(!this.global.testing) {
           this.database.enterOrder(id).subscribe(
             response => {
               this.admin.orders[index]['entered'] = 1;
