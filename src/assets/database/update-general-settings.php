@@ -26,6 +26,8 @@ switch($_SERVER['REQUEST_METHOD']){
         $send_email = $params->sendEmail;
         $active = $params->promoActive;
         $amount = $params->promoAmount;
+        $type = $params->promoType;
+        $gift = $params->promoGift;
         $code = $params->promoCode;
         $end_date = $params->promoEndDate;
         $plan_one = $params->planOne;
@@ -69,7 +71,9 @@ switch($_SERVER['REQUEST_METHOD']){
 
             $query = "UPDATE $table SET ";
             $query .= "active = '$active',";
-            $query .= "amount = '$amount',";
+            $query .= "type = '$type',";
+            $query .= "amount = ".($amount == '' ? "NULL" : "'$amount'").",";
+            $query .= "gift = ".($gift == '' ? "NULL" : "'$gift'").",";
             $query .= "code = '$code',";
             $query .= "end_date = '$end_date'";
                 
