@@ -172,8 +172,8 @@ export class GlobalService {
 
   displayPromo() {
     let today = new Date();
-    let endDate = new Date(this.getPromo.endDate);
-    let valid = this.getPromo.active && today <= endDate;
+    let endDate = new Date(this.getPromo.endDate + ' 23:59:59 GMT-0400');
+    let valid = this.getPromo.active && today.getTime() <= endDate.getTime();
     return valid ? true : false;
   }
 
@@ -406,8 +406,8 @@ export class GlobalService {
       amount: 0,
       type: 'Free Gift',
       gift: 'Echo Dot',
-      endDate: new Date("03/31/2020"),
-      endDateString: "03/31/2020",
+      endDate: "2020-03-08",
+      endDateString: "03/08/2020",
       code: "HWA50"
     };
 
