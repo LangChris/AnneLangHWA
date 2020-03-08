@@ -63,7 +63,7 @@ export class GlobalService {
 
   orders: any;
 
-  testing = true;
+  testing = false;
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
