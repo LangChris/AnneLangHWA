@@ -403,11 +403,11 @@ export class GlobalService {
 
     this.promo = {
       active: true,
-      amount: 0,
-      type: 'Free Gift',
-      gift: 'Echo Dot',
-      endDate: "2020-03-08",
-      endDateString: "03/08/2020",
+      amount: 50,
+      type: 'Money Off',
+      gift: null,
+      endDate: "2020-03-31",
+      endDateString: "03/31/2020",
       code: "HWA50"
     };
 
@@ -419,7 +419,24 @@ export class GlobalService {
           options: [
             "Unknown Pre-existing Conditions",
             "Unknown Insufficient Maintenance",
+            "Heating System/Furnace",
             "Air Conditioning System/Cooler",
+            "Ductwork",
+            "Plumbing System",
+            "Stoppages/Clogs",
+            "Permanent Sump Pump",
+            "Water Heater including Tankless",
+            "Instant Hot Water Dispenser",
+            "Whirlpool Bath Tub",
+            "Electrical System",
+            "Ceiling Fans and Exhaust Fans",
+            "Door Bells, Burglar & Fire Alarm Systems",
+            "Central Vacuum",
+            "Dishwasher",
+            "Garbage Disposal",
+            "Built-in Microwave",
+            "Range/Oven/Cooktop",
+            "Trash Compactor",
             "Garage Door Opener"
           ]
       },
@@ -446,7 +463,16 @@ export class GlobalService {
   
     this.optionalCoverage = [
       {option: "Pool/Spa Combo", price: "$190/yr."},
+      {option: "Additional Pool or Spa", price: "$190/yr."},
+      {option: "Salt Water Pool (must purchase with Pool/Spa Combo", price: "$345/yr."},
       {option: "Well Pump", price: "$100/yr."},
+      {option: "Stand Alone Freezer", price: "$50/yr."},
+      {option: "Second Refrigerator", price: "$35/yr."},
+      {option: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75/yr."},
+      {option: "External Water Line Repair", price: "$90/yr."},
+      {option: "External Water Line + Sewer & Septic Line Repair", price: "$195/yr."},
+      {option: "Washer/Dryer Package", price: "$85/yr."},
+      {option: "Kitchen Refrigerator w/Ice Maker", price: "$50/yr."},
       {option: "Green Plus", price: "$70/yr."},
       {option: "Orange Plus", price: "$100/yr."}
     ];
@@ -458,16 +484,16 @@ export class GlobalService {
     ];
   
     this.generalSettings = {
-      phoneNumber: '703-232-8168',
-      email: 'christopherjlang01@gmail.com',
-      owner: 'CJ Lang',
+      phoneNumber: '703-123-1234',
+      email: 'tina.flowers@homewarrantyamerica.com',
+      owner: 'Tina Flowers',
       webpageTitle: 'HWA Home Warranty',
       webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',
-      webpageDescription: 'Here is the webpage description',
+      webpageDescription: 'Welcome get started by viewing our plans, brochures or place an order below.',
       orderDescription: 'Fill out the information below to place an order',
-      orderMessage: 'Thank you. I will be in touch with you very soon!',
-      defaultSortOrder: 'DESC',
-      defaultFilename: 'export',
+      orderMessage: 'Thank you - order received! I will be in touch with you very soon',
+      defaultSortOrder: 'ASC',
+      defaultFilename: 'MyOrders',
       sendEmail: false
     };
 
