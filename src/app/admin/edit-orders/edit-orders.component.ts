@@ -58,49 +58,76 @@ export class EditOrdersComponent implements OnInit {
         this.admin.showSuccess = false;
         this.admin.showError = false;
       }
-      for(var i = 0; i < this.admin.orders.length; i++) {
-        if(this.admin.orders[i]['id'] == value) {
-          this.editForm.controls.name.setValue(this.admin.orders[i]['name']);
-          this.editForm.controls.email.setValue(this.admin.orders[i]['email']);
-          this.editForm.controls.plan.setValue(this.admin.orders[i]['plan']);
-          this.editForm.controls.years.setValue(this.admin.orders[i]['years']);
-          this.editForm.controls.homeType.setValue(this.admin.orders[i]['home_type']);
-          this.editForm.controls.addressLine.setValue(this.admin.orders[i]['address_line']);
-          this.editForm.controls.city.setValue(this.admin.orders[i]['city']);
-          this.editForm.controls.state.setValue(this.admin.orders[i]['state']);
-          this.editForm.controls.zip.setValue(this.admin.orders[i]['zip']);
-          this.editForm.controls.buyerName.setValue(this.admin.orders[i]['buyer_name']);
-          this.editForm.controls.buyerEmail.setValue(this.admin.orders[i]['buyer_email']);
-          this.editForm.controls.buyerPhone.setValue(this.admin.orders[i]['buyer_phone']);
-          this.editForm.controls.sellerName.setValue(this.admin.orders[i]['seller_name']);
-          this.editForm.controls.sellerEmail.setValue(this.admin.orders[i]['seller_email']);
-          this.editForm.controls.sellerPhone.setValue(this.admin.orders[i]['seller_phone']);
-          this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(this.admin.orders[i]['close_start_date'], 'yyyy-MM-dd'));
+      for(var i = 0; i < this.global.getOrders.length; i++) {
+        if(this.global.getOrders[i]['id'] == value) {
+          this.editForm.controls.name.setValue(this.global.getOrders[i]['name']);
+          this.editForm.controls.email.setValue(this.global.getOrders[i]['email']);
+          this.editForm.controls.plan.setValue(this.global.getOrders[i]['plan']);
+          this.editForm.controls.years.setValue(this.global.getOrders[i]['years']);
+          this.editForm.controls.homeType.setValue(this.global.getOrders[i]['home_type']);
+          this.editForm.controls.addressLine.setValue(this.global.getOrders[i]['address_line']);
+          this.editForm.controls.city.setValue(this.global.getOrders[i]['city']);
+          this.editForm.controls.state.setValue(this.global.getOrders[i]['state']);
+          this.editForm.controls.zip.setValue(this.global.getOrders[i]['zip']);
+          this.editForm.controls.buyerName.setValue(this.global.getOrders[i]['buyer_name']);
+          this.editForm.controls.buyerEmail.setValue(this.global.getOrders[i]['buyer_email']);
+          this.editForm.controls.buyerPhone.setValue(this.global.getOrders[i]['buyer_phone']);
+          this.editForm.controls.sellerName.setValue(this.global.getOrders[i]['seller_name']);
+          this.editForm.controls.sellerEmail.setValue(this.global.getOrders[i]['seller_email']);
+          this.editForm.controls.sellerPhone.setValue(this.global.getOrders[i]['seller_phone']);
+          this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(this.global.getOrders[i]['close_start_date'], 'yyyy-MM-dd'));
           let options = [];
           let selectedOptions = [];
           for(var option = 0; option < this.global.getOptionalCoverage.length; option++) {
             options.push(this.global.getOptionalCoverage[option].option);
           }
-          if(this.admin.orders[i]['optional_coverage'] != null) {
-            selectedOptions = this.admin.orders[i]['optional_coverage'].split(", ");
-            this.editForm.controls.optionalCoverage.setValue(selectedOptions);
-            var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
-            optionalCoverageSelect.options.length = 0;
-            for(var j = 0; j < optionalCoverageSelect.options.length; j++) {
-                optionalCoverageSelect.options[j].selected = selectedOptions.indexOf(optionalCoverageSelect.options[j].text) >= 0;
-                if(optionalCoverageSelect.options[j].selected) {
-                  selectedOptions.push(optionalCoverageSelect.options[j].text);
-                }
-            }
+
+          if(this.global.getOrders[i]['optional_coverage'] != null) {
+            selectedOptions = this.global.getOrders[i]['optional_coverage'].split(", ");            
+          }
+
+          this.editForm.controls.optionalCoverage.setValue(selectedOptions);
+          var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+
+          for(var j = 0; j < optionalCoverageSelect.options.length; j++) {
+              optionalCoverageSelect.options[j].selected = selectedOptions.indexOf(optionalCoverageSelect.options[j].text) >= 0;
           }
 
           if(this.multiSelect == null) {
-           this.multiSelect = new (MultiSelect as any)('.multi-select', {
+            this.multiSelect = new (MultiSelect as any)('.multi-select', {
               items: options,
               current: selectedOptions
             });
           } else {
+            let result = document.getElementById('multi-select').getElementsByClassName('si-result')[0];
+            let list = document.getElementById('multi-select').getElementsByClassName('si-list')[0].getElementsByTagName('ul')[0].getElementsByTagName('li');
+
+            if(selectedOptions.length == 0) {
+              result.classList.remove('si-selection');
+              result.innerHTML = "Select items";
+            } else {
+              if(selectedOptions.length == 1) {
+                result.innerHTML = selectedOptions[0];
+              } else {
+                result.innerHTML = selectedOptions[0] + " (+" + (selectedOptions.length - 1) + " more)" ;
+              }
+            }
+            for(var i  = 0; i < list.length; i++) {
+              if(selectedOptions.indexOf(list[i].innerHTML) >= 0) {
+                if(!list[i].classList.contains('si-selected')) {
+                  list[i].classList.add('si-selected');
+                  this.multiSelect.options.items.set(i, {value: list[i].innerHTML, selected: true});
+                }
+              } else {
+                if(list[i].classList.contains('si-selected')) {
+                  list[i].classList.remove('si-selected');
+                  this.multiSelect.options.items.set(i, {value: list[i].innerHTML});
+                }
+              }
+            }
+
             this.multiSelect.options.current = selectedOptions;
+            
           }
           
           this.multiSelect.on('change', function (e) {
@@ -110,26 +137,29 @@ export class EditOrdersComponent implements OnInit {
               }
           });
 
-          if(this.admin.orders[i]['special_request'] != null) {
-            let selectedRequests = this.admin.orders[i]['special_request'].split(", ");
+          for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+            var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+            specialRequest.checked = false;
+          }
+
+          if(this.global.getOrders[i]['special_request'] != null) {
+            let selectedRequests = this.global.getOrders[i]['special_request'].split(", ");
             for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
               var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
               let index = selectedRequests.indexOf(this.global.getSpecialRequest[i]);
-              if(index >= 0) {
-                specialRequest.checked = true;
-              }
+              specialRequest.checked = index >= 0 ? true : false;
             }
             this.editForm.controls.specialRequest.setValue(selectedRequests);
           }
 
-          this.editForm.controls.hvacCoverage.setValue(this.admin.orders[i]['hvac_coverage']);
-          this.editForm.controls.realtorName.setValue(this.admin.orders[i]['realtor_name']);
-          this.editForm.controls.realtorEmail.setValue(this.admin.orders[i]['realtor_email']);
-          this.editForm.controls.realtorCompany.setValue(this.admin.orders[i]['realtor_company']);
-          this.editForm.controls.realtorZip.setValue(this.admin.orders[i]['realtor_zip']);
-          this.editForm.controls.titleAgentEmail.setValue(this.admin.orders[i]['title_agent_email']);
-          this.editForm.controls.promo.setValue(this.admin.orders[i]['promo']);
-          this.editForm.controls.createdDate.setValue(this.datePipe.transform(this.admin.orders[i]['created_date'], 'yyyy-MM-dd'));
+          this.editForm.controls.hvacCoverage.setValue(this.global.getOrders[i]['hvac_coverage']);
+          this.editForm.controls.realtorName.setValue(this.global.getOrders[i]['realtor_name']);
+          this.editForm.controls.realtorEmail.setValue(this.global.getOrders[i]['realtor_email']);
+          this.editForm.controls.realtorCompany.setValue(this.global.getOrders[i]['realtor_company']);
+          this.editForm.controls.realtorZip.setValue(this.global.getOrders[i]['realtor_zip']);
+          this.editForm.controls.titleAgentEmail.setValue(this.global.getOrders[i]['title_agent_email']);
+          this.editForm.controls.promo.setValue(this.global.getOrders[i]['promo']);
+          this.editForm.controls.createdDate.setValue(this.datePipe.transform(this.global.getOrders[i]['created_date'], 'yyyy-MM-dd'));
         }
       }
     }, 100);
@@ -138,7 +168,7 @@ export class EditOrdersComponent implements OnInit {
   }
 
   resetForm() {
-    if(this.admin.orders && this.admin.orders.length > 0){
+    if(this.global.getOrders && this.global.getOrders.length > 0){
       let orderSelect = document.getElementById('order-id') as HTMLSelectElement;
       orderSelect.selectedIndex = 0;
       this.editForm.controls.orderId.setValue('Select Order');
