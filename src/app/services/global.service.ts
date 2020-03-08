@@ -170,6 +170,13 @@ export class GlobalService {
     return this.promo;
   }
 
+  displayPromo() {
+    let today = new Date();
+    let endDate = new Date(this.getPromo.endDate);
+    let valid = this.getPromo.active && today <= endDate;
+    return valid ? true : false;
+  }
+
   updatePromo() {
     this.database.getPromo().subscribe(
       response => {

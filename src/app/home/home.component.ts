@@ -31,9 +31,9 @@ export class HomeComponent implements OnInit {
 
   priceStyle() {
     return {
-      'text-decoration': this.global.getPromo.active ? 'line-through' : 'none',
-      'text-decoration-color': this.global.getPromo.active ? '#eb5e17' : 'orange',
-      'font-size': this.global.getPromo.active ? '25px' : '30px'
+      'text-decoration': this.global.displayPromo() ? 'line-through' : 'none',
+      'text-decoration-color': this.global.displayPromo() ? '#eb5e17' : 'orange',
+      'font-size': this.global.displayPromo() ? '25px' : '30px'
     }
   }
 

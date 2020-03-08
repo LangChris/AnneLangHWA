@@ -16,13 +16,6 @@ export class PromoComponent implements OnInit {
     }
   }
 
-  displayPromo() {
-    let today = new Date();
-    let endDate = new Date(this.global.getPromo.endDate);
-    let valid = this.global.getPromo.active && today <= endDate;
-    return valid ? true : false;
-  }
-
   displayPromoType(type: string) {
     return this.global.getPromo.type == type ? true : false;
   }
