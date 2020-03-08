@@ -173,7 +173,7 @@ export class EditOrdersComponent implements OnInit {
       orderSelect.selectedIndex = 0;
       this.editForm.controls.orderId.setValue('Select Order');
 
-      this.admin.getOrders();
+      this.global.updateOrders();
     }
   }
 
@@ -201,6 +201,7 @@ export class EditOrdersComponent implements OnInit {
     return this.database.updateOrder(this.editForm).subscribe(
       response => {
         this.admin.showSuccess = true;
+        this.global.updateOrders();
       },
       error => {
         this.admin.showError = true;

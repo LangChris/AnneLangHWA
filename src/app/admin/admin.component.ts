@@ -171,6 +171,9 @@ export class AdminComponent implements OnInit {
     this.showSuccess = false;
 
     this.display = display;
+    if(display == 'DASHBOARD') {
+      this.global.updateOrders();
+    }
   }
 
   filterOrders(sort: string, timeline: string, plan: string, homeType: string, entered: string, years: string, realtor: string) {
