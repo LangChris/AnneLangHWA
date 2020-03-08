@@ -25,20 +25,20 @@
         </tr>
         <tr>
             <th>Owner</th>
-            <td><input type="text" id="owner" class="small" name="owner" formControlName="owner" /></td>
+            <td><input type="text" id="owner" class="medium" name="owner" formControlName="owner" /></td>
         </tr>
         <tr>
             <th>Phone Number</th>
-            <td><input type="tel" id="phone-number" class="small" name="phone" formControlName="phone" /></td>
+            <td><input type="tel" id="phone-number" class="medium" name="phone" formControlName="phone" /></td>
         </tr>
         <tr>
             <th>Email</th>
-            <td><input type="email" id="email" class="small" name="email" formControlName="email" /></td>
+            <td><input type="email" id="email" class="medium" name="email" formControlName="email" /></td>
         </tr>
         <tr>
             <th>Default Sort</th>
             <td>
-                <select id="sort" class="small" name="defaultSort" formControlName="defaultSort">
+                <select id="sort" class="medium" name="defaultSort" formControlName="defaultSort">
                     <option value="ASC">Oldest to Newest</option>
                     <option value="DESC">Newest to Oldest</option>
                 </select>
@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <th>Default Filename</th>
-            <td><input type="text" id="filename" class="small" name="defaultFilename" formControlName="defaultFilename" /></td>
+            <td><input type="text" id="filename" class="medium" name="defaultFilename" formControlName="defaultFilename" /></td>
         </tr>
         <tr>
             <th>Receive Emails</th>
@@ -62,15 +62,15 @@
         </tr>
         <tr>
             <th class="group-label">#1</th>
-            <td><input type="text" class="small" name="planOne" formControlName="planOne" /></td>
+            <td><input type="text" class="medium" name="planOne" formControlName="planOne" /></td>
         </tr>
         <tr>
             <th class="group-label">#2</th>
-            <td><input type="text" class="small" name="planTwo" formControlName="planTwo" /></td>
+            <td><input type="text" class="medium" name="planTwo" formControlName="planTwo" /></td>
         </tr>
         <tr>
             <th class="group-label">#3</th>
-            <td><input type="text" class="small" name="planThree" formControlName="planThree" /></td>
+            <td><input type="text" class="medium" name="planThree" formControlName="planThree" /></td>
         </tr>
         <tr>
             <th class="group-header">Promo</th>
@@ -84,7 +84,7 @@
         <tr>
             <th class="group-label">Type</th>
             <td>
-                <select class="small" id="promo-type" name="promoType" formControlName="promoType" >
+                <select class="medium" id="promo-type" name="promoType" formControlName="promoType" >
                     <option value="Money Off">Money Off</option>
                     <option value="Free Gift">Free Gift</option>
                 </select>
@@ -92,19 +92,19 @@
         </tr>
         <tr *ngIf="showPromoType('Free Gift')">
             <th class="group-label">Gift</th>
-            <td><input type="text" class="small" name="promoGift" formControlName="promoGift" /></td>
+            <td><input type="text" class="medium" name="promoGift" formControlName="promoGift" /></td>
         </tr>
         <tr *ngIf="showPromoType('Money Off')">
             <th class="group-label">Amount</th>
-            <td><input type="text" class="small" name="promoAmount" formControlName="promoAmount" /></td>
+            <td><input type="text" class="medium" name="promoAmount" formControlName="promoAmount" /></td>
         </tr>
         <tr>
             <th class="group-label">Code</th>
-            <td><input type="text" class="small" name="promoCode" formControlName="promoCode" /></td>
+            <td><input type="text" class="medium" name="promoCode" formControlName="promoCode" /></td>
         </tr>
         <tr>
             <th class="group-label">End Date</th>
-            <td><input type="date" class="small" name="promoEndDate" formControlName="promoEndDate" /></td>
+            <td><input type="date" class="medium" name="promoEndDate" formControlName="promoEndDate" /></td>
         </tr>
     </table>
         <div *ngIf="admin.showError" class="error">Error Making Changes</div>

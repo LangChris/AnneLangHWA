@@ -28,8 +28,8 @@ export class SettingsComponent implements OnInit {
     planThree: new FormControl(this.global.getPlans.diamond.header, [Validators.required]),
     promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
     promoType: new FormControl(this.global.getPromo.type, [Validators.required]),
-    promoGift: new FormControl(this.global.getPromo.gift, [Validators.required]),
-    promoAmount: new FormControl(this.global.getPromo.amount, [Validators.required]),
+    promoGift: new FormControl(this.global.getPromo.gift),
+    promoAmount: new FormControl(this.global.getPromo.amount),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required])
   });
