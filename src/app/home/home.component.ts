@@ -13,11 +13,16 @@ export class HomeComponent implements OnInit {
   constructor(public global: GlobalService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
-    this.global.updatePlans();
-    this.global.updatePlanOptions();
-    this.global.updateOptionalCoverage();
-    this.global.updateSpecialRequest();
-    this.global.updateGeneralSettings();
+    if(!this.global.testing) {
+      this.global.updatePlans();
+      this.global.updatePlanOptions();
+      this.global.updateOptionalCoverage();
+      this.global.updateSpecialRequest();
+      this.global.updateGeneralSettings();
+      this.global.updateOrders();
+    } else {
+      this.global.setTestData();
+    }
     setTimeout(()=>{
       this.titleService.setTitle(this.global.getGeneralSettings.webpageTitle);
     },200);
