@@ -21,6 +21,7 @@ import { LoginComponent } from './admin/login/login.component';
 import { ViewOrdersComponent } from './admin/view-orders/view-orders.component';
 import { EditOrdersComponent } from './admin/edit-orders/edit-orders.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { SettingsComponent } from './admin/settings/settings.component';
 
 
 const routes: Routes = [
@@ -59,7 +60,8 @@ const routes: Routes = [
     LoginComponent,
     ViewOrdersComponent,
     EditOrdersComponent,
-    DashboardComponent
+    DashboardComponent,
+    SettingsComponent
   ],
   imports: [
     ReactiveFormsModule,

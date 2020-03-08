@@ -1,0 +1,77 @@
+.settings-table {
+    margin: 0 auto;
+    text-align: left;
+    padding-bottom: 25px;
+    width: auto;
+}
+
+input,textarea,select {
+    width: 100%;
+}
+
+.large {
+    width: 500px;
+}
+
+.medium {
+    width: 250px;
+}
+
+.small {
+  width: 125px;
+}
+
+th {
+    text-align: left;
+}
+
+th,td {
+    padding: 5px;
+}
+
+button {
+    margin: 5px;
+    width: 25%;
+}
+
+.top-padding {
+    padding-top: 20px;
+}
+
+.bottom-padding {
+    padding-bottom: 20px;
+}
+
+.top-margin {
+    margin-top: 20px;
+}
+
+.settings-box {
+    width: 90%;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.error {
+  color: #ff0000;
+}
+
+.success {
+   color: green;
+}
+
+  @media screen and (max-width: 800px) {
+    
+    .large {
+        width: 150px;
+    }
+
+    .medium {
+        width: 150px;
+    }
+
+    .small {
+      width: 75px;
+    }
+}

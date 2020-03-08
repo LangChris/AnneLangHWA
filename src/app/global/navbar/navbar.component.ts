@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,12 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
-
-  contact = {
-    phone: "703-220-9633",
-    email: "Anne.lang@hwahomewarranty.com"
-  };
+  constructor(public global: GlobalService) { }
 
   ngOnInit() {
   }

@@ -23,24 +23,27 @@ export class SellerOrderFormComponent implements OnInit {
     zip: new FormControl(),
     sellerName: new FormControl(),
     sellerEmail: new FormControl(),
+    sellerPhone: new FormControl(),
     startDate: new FormControl(),
     hvacCoverage: new FormControl(),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
-    createdDate: new FormControl()
+    realtorCompany: new FormControl(),
+    realtorZip: new FormControl(),
+    createdDate: new FormControl(),
+    sendEmail: new FormControl(),
+    adminName: new FormControl(),
+    adminEmail: new FormControl(),
+    orderTotal: new FormControl()
   }); 
-
-  pageProperties = {
-    header: "HWA - Your Home Warranty Partner",
-    subheader: "Give your clients the best with the only 13-month home warranty.",
-    description: "Fill out the information below to place an order!"
-  };
 
   showForm = true;
   validateName = false;
   validateEmail = false;
 
-  constructor(private database: DatabaseService, private global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
+  total = 'FREE';
+
+  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -61,6 +64,14 @@ export class SellerOrderFormComponent implements OnInit {
       }
     });
 
+    this.sellerOrderForm.controls.hvacCoverage.valueChanges.subscribe(value => {
+      if(this.sellerOrderForm.controls.hvacCoverage.value == 'Yes') {
+        this.total = '$50';
+      } else {
+        this.total = 'FREE';
+      }
+    });
+
     if(this.showForm) {
       setTimeout(()=>{
         var plan = document.getElementById('plan') as HTMLSelectElement;
@@ -75,7 +86,7 @@ export class SellerOrderFormComponent implements OnInit {
     }
   }
 
-  sendEmail() {
+  submitOrder() {
     this.validateName = true;
     this.validateEmail = true;
     if(this.sellerOrderForm.valid) {
@@ -90,6 +101,10 @@ export class SellerOrderFormComponent implements OnInit {
       this.sellerOrderForm.controls.hvacCoverage.setValue(hvacCoverage.value);
 
       this.sellerOrderForm.controls.createdDate.setValue(new Date());
+      this.sellerOrderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
+      this.sellerOrderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
+      this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.sellerOrderForm.controls.orderTotal.setValue(this.total);
 
       return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;

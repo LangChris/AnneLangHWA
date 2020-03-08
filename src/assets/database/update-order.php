@@ -25,15 +25,20 @@ switch($_SERVER['REQUEST_METHOD']){
         $zip = $params->zip;
         $buyer_name = $params->buyerName;
         $buyer_email = $params->buyerEmail;
+        $buyer_phone = $params->buyerPhone;
         $seller_name = $params->sellerName;
         $seller_email = $params->sellerEmail;
+        $seller_phone = $params->sellerPhone;
         $close_start_date = $params->closeStartDate;
         $optional_coverage = $params->optionalCoverage;
         $hvac_coverage = $params->hvacCoverage;
         $realtor_name = $params->realtorName;
         $realtor_email = $params->realtorEmail;
+        $realtor_company = $params->realtorCompany;
+        $realtor_zip = $params->realtorZip;
         $title_agent_email = $params->titleAgentEmail;
         $promo = $params->promo;
+        $special_request = $params->specialRequest;
 
         // Update to Database
         $hostname="localhost";
@@ -59,6 +64,12 @@ switch($_SERVER['REQUEST_METHOD']){
             }
             $optional_coverage_string = empty($optional_coverage_string) ? null : substr($optional_coverage_string, 0, -2);
 
+            $special_request_string = '';
+            foreach($special_request as $request) {
+                $special_request_string .= $request .", ";
+            }
+            $special_request_string = empty($special_request_string) ? null : substr($special_request_string, 0, -2);
+
             $query = "UPDATE $table SET ";
             $query .= "name = '$name',";
             $query .= "email = '$email',";
@@ -71,15 +82,20 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "zip = ".($zip == '' ? "NULL" : "'$zip'").",";
             $query .= "buyer_name = ".($buyer_name == '' ? "NULL" : "'$buyer_name'").",";
             $query .= "buyer_email = ".($buyer_email == '' ? "NULL" : "'$buyer_email'").",";
+            $query .= "buyer_phone = ".($buyer_phone == '' ? "NULL" : "'$buyer_phone'").",";
             $query .= "seller_name = ".($seller_name == '' ? "NULL" : "'$seller_name'").",";
             $query .= "seller_email = ".($seller_email == '' ? "NULL" : "'$seller_email'").",";
+            $query .= "seller_phone = ".($seller_phone == '' ? "NULL" : "'$seller_phone'").",";
             $query .= "close_start_date = ".($close_start_date == '' ? "NULL" : "'$close_start_date'").",";
             $query .= "optional_coverage = ".($optional_coverage_string == '' ? "NULL" : "'$optional_coverage_string'").",";
             $query .= "hvac_coverage = ".($hvac_coverage == '' ? "NULL" : "'$hvac_coverage'").",";
             $query .= "realtor_name = ".($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= "realtor_email = ".($realtor_email == '' ? "NULL" : "'$realtor_email'").",";
+            $query .= "realtor_company = ".($realtor_company == '' ? "NULL" : "'$realtor_company'").",";
+            $query .= "realtor_zip = ".($realtor_zip == '' ? "NULL" : "'$realtor_zip'").",";
             $query .= "title_agent_email = ".($title_agent_email == '' ? "NULL" : "'$title_agent_email'").",";
-            $query .= "promo = ".($promo == '' ? "NULL" : "'$promo'");
+            $query .= "promo = ".($promo == '' ? "NULL" : "'$promo'").",";
+            $query .= "special_request = ".($special_request_string == '' ? "NULL" : "'$special_request_string'");
             $query .= " WHERE id = '$id'";
                 
             $result = mysqli_query($con, $query);

@@ -1,4 +1,5 @@
 <admin-login *ngIf="!login.getStatus.successful"></admin-login>
-<admin-dashboard class="centered-block" *ngIf="login.getStatus.successful && display.dashboard"></admin-dashboard>
-<view-orders *ngIf="login.getStatus.successful && display.view"></view-orders>
-<edit-orders class="centered-block" *ngIf="login.getStatus.successful && display.edit"></edit-orders>
+<admin-dashboard class="centered-block" *ngIf="login.getStatus.successful && display == 'DASHBOARD'"></admin-dashboard>
+<view-orders *ngIf="login.getStatus.successful && display == 'VIEW'"></view-orders>
+<edit-orders class="centered-block" *ngIf="login.getStatus.successful && display == 'EDIT'"></edit-orders>
+<settings class="centered-block" *ngIf="login.getStatus.successful && display == 'SETTINGS'"></settings>

@@ -1,6 +1,6 @@
 .promo {
     background-color: #eb5e17;
-    width: 99%;
+    width: 100%;
     height: auto;
     padding: 1px;
     margin: 0 auto;
@@ -17,10 +17,6 @@
 
 #promo-code {
     font-weight: bold;
-}
-
-#promo-code:before {
-    content: "Use Promo Code: ";
 }
 
 span {

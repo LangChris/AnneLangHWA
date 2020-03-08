@@ -108,10 +108,6 @@ button {
     width: 200px;
 }
 
-table th {
-    text-align: right;
-}
-
 #filter-dropdown {
     text-align: center;
     font-weight: bold;
@@ -128,8 +124,20 @@ table th {
 }
 
 @media (max-width: 800px) {
+    .top-wrapper {
+        float: right;
+    }
+
+    .bottom-wrapper {
+        display: inline-block;
+    }
+
     table {
         text-align: left;
+    }
+
+    table th {
+        text-align: right;
     }
     
     .table tr {

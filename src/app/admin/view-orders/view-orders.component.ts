@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AdminComponent } from '../admin.component';
 import { DatabaseService } from '../../services/database.service';
+import { GlobalService } from '../../services/global.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -11,10 +12,10 @@ import * as XLSX from 'xlsx';
 export class ViewOrdersComponent implements OnInit {
   @ViewChild('TABLE') TABLE: ElementRef;  
 
-  constructor(public admin: AdminComponent, private database: DatabaseService) { }
+  constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = "Orders";
+  filename: string = this.global.getGeneralSettings.defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 
@@ -61,7 +62,7 @@ export class ViewOrdersComponent implements OnInit {
   }  
 
   formatOrder(value: any) {
-    if(value) {
+    if(value && value != 0) {
       if(value.toString().substring(value.length - 2) == ", ") {
         value = value.toString().substring(0, value.length - 2);
       }
@@ -91,7 +92,7 @@ export class ViewOrdersComponent implements OnInit {
     for(var i = 0; i < this.admin.orders.length; i++) {
       if(this.admin.orders[i]['id'] == id && this.admin.orders[i]['entered'] == 0) {
         index = i;
-        if(!this.admin.testing) {
+        if(!this.global.testing) {
           this.database.enterOrder(id).subscribe(
             response => {
               this.admin.orders[index]['entered'] = 1;

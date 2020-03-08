@@ -8,26 +8,16 @@ import { GlobalService } from '../../services/global.service';
 })
 export class PromoComponent implements OnInit {
 
-  constructor(private global: GlobalService) { }
+  constructor(public global: GlobalService) { }
 
   ngOnInit() {
-    this.updatePromo();
+    if(!this.global.testing) {
+      this.global.updatePromo();
+    }
   }
 
-  updatePromo() {
-    if (this.global.getPromo.active) {
-        var title = document.getElementById('promo-title');
-        var subtitle = document.getElementById('promo-subtitle');
-        var endDate = document.getElementById('promo-endDate');
-        var code = document.getElementById('promo-code');
-        
-        title.innerHTML = this.global.getPromo.title;
-        subtitle.innerHTML = this.global.getPromo.subtitle;
-        endDate.innerHTML = this.global.getPromo.endDate;
-        code.innerHTML = this.global.getPromo.code;
-    } else {
-        document.getElementById('promo').style.display = 'none';
-    }
+  displayPromoType(type: string) {
+    return this.global.getPromo.type == type ? true : false;
   }
 
 }

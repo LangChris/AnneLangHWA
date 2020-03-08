@@ -1,0 +1,117 @@
+<div class="settings-box">
+    <div class="header">Settings &#9881;</div>
+
+    <form id="settingsForm" [formGroup]="settingsForm" novalidate (ngSubmit)="updateSettings()" >
+    <table class="settings-table">
+        <tr>
+            <th>Title</th>
+            <td><input type="text" id="title" class="large" name="title" formControlName="title" /></td>
+        </tr>
+        <tr>
+            <th>Sub Title</th>
+            <td><input type="text" id="sub-title" class="large" name="subtitle" formControlName="subtitle" /></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><textarea id="description" rows=10 cols=30 class="large" name="description" formControlName="description" ></textarea></td>
+        </tr>
+        <tr>
+            <th>Order Form Description</th>
+            <td><input type="text" id="order-description" class="large" name="orderDescription" formControlName="orderDescription" /></td>
+        </tr>
+        <tr>
+            <th>Order Form Message</th>
+            <td><input type="text" id="order-message" class="large" name="orderMessage" formControlName="orderMessage" /></td>
+        </tr>
+        <tr>
+            <th>Owner</th>
+            <td><input type="text" id="owner" class="medium" name="owner" formControlName="owner" /></td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td><input type="tel" id="phone-number" class="medium" name="phone" formControlName="phone" /></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" id="email" class="medium" name="email" formControlName="email" /></td>
+        </tr>
+        <tr>
+            <th>Default Sort</th>
+            <td>
+                <select id="sort" class="medium" name="defaultSort" formControlName="defaultSort">
+                    <option value="ASC">Oldest to Newest</option>
+                    <option value="DESC">Newest to Oldest</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Default Filename</th>
+            <td><input type="text" id="filename" class="medium" name="defaultFilename" formControlName="defaultFilename" /></td>
+        </tr>
+        <tr>
+            <th>Receive Emails</th>
+            <td>
+                <div class="on-off-switch">  
+                    <input type="checkbox" value="None" id="send-email" name="sendEmail" formControlName="sendEmail" />
+                    <label for="send-email"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th class="group-header">Plans</th>
+        </tr>
+        <tr>
+            <th class="group-label">#1</th>
+            <td><input type="text" class="medium" name="planOne" formControlName="planOne" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">#2</th>
+            <td><input type="text" class="medium" name="planTwo" formControlName="planTwo" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">#3</th>
+            <td><input type="text" class="medium" name="planThree" formControlName="planThree" /></td>
+        </tr>
+        <tr>
+            <th class="group-header">Promo</th>
+            <td>
+                <div class="on-off-switch">  
+                    <input type="checkbox" value="None" id="promo-active" name="promoActive" formControlName="promoActive" />
+                    <label for="promo-active"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th class="group-label">Type</th>
+            <td>
+                <select class="medium" id="promo-type" name="promoType" formControlName="promoType" >
+                    <option value="Money Off">Money Off</option>
+                    <option value="Free Gift">Free Gift</option>
+                </select>
+            </td>
+        </tr>
+        <tr *ngIf="showPromoType('Free Gift')">
+            <th class="group-label">Gift</th>
+            <td><input type="text" class="medium" name="promoGift" formControlName="promoGift" /></td>
+        </tr>
+        <tr *ngIf="showPromoType('Money Off')">
+            <th class="group-label">Amount</th>
+            <td><input type="text" class="medium" name="promoAmount" formControlName="promoAmount" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">Code</th>
+            <td><input type="text" class="medium" name="promoCode" formControlName="promoCode" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">End Date</th>
+            <td><input type="date" class="medium" name="promoEndDate" formControlName="promoEndDate" /></td>
+        </tr>
+    </table>
+        <div *ngIf="admin.showError" class="error">Error Making Changes</div>
+        <div *ngIf="admin.showSuccess" class="success">Successfully Made Changes</div>
+    </form>
+</div>
+<div class="centered-block top-padding">
+    <button class="top-margin check" type="submit" form="settingsForm"></button>
+    <button class="top-margin home" (click)="admin.updateDisplay('DASHBOARD');"></button>
+</div>

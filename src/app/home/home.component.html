@@ -1,7 +1,7 @@
 <div class="centered-block">
-  <div class="header">{{pageProperties.header}}</div>
-  <div class="sub-header">{{pageProperties.subheader}}</div>
-  <p>{{pageProperties.description}}</p>
+  <div class="header">{{global.getGeneralSettings.webpageTitle}}</div>
+  <div class="sub-header">{{global.getGeneralSettings.webpageSubTitle}}</div>
+  <p>{{global.getGeneralSettings.webpageDescription}}</p>
   <div class="double-section">
       <button (click)="navigateToBrochure('english')">ENGLISH BROCHURE</button>
       <button (click)="navigateToBrochure('spanish')">SPANISH BROCHURE</button>
@@ -9,23 +9,28 @@
   <app-promo></app-promo>
   <table class="plans">
       <tr>
-        <td id="gold">
-            <span class="plan-header" id="gold-header"></span>
+        <td id="gold" *ngIf="global.plans.gold.header != null">
+            <span class="plan-header" id="gold-header">{{global.plans.gold.header}}</span>
             <hr width="50%" color="#ddd" />
-            <ul class="plan-table" id="gold-table"></ul>
+            <ul class="plan-table" id="gold-table">
+                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
+            </ul>
             <div class="plan-footer" id="gold-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="gold-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }" ></span>
-                <p id="gold-price-promo"></p>
+                <span id="gold-price" [ngStyle]="priceStyle()" >${{global.plans.gold.price}}</span>
+                <p id="gold-price-promo" *ngIf="global.displayPromo()">${{global.plans.gold.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="gold-discount"></h4>
+                <h4 id="gold-discount">-${{global.plans.gold.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('gold')">ORDER NOW</button>
             </div>
         </td>
-        <td id="platinum">
-            <span class="plan-header" id="platinum-header"></span>
+        <td id="platinum" *ngIf="global.plans.platinum.header != null">
+            <span class="plan-header" id="platinum-header">{{global.plans.platinum.header}}</span>
             <hr width="50%" color="#ddd" />
-            <ul class="plan-table" id="platinum-table"></ul>
+            <ul class="plan-table" id="platinum-table">
+                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans.platinum.options">&#10004; {{option}}</li>
+            </ul>
             <div class="plan-sub-header">
             <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
             <ul>
@@ -36,17 +41,20 @@
             </div>
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="platinum-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }"></span>
-                <p id="platinum-price-promo"></p>
+                <span id="platinum-price" [ngStyle]="priceStyle()">${{global.plans.platinum.price}}</span>
+                <p id="platinum-price-promo" *ngIf="global.displayPromo()">${{global.plans.platinum.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="platinum-discount"></h4>
+                <h4 id="platinum-discount">-${{global.plans.platinum.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('platinum')">ORDER NOW</button>
             </div>
         </td>
-        <td id="diamond">
-            <span class="plan-header" id="diamond-header"></span>
+        <td id="diamond" *ngIf="global.plans.diamond.header != null">
+            <span class="plan-header" id="diamond-header">{{global.plans.diamond.header}}</span>
             <hr width="50%" color="#ddd" />
-            <ul class="plan-table" id="diamond-table"></ul>
+            <ul class="plan-table" id="diamond-table">
+                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans.platinum.options">&#10004; {{option}}</li>
+            </ul>
             <div class="plan-sub-header">
             <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
             <ul>
@@ -55,7 +63,9 @@
                 <li> Plus over 25 more items!</li>
             </ul>
             </div>
-            <ul class="plan-table" id="diamond-table-extra"></ul>
+            <ul class="plan-table" id="diamond-table-extra">
+                <li *ngFor="let option of global.plans.diamond.options">&#10004; {{option}}</li>
+            </ul>
             <div class="plan-sub-header">
             <ul>
                 <li> Code Violations and permits up to $250</li>
@@ -67,10 +77,10 @@
             </div>
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="diamond-price" [ngStyle]="{ 'text-decoration-color': global.getPromo.active ? '#eb5e17' : 'orange' }"></span>
-                <p id="diamond-price-promo"></p>
+                <span id="diamond-price" [ngStyle]="priceStyle()">${{global.plans.diamond.price}}</span>
+                <p id="diamond-price-promo" *ngIf="global.displayPromo()">${{global.plans.diamond.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="diamond-discount"></h4>
+                <h4 id="diamond-discount">-${{global.plans.diamond.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('diamond')">ORDER NOW</button>
             </div>
         </td>

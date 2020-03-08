@@ -8,7 +8,14 @@ const endpoints = {
   getOrders: "/assets/database/get-orders.php",
   updateOrder: "/assets/database/update-order.php",
   deleteOrder: "/assets/database/delete-order.php",
-  enterOrder: "/assets/database/enter-order.php"
+  enterOrder: "/assets/database/enter-order.php",
+  getPromo: "/assets/database/get-promo.php",
+  getPlans: "/assets/database/get-plans.php",
+  getPlanOptions: "/assets/database/get-plan-options.php",
+  getOptionalCoverage: "/assets/database/get-optional-coverage.php",
+  getSpecialRequest: "/assets/database/get-special-request.php",
+  getGeneralSettings: "/assets/database/get-general-settings.php",
+  updateGeneralSettings: "/assets/database/update-general-settings.php"
 };
 
 @Injectable()
@@ -44,6 +51,41 @@ export class DatabaseService {
   // Delete Order
   deleteOrder(id: any) {
     return this.http.post(endpoints.deleteOrder, id );
+  }
+
+  // Get Promo
+  getPromo() {
+    return this.http.get(endpoints.getPromo);
+  }
+
+  // Get Plans
+  getPlans() {
+    return this.http.get(endpoints.getPlans);
+  }
+
+  // Get Plan Options
+  getPlanOptions() {
+    return this.http.get(endpoints.getPlanOptions);
+  }
+
+  // Get Optional Coverage
+  getOptionalCoverage() {
+    return this.http.get(endpoints.getOptionalCoverage);
+  }
+
+  // Get Special Request
+  getSpecialRequest() {
+    return this.http.get(endpoints.getSpecialRequest);
+  }
+
+  // Get General Settings
+  getGeneralSettings() {
+    return this.http.get(endpoints.getGeneralSettings);
+  }
+
+  // Save General Settings
+  saveGeneralSettings(formGroup: FormGroup) {
+    return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
   }
 
 }

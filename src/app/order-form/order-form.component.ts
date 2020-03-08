@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
@@ -24,20 +24,22 @@ export class OrderFormComponent implements OnInit {
     zip: new FormControl('', [Validators.maxLength(5)]),
     buyerName: new FormControl(),
     buyerEmail: new FormControl(),
+    buyerPhone: new FormControl(),
     closeStartDate: new FormControl(),
     optionalCoverage: new FormControl([]),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
+    realtorCompany: new FormControl(),
+    realtorZip: new FormControl(),
     titleAgentEmail: new FormControl(),
     promo: new FormControl(),
-    createdDate: new FormControl()
+    specialRequest: new FormControl(),
+    createdDate: new FormControl(),
+    sendEmail: new FormControl(),
+    adminName: new FormControl(),
+    adminEmail: new FormControl(),
+    orderTotal: new FormControl()
   }); 
-
-  pageProperties = {
-    header: "HWA - Your Home Warranty Partner",
-    subheader: "Give your clients the best with the only 13-month home warranty.",
-    description: "Fill out the information below to place an order!"
-  };
 
   showForm = true;
   validPromo = false;
@@ -46,7 +48,9 @@ export class OrderFormComponent implements OnInit {
 
   total: number = 0;
 
-  constructor(private global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
+  optionalCoverageMultiSelect: any;
+
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -103,54 +107,38 @@ export class OrderFormComponent implements OnInit {
         this.updateOrderTotal();
 
         this.updateOptionalCoverageSelect();
+
       }, 100);
     }
   }
 
   updateOptionalCoverageSelect() {
-
     var optionalCoverageSelect = document.getElementById("optional-coverage") as HTMLSelectElement;
-    optionalCoverageSelect.options.length = 1;
+    optionalCoverageSelect.options.length = 0;
     
-    var plan = document.getElementById('plan') as HTMLSelectElement;
     var options = [];
 
     for(var i = 0; i < this.global.getOptionalCoverage.length; i++) {
-        if(plan.value == this.global.getPlans.platinum.header.toLowerCase()) {
-            if(i != 9 && i != 10) {
-                var option = document.createElement("option");
-                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-                option.value = this.global.getOptionalCoverage[i].option;
-                optionalCoverageSelect.add(option);
-                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-            }
-        } else if(plan.value === this.global.getPlans.diamond.header.toLowerCase()) {
-            if(i != 9 && i != 10 && i != 12) {
-                var option = document.createElement("option");
-                option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-                option.value = this.global.getOptionalCoverage[i].option;
-                optionalCoverageSelect.add(option);
-                options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-            }
-        } else {
-            var option = document.createElement("option");
-            option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-            option.value = this.global.getOptionalCoverage[i].option;
-            optionalCoverageSelect.add(option);
-            options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
-        }
+      var option = document.createElement("option");
+      option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
+      option.value = this.global.getOptionalCoverage[i].option;
+      optionalCoverageSelect.add(option);
+      options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
     }
     
-    var multiSelect = new (MultiSelect as any)('.multi-select', {
+    this.optionalCoverageMultiSelect = new (MultiSelect as any)('.multi-select', {
     items: options,
     current: null,
     });
-    multiSelect.on('change', function (e) {
-        var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
-        for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
-            optionalCoverageSelect.options[i].selected = multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
-        }
-    });
+    this.optionalCoverageMultiSelect.on('change', this.optionalCoverageChange.bind(this));
+  }
+
+  optionalCoverageChange(e) {
+    var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+    for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.optionalCoverageMultiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+    }
+    this.updateOrderTotal();
   }
 
   updatePromoStatus(event) {
@@ -183,7 +171,7 @@ export class OrderFormComponent implements OnInit {
     
   }
 
-  sendEmail() {
+  submitOrder() {
     this.validateName = true;
     this.validateEmail = true;
     if(this.orderForm.valid) {
@@ -194,8 +182,17 @@ export class OrderFormComponent implements OnInit {
           selectedOptions.push(optionalCoverageSelect.options[i].value);
         }
       }
-      
       this.orderForm.controls.optionalCoverage.setValue(selectedOptions);
+
+      let selectedSpecialRequests = [];
+      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+        var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+        if(specialRequest.checked) {
+          selectedSpecialRequests.push(this.global.getSpecialRequest[i]);
+        }
+      }
+      
+      this.orderForm.controls.specialRequest.setValue(selectedSpecialRequests);
       var plan = document.getElementById('plan') as HTMLSelectElement;
       this.orderForm.controls.plan.setValue(plan.value);
 
@@ -207,6 +204,10 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.promo.setValue(promoInput.value);
 
       this.orderForm.controls.createdDate.setValue(new Date());
+      this.orderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
+      this.orderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
+      this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
       return this.database.placeOrder(this.orderForm).subscribe(response => {
         this.showForm = false;
@@ -239,40 +240,50 @@ export class OrderFormComponent implements OnInit {
     let plan = document.getElementById('plan') as HTMLSelectElement;
     let homeTypeTH = document.getElementById('home-type-th') as HTMLInputElement;
     let isTownhome = homeTypeTH.checked;
- 
+    
     switch(plan.value) {
       case "Gold": {
         this.total += (isTownhome) ? 
-        (this.global.getPlans.gold.price - this.global.getPlans.gold.townhomeDiscount) :
-        this.global.getPlans.gold.price; 
+        +(this.global.getPlans.gold.price - this.global.getPlans.gold.townhomeDiscount) :
+        +this.global.getPlans.gold.price; 
         break;
       }
       case "Platinum": {
         this.total += (isTownhome) ? 
-        (this.global.getPlans.platinum.price - this.global.getPlans.platinum.townhomeDiscount) :
-        this.global.getPlans.platinum.price; 
+        +(this.global.getPlans.platinum.price - this.global.getPlans.platinum.townhomeDiscount) :
+        +this.global.getPlans.platinum.price; 
         break;
       }
       case "Diamond": {
         this.total += (isTownhome) ? 
-        (this.global.getPlans.diamond.price - this.global.getPlans.diamond.townhomeDiscount) :
-        this.global.getPlans.diamond.price; 
+        +(this.global.getPlans.diamond.price - this.global.getPlans.diamond.townhomeDiscount) :
+        +this.global.getPlans.diamond.price; 
         break;
       }
     }
+
     let years = this.orderForm.controls.years.value;
 
     if(years == "2 Years") {
-      let discountYear = this.total - (this.total * 0.10);
-      this.total += discountYear;
+      let discountYear = this.total - +(this.total * 0.10);
+      this.total += +discountYear;
     }
     if(years == "3 Years") {
-      let discountYear = this.total - (this.total * 0.10);
-      this.total += (discountYear * 2);
+      let discountYear = this.total - +(this.total * 0.10);
+      this.total += +(discountYear * 2);
     }
 
     if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '') {
-      this.total -= this.global.getPromo.amount;
+      this.total -= +this.global.getPromo.amount;
     }
+
+    var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        if(optionalCoverageSelect.options[i].selected) {
+          let option = optionalCoverageSelect.options[i].text;
+          let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
+          this.total += +price;
+        }
+      }
   }
 }
