@@ -11,13 +11,15 @@ export class PromoComponent implements OnInit {
   constructor(public global: GlobalService) { }
 
   ngOnInit() {
-    this.global.updatePromo();
+    if(!this.global.testing) {
+      this.global.updatePromo();
+    }
   }
 
   displayPromo() {
     let today = new Date();
     let endDate = new Date(this.global.getPromo.endDate);
-    let valid = this.global.getPromo.active && today < endDate;
+    let valid = this.global.getPromo.active && today <= endDate;
     return valid ? true : false;
   }
 
