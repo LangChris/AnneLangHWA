@@ -138,8 +138,8 @@
       </tr>  
     </tbody>  
   </table> 
-  <div class="centered-block top-padding">
-    <button class="export" (click)="ExportToExcel()"></button>  
-    <button class="top-margin home" (click)="admin.updateDisplay('DASHBOARD');"></button>
-  </div>
 </div> 
+<div class="centered-block top-padding">
+  <button *ngIf="admin.orders && admin.orders.length > 0" class="export" (click)="ExportToExcel()"></button>  
+  <button class="top-margin home" (click)="admin.updateDisplay('DASHBOARD');"></button>
+</div>
