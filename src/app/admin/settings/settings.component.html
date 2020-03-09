@@ -61,24 +61,24 @@
             <th class="group-header">Plans</th>
         </tr>
         <tr>
-            <th class="group-label">#1</th>
+            <th class="group-label"></th>
             <td>
-                <input type="text" class="small" name="planOne" formControlName="planOne" />&nbsp;
-                <input type="text" class="small" name="planOnePrice" formControlName="planOnePrice" />
+                <input type="text" class="extra-medium" name="planOne" formControlName="planOne" />&nbsp;
+                <input type="text" class="extra-small" name="planOnePrice" formControlName="planOnePrice" />
             </td>
         </tr>
         <tr>
-            <th class="group-label">#2</th>
+            <th class="group-label"></th>
             <td>
-                <input type="text" class="small" name="planTwo" formControlName="planTwo" />&nbsp;
-                <input type="text" class="small" name="planTwoPrice" formControlName="planTwoPrice" />
+                <input type="text" class="extra-medium" name="planTwo" formControlName="planTwo" />&nbsp;
+                <input type="text" class="extra-small" name="planTwoPrice" formControlName="planTwoPrice" />
             </td>
         </tr>
         <tr>
-            <th class="group-label">#3</th>
+            <th class="group-label"></th>
             <td>
-                <input type="text" class="small" name="planThree" formControlName="planThree" />&nbsp;
-                <input type="text" class="small" name="planThreePrice" formControlName="planThreePrice" />
+                <input type="text" class="extra-medium" name="planThree" formControlName="planThree" />&nbsp;
+                <input type="text" class="extra-small" name="planThreePrice" formControlName="planThreePrice" />
             </td>
         </tr>
         <tr>
@@ -115,6 +115,29 @@
             <th class="group-label">End Date</th>
             <td><input type="date" class="medium" name="promoEndDate" formControlName="promoEndDate" /></td>
         </tr>
+        <tr>
+           <th class="group-header">Special Requests</th> 
+           <div class="small-button add" (click)="newSpecialRequest()"></div>
+        </tr>
+        <tbody id="special-requests">
+            <tr *ngFor="let request of global.getSpecialRequest">
+                <th class="group-label"></th>
+                <td><input type="text" class="medium specialRequests" value="{{request}}" /></td>
+            </tr>
+        </tbody>
+        <tr>
+            <th class="group-header">Optional Coverage</th> 
+            <div class="small-button add" (click)="newOptionalCoverage()"></div>
+         </tr>
+         <tbody id="optional-coverages">
+         <tr *ngFor="let option of global.getOptionalCoverage; let i = index;">
+             <th class="group-label"></th>
+             <td>
+                 <input type="text" class="extra-medium optionalCoverages" id="optional-coverage-{{(i + 1)}}" value="{{option.option}}" />&nbsp;
+                 <input type="text" class="extra-small optionalCoveragePrices" id="optional-coverage-price-{{(i + 1)}}" value="{{option.price.substring(option.price.indexOf('$') + 1, option.price.indexOf('/'))}}" />
+            </td>
+         </tr>
+        </tbody>
     </table>
         <div *ngIf="admin.showError" class="error">Error Making Changes</div>
         <div *ngIf="admin.showSuccess" class="success">Successfully Made Changes</div>

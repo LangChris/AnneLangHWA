@@ -34,7 +34,9 @@ export class SettingsComponent implements OnInit {
     promoGift: new FormControl(this.global.getPromo.gift),
     promoAmount: new FormControl(this.global.getPromo.amount),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
-    promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required])
+    promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
+    specialRequest: new FormControl(),
+    optionalCoverage: new FormControl()
   });
 
   constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
@@ -55,6 +57,34 @@ export class SettingsComponent implements OnInit {
     return this.settingsForm.controls.promoActive.value ? false : true;
   }
 
+  newSpecialRequest() {
+    let specialRequestsSection = document.getElementById('special-requests') as HTMLTableSectionElement;
+    let specialRequestsRows = document.getElementById('special-requests').getElementsByTagName("tr") as HTMLCollection;
+    let lastRow = specialRequestsRows[specialRequestsRows.length - 1] as HTMLTableRowElement;
+    let lastRowInput = lastRow.children[1].children[0] as HTMLInputElement;
+    if(lastRowInput.value != "") {
+      let newRow = lastRow.cloneNode(true) as HTMLTableRowElement;
+      let rowInput = newRow.children[1].children[0] as HTMLInputElement;
+      rowInput.value = "";
+      specialRequestsSection.appendChild(newRow);
+    }
+  }
+
+  newOptionalCoverage() {
+    let optionalCoverageSection = document.getElementById('optional-coverages') as HTMLTableSectionElement;
+    let optionalCoverageRows = document.getElementById('optional-coverages').getElementsByTagName("tr") as HTMLCollection;
+    let lastRow = optionalCoverageRows[optionalCoverageRows.length - 1] as HTMLTableRowElement;
+    let lastRowInput = lastRow.children[1].children[0] as HTMLInputElement;
+    if(lastRowInput.value != "") {
+      let newRow = lastRow.cloneNode(true) as HTMLTableRowElement;
+      let rowOption = newRow.children[1].children[0] as HTMLInputElement;
+      let rowPrice = newRow.children[1].children[1] as HTMLInputElement;
+      rowOption.value = "";
+      rowPrice.value = "";
+      optionalCoverageSection.appendChild(newRow);
+    }
+  }
+
   updateSettings() {
     if(this.settingsForm.valid) {
 
@@ -63,6 +93,33 @@ export class SettingsComponent implements OnInit {
       } else if(this.settingsForm.controls.promoType.value == "Free Gift") {
         this.settingsForm.controls.promoAmount.setValue('');
       }
+
+      let specialRequests = [];
+      let requests = document.getElementsByClassName('specialRequests');
+      for(var i = 0; i < requests.length; i++) {
+        let request = requests[i] as HTMLInputElement;
+        if(request.value != "") {
+          specialRequests.push(request.value);
+        }
+      }
+
+      let optionalCoverages = [];
+      let coverages = document.getElementsByClassName('optionalCoverages');
+      let prices = document.getElementsByClassName('optionalCoveragePrices');
+      for(var i = 0; i < coverages.length; i++) {
+        let coverage = coverages[i] as HTMLInputElement;
+        let price = prices[i] as HTMLInputElement;
+        let option = {
+          option: coverage.value, 
+          price: price.value
+        };
+        if(option.option != "" && option.price != "") {
+          optionalCoverages.push(option);
+        }
+      }
+  
+      this.settingsForm.controls.specialRequest.setValue(specialRequests);
+      this.settingsForm.controls.optionalCoverage.setValue(optionalCoverages);
 
       return this.database.saveGeneralSettings(this.settingsForm).subscribe(
         response => {

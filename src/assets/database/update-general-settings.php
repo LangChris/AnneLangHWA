@@ -35,7 +35,9 @@ switch($_SERVER['REQUEST_METHOD']){
         $plan_three = $params->planThree;
         $plan_one_price = $params->planOnePrice;
         $plan_two_price = $params->planTwoPrice;
-        $plan_three-price = $params->planThreePrice;
+        $plan_three_price = $params->planThreePrice;
+        $special_request = $params->specialRequest;
+        $optional_coverage = $params->optionalCoverage;
 
         // Update to Database
         $hostname="localhost";
@@ -101,6 +103,33 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "price = '$plan_three_price' WHERE id = 3";
                 
             $result = mysqli_query($con, $query);
+
+            $table="special_request";
+
+            $query = "DELETE FROM $table";
+            $result = mysqli_query($con, $query);
+
+            foreach($special_request as $request) {
+                $query = "INSERT INTO $table VALUES(";
+                $query .= "'',";
+                $query .= "'$request')";
+
+                $result = mysqli_query($con, $query);
+            }
+
+            $table="optional_coverage";
+
+            $query = "DELETE FROM $table";
+            $result = mysqli_query($con, $query);
+
+            foreach($optional_coverage as $option) {
+                $query = "INSERT INTO $table VALUES(";
+                $query .= "'',";
+                $query .= "'$option->option',";
+                $query .= "'$option->price')";
+
+                $result = mysqli_query($con, $query);
+            }
 
             mysqli_close($con);
         }

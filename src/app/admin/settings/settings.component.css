@@ -17,9 +17,17 @@ input,textarea,select {
     width: 250px;
 }
 
+.extra-medium {
+    width: 200px;
+}
+
 .small {
   width: 120px;
 }
+
+.extra-small {
+    width: 35px;
+  }
 
 th {
     text-align: left;
@@ -69,6 +77,10 @@ button {
 
     .medium {
         width: 150px;
+    }
+
+    .extra-medium {
+        width: 100px;
     }
 
     .small {
