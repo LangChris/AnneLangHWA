@@ -130,11 +130,11 @@
             <div class="small-button add" (click)="newOptionalCoverage()"></div>
          </tr>
          <tbody id="optional-coverages">
-         <tr *ngFor="let option of global.getOptionalCoverage; let i = index;">
+         <tr *ngFor="let option of global.getOptionalCoverage">
              <th class="group-label"></th>
              <td>
-                 <input type="text" class="extra-medium optionalCoverages" id="optional-coverage-{{(i + 1)}}" value="{{option.option}}" />&nbsp;
-                 <input type="text" class="extra-small optionalCoveragePrices" id="optional-coverage-price-{{(i + 1)}}" value="{{option.price.substring(option.price.indexOf('$') + 1, option.price.indexOf('/'))}}" />
+                 <input type="text" class="extra-medium optionalCoverages" value="{{option.option}}" />&nbsp;
+                 <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price.substring(option.price.indexOf('$') + 1, option.price.indexOf('/'))}}" />
             </td>
          </tr>
         </tbody>
