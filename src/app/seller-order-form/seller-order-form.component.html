@@ -4,6 +4,8 @@
   <p *ngIf="showForm">{{global.getGeneralSettings.orderDescription}}</p>
   <div class="section" *ngIf="!showForm">{{global.getGeneralSettings.orderMessage}}</div>
   <div class="section" *ngIf="showForm">
+      <h2>Free Sellers Coverage</h2>
+      <p class="small-text" >Good for 6 months and up to $1,500 in paid claims.</p>
       <form id="sellerOrderForm" [formGroup]="sellerOrderForm" novalidate (ngSubmit)="submitOrder()">
         <table class="order-form">
           <tr>
