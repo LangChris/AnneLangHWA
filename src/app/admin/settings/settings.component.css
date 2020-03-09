@@ -69,7 +69,26 @@ button {
    color: green;
 }
 
-  @media screen and (max-width: 800px) {
+@media screen and (max-width: 800px) {
+    
+    .large {
+        width: 300px;
+    }
+
+    .medium {
+        width: 300px;
+    }
+
+    .extra-medium {
+        width: 250px;
+    }
+
+    .small {
+      width: 70px;
+    }
+}
+
+@media screen and (max-width: 550px) {
     
     .large {
         width: 150px;
@@ -80,7 +99,7 @@ button {
     }
 
     .extra-medium {
-        width: 100px;
+        width: 90px;
     }
 
     .small {
