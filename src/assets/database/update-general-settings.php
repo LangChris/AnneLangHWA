@@ -33,6 +33,9 @@ switch($_SERVER['REQUEST_METHOD']){
         $plan_one = $params->planOne;
         $plan_two = $params->planTwo;
         $plan_three = $params->planThree;
+        $plan_one_price = $params->planOnePrice;
+        $plan_two_price = $params->planTwoPrice;
+        $plan_three-price = $params->planThreePrice;
 
         // Update to Database
         $hostname="localhost";
@@ -82,17 +85,20 @@ switch($_SERVER['REQUEST_METHOD']){
             $table="plan";
 
             $query = "UPDATE $table SET ";
-            $query .= "name = '$plan_one' WHERE id = 1";
+            $query .= "name = '$plan_one',";
+            $query .= "price = '$plan_one_price' WHERE id = 1";
                 
             $result = mysqli_query($con, $query);
 
             $query = "UPDATE $table SET ";
-            $query .= "name = '$plan_two' WHERE id = 2";
+            $query .= "name = '$plan_two',";
+            $query .= "price = '$plan_two_price' WHERE id = 2";
                 
             $result = mysqli_query($con, $query);
 
             $query = "UPDATE $table SET ";
-            $query .= "name = '$plan_three' WHERE id = 3";
+            $query .= "name = '$plan_three',";
+            $query .= "price = '$plan_three_price' WHERE id = 3";
                 
             $result = mysqli_query($con, $query);
 
