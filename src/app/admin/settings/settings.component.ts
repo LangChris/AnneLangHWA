@@ -35,6 +35,8 @@ export class SettingsComponent implements OnInit {
     promoAmount: new FormControl(this.global.getPromo.amount),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
+    loginUsername: new FormControl(this.global.getLogin.username),
+    loginPassword: new FormControl(this.global.getLogin.password),
     specialRequest: new FormControl(),
     optionalCoverage: new FormControl()
   });
@@ -118,6 +120,7 @@ export class SettingsComponent implements OnInit {
         }
       }
   
+      this.settingsForm.controls.loginPassword.setValue(btoa(this.settingsForm.controls.loginPassword.value));
       this.settingsForm.controls.specialRequest.setValue(specialRequests);
       this.settingsForm.controls.optionalCoverage.setValue(optionalCoverages);
 
@@ -127,6 +130,7 @@ export class SettingsComponent implements OnInit {
           this.global.updateGeneralSettings();
           this.global.updatePlans();
           this.global.updatePromo();
+          this.global.updateLogin();
         },
         error => {
           this.admin.showError = true;

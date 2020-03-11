@@ -61,6 +61,11 @@ export class GlobalService {
     sendEmail: true
   };
 
+  login = {
+    username: '',
+    password: ''
+  };
+
   orders: any;
 
   testing = false;
@@ -224,6 +229,20 @@ export class GlobalService {
         this.generalSettings.defaultSortOrder = response[0].default_sort_order;
         this.generalSettings.defaultFilename = response[0].default_filename;
         this.generalSettings.sendEmail = response[0].send_email == "1" ? true : false;
+      },
+      error => console.log(error)
+    );
+  }
+
+  get getLogin() {
+    return this.login;
+  }
+
+  updateLogin() {
+    this.database.getLogin().subscribe(
+      response => {
+        this.login.username = response[0].username;
+        this.login.password = atob(response[0].password);
       },
       error => console.log(error)
     );
@@ -408,8 +427,8 @@ export class GlobalService {
       amount: 50,
       type: 'Money Off',
       gift: null,
-      endDate: "2020-03-08",
-      endDateString: "03/08/2020",
+      endDate: "2020-03-31",
+      endDateString: "03/31/2020",
       code: "HWA50"
     };
 
@@ -497,6 +516,11 @@ export class GlobalService {
       defaultSortOrder: 'ASC',
       defaultFilename: 'MyOrders',
       sendEmail: false
+    };
+
+    this.login = {
+      username: 'Anne.Lang',
+      password: 'Regina23!'
     };
 
   }

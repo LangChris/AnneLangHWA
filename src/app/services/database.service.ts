@@ -15,7 +15,9 @@ const endpoints = {
   getOptionalCoverage: "/assets/database/get-optional-coverage.php",
   getSpecialRequest: "/assets/database/get-special-request.php",
   getGeneralSettings: "/assets/database/get-general-settings.php",
-  updateGeneralSettings: "/assets/database/update-general-settings.php"
+  updateGeneralSettings: "/assets/database/update-general-settings.php",
+  getLogin: "/assets/database/get-login.php",
+  resetPassword: "/assets/database/reset-password.php"
 };
 
 @Injectable()
@@ -86,6 +88,16 @@ export class DatabaseService {
   // Save General Settings
   saveGeneralSettings(formGroup: FormGroup) {
     return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
+  }
+
+  // Get Login
+  getLogin() {
+    return this.http.get(endpoints.getLogin);
+  }
+
+  // Reset Password
+  resetPassword(formGroup: FormGroup) {
+    return this.http.post(endpoints.resetPassword, formGroup.value);
   }
 
 }

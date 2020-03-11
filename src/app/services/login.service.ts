@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-
-const username = 'Anne.Lang';
-const password = 'Regina23!';
+import { GlobalService } from '../services/global.service';
+import { DatabaseService } from '../services/database.service';
 
 @Injectable()
 export class LoginService {
@@ -12,23 +11,21 @@ export class LoginService {
     successful: false 
   };
 
-  constructor() { }
+  constructor(private global: GlobalService, private database: DatabaseService) { }
 
   login(user: string, pass: string): any {
-    if(user == username && pass == password) {
+    if(user == this.global.getLogin.username && pass == this.global.getLogin.password) {
       this.status = { 
         bad_user: false, 
         bad_pass: false, 
         successful: true 
       };
-      //return this.status;
     } else {
       this.status = { 
-        bad_user: user != username ? true : false, 
-        bad_pass: pass != password ? true : false, 
+        bad_user: user != this.global.getLogin.username ? true : false, 
+        bad_pass: pass != this.global.getLogin.password ? true : false, 
         successful: false 
       };
-      //return this.status;
     }
   }
 

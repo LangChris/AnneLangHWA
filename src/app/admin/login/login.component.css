@@ -15,3 +15,20 @@ table td {
     font-weight: 300;
     font-style: oblique;
 }
+
+div {
+    display: block;
+    padding-bottom: 20px;
+}
+
+.password-reset {
+    cursor: pointer;
+}
+
+.password-reset:hover {
+    color: #eb5e17;
+}
+
+.success {
+    color: green;
+}

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
+import { GlobalService } from '../../services/global.service';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'admin-login',
@@ -8,10 +11,34 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public login: LoginService) { }
+  resetPasswordForm = new FormGroup({
+    password: new FormControl(),
+    email: new FormControl()
+  });
+
+  passwordResetSent: boolean;
+
+  constructor(public login: LoginService, private global: GlobalService, private database: DatabaseService) { }
 
   ngOnInit() {
+    this.passwordResetSent = false;
   }
+
+  passwordReset() {
+    let randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    let newPassword = btoa(randomString);
+
+    this.resetPasswordForm.controls.password.setValue(newPassword);
+    this.resetPasswordForm.controls.email.setValue(this.global.getGeneralSettings.email);
+    return this.database.resetPassword(this.resetPasswordForm).subscribe(
+      response => {
+        this.passwordResetSent = true;
+      },
+      error => console.log(error)
+    );
+  }
+
+  
 
   tryLogin() {
     let username = document.getElementById('username') as HTMLInputElement;

@@ -36,6 +36,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $plan_one_price = $params->planOnePrice;
         $plan_two_price = $params->planTwoPrice;
         $plan_three_price = $params->planThreePrice;
+        $login_password = $params->loginPassword;
         $special_request = $params->specialRequest;
         $optional_coverage = $params->optionalCoverage;
 
@@ -130,6 +131,13 @@ switch($_SERVER['REQUEST_METHOD']){
 
                 $result = mysqli_query($con, $query);
             }
+
+            $table="login";
+
+            $query = "UPDATE $table SET ";
+            $query .= "password = '$login_password'";
+                
+            $result = mysqli_query($con, $query);
 
             mysqli_close($con);
         }
