@@ -3,14 +3,14 @@
         <tr>
         <td>Username:</td>
         <td>
-            <input type="text" class="large" id="username" />
+            <input type="text" class="large" id="username" (keydown)="checkKey($event)" />
             <span *ngIf="login.getStatus.bad_user" class="required small-text" ><br /> Invalid Username!</span>
         </td>
         </tr>
         <tr>
         <td>Password:</td>
         <td>
-            <input type="password" class="large" id="password" />
+            <input type="password" class="large" id="password" (keydown)="checkKey($event)" />
             <span *ngIf="login.getStatus.bad_pass" class="required small-text" ><br /> Invalid Password!</span>
         </td>
         </tr>

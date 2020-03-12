@@ -38,7 +38,11 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  
+  checkKey(event) {
+    if(event.key === 'Enter') {
+      this.tryLogin();
+    }
+  }
 
   tryLogin() {
     let username = document.getElementById('username') as HTMLInputElement;
