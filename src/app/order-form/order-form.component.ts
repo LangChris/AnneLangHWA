@@ -203,7 +203,8 @@ export class OrderFormComponent implements OnInit {
       var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
       this.orderForm.controls.promo.setValue(promoInput.value);
 
-      this.orderForm.controls.createdDate.setValue(new Date());
+      let today = new Date;
+      this.orderForm.controls.createdDate.setValue(today);
       this.orderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
       this.orderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
       this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);

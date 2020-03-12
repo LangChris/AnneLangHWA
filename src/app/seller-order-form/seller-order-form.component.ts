@@ -100,7 +100,8 @@ export class SellerOrderFormComponent implements OnInit {
       var hvacCoverage = document.getElementById('hvac-coverage') as HTMLSelectElement;
       this.sellerOrderForm.controls.hvacCoverage.setValue(hvacCoverage.value);
 
-      this.sellerOrderForm.controls.createdDate.setValue(new Date());
+      let today = new Date;
+      this.sellerOrderForm.controls.createdDate.setValue(today);
       this.sellerOrderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
       this.sellerOrderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
       this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
