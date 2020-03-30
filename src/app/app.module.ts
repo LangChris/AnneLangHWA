@@ -22,6 +22,7 @@ import { ViewOrdersComponent } from './admin/view-orders/view-orders.component';
 import { EditOrdersComponent } from './admin/edit-orders/edit-orders.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { SettingsComponent } from './admin/settings/settings.component';
+import { ClaimsComponent } from './claims/claims.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: "admin-portal",
     component: AdminComponent
+  },
+  {
+    path: "claims",
+    component: ClaimsComponent
   },
   {
     path: "**",
@@ -61,7 +66,8 @@ const routes: Routes = [
     ViewOrdersComponent,
     EditOrdersComponent,
     DashboardComponent,
-    SettingsComponent
+    SettingsComponent,
+    ClaimsComponent
   ],
   imports: [
     ReactiveFormsModule,

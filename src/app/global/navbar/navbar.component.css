@@ -29,7 +29,12 @@
 }
 
 .contact-info a {
-    color: #000;
+    color: #191e3f;
+    text-decoration: none;
+}
+
+.contact-info span {
+    cursor: pointer;
 }
 
 #anne-picture {

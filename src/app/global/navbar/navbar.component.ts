@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +9,13 @@ import { GlobalService } from '../../services/global.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public global: GlobalService) { }
+  constructor(public global: GlobalService, public router: Router) { }
 
   ngOnInit() {
+  }
+
+  navigateToClaims() {
+    this.router.navigate(['claims']);
   }
 
 }

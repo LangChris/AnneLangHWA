@@ -6,6 +6,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     background: #4894a4;
+    color: #191e3f;
 }
 
 .centered-block {
@@ -198,6 +199,16 @@ button:hover {
 
 .minus:before {
     content: "\2212";
+    font-size: 20px;
+}
+
+.claims:before {
+    content: "\01F4DD";
+    font-size: 20px;
+}
+
+.claims-after:after {
+    content: "\01F4DD";
     font-size: 20px;
 }
 
