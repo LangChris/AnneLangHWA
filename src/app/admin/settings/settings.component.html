@@ -106,6 +106,7 @@
             <td>
                 <select class="medium" id="promo-type" name="promoType" formControlName="promoType" >
                     <option value="Money Off">Money Off</option>
+                    <option value="Free Coverage">Free Coverage</option>
                     <option value="Free Gift">Free Gift</option>
                 </select>
             </td>
@@ -117,6 +118,15 @@
         <tr *ngIf="showPromoType('Money Off')">
             <th class="group-label">Amount</th>
             <td><input type="text" class="medium" name="promoAmount" formControlName="promoAmount" /></td>
+        </tr>
+        <tr *ngIf="showPromoType('Free Coverage')">
+            <th class="group-label">Coverage</th>
+            <td>
+                <select class="medium" name="promoCoverage" formControlName="promoCoverage" >
+                    <option>Select One</option>
+                    <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+                </select>
+            </td>
         </tr>
         <tr>
             <th class="group-label">Code</th>

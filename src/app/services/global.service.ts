@@ -17,6 +17,7 @@ export class GlobalService {
     amount: 0,
     type: '',
     gift: '',
+    coverage: '',
     endDate: null,
     endDateString: null,
     code: null
@@ -177,7 +178,6 @@ export class GlobalService {
 
   displayPromo() {
     let today = new Date();
-    //let endDate = new Date(this.getPromo.endDate + ' 23:59:59 GMT-0400');
     let endDate = new Date(this.getPromo.endDateString + ' 23:59:59');
 
     let valid = this.getPromo.active && today.getTime() <= endDate.getTime();
@@ -194,6 +194,7 @@ export class GlobalService {
           this.promo.amount = data[i].amount;
           this.promo.type = data[i].type;
           this.promo.gift = data[i].gift;
+          this.promo.coverage = data[i].coverage;
           this.promo.endDate = data[i].end_date;
           this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
           this.promo.code = data[i].code;
@@ -424,12 +425,13 @@ export class GlobalService {
 
     this.promo = {
       active: true,
-      amount: 50,
-      type: 'Money Off',
+      amount: null,
+      type: 'Free Coverage',
       gift: null,
+      coverage: 'Green Plus',
       endDate: "2020-03-31",
       endDateString: "03/31/2020",
-      code: "HWA50"
+      code: "FREEGP$70"
     };
 
     this.plans = {

@@ -33,6 +33,7 @@ export class SettingsComponent implements OnInit {
     promoType: new FormControl(this.global.getPromo.type, [Validators.required]),
     promoGift: new FormControl(this.global.getPromo.gift),
     promoAmount: new FormControl(this.global.getPromo.amount),
+    promoCoverage: new FormControl(this.global.getPromo.coverage),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
     loginUsername: new FormControl(this.global.getLogin.username),
@@ -92,8 +93,13 @@ export class SettingsComponent implements OnInit {
 
       if(this.settingsForm.controls.promoType.value == "Money Off") {
         this.settingsForm.controls.promoGift.setValue('');
+        this.settingsForm.controls.promoCoverage.setValue('Select One');
       } else if(this.settingsForm.controls.promoType.value == "Free Gift") {
         this.settingsForm.controls.promoAmount.setValue('');
+        this.settingsForm.controls.promoCoverage.setValue('Select One');
+      } else if(this.settingsForm.controls.promoType.value == "Free Coverage") {
+        this.settingsForm.controls.promoAmount.setValue('');
+        this.settingsForm.controls.promoGift.setValue('');
       }
 
       let specialRequests = [];

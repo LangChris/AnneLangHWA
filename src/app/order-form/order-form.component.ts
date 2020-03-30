@@ -4,6 +4,7 @@ import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-order-form',
@@ -166,6 +167,32 @@ export class OrderFormComponent implements OnInit {
           promoInput.style.border = "1px solid #ccc";
           this.validPromo = true;
       }
+
+      if(this.validPromo && this.global.getPromo.active && this.global.getPromo.type == 'Free Coverage') {
+        for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
+          let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
+          if(value.toString().includes(this.global.getPromo.coverage)) {
+            this.optionalCoverageMultiSelect.options.items.get(i).selected = true;
+            this.optionalCoverageChange(null);
+
+            let result = document.getElementById('multi-select').getElementsByClassName('si-result')[0];
+            let list = document.getElementById('multi-select').getElementsByClassName('si-list')[0].getElementsByTagName('ul')[0].getElementsByTagName('li');
+
+            result.innerHTML = value;
+
+            for(var i  = 0; i < list.length; i++) {
+              if(value.indexOf(list[i].innerHTML) >= 0) {
+                if(!list[i].classList.contains('si-selected')) {
+                  list[i].classList.add('si-selected');
+                }
+              }
+            }
+          }
+        }
+      }
+
+
+
       this.updateOrderTotal();
     }, 100);
     
@@ -274,7 +301,7 @@ export class OrderFormComponent implements OnInit {
       this.total += +(discountYear * 2);
     }
 
-    if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '') {
+    if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '' && this.global.getPromo.type == 'Money Off') {
       this.total -= +this.global.getPromo.amount;
     }
 
@@ -283,7 +310,9 @@ export class OrderFormComponent implements OnInit {
         if(optionalCoverageSelect.options[i].selected) {
           let option = optionalCoverageSelect.options[i].text;
           let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
-          this.total += +price;
+          if(this.global.getPromo.type != 'Free Coverage' || !option.includes(this.global.getPromo.coverage) || !this.validPromo) {
+            this.total += +price;
+          }
         }
       }
   }

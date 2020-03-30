@@ -29,6 +29,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $type = $params->promoType;
         $gift = $params->promoGift;
         $code = $params->promoCode;
+        $coverage = $params->promoCoverage;
         $end_date = $params->promoEndDate;
         $plan_one = $params->planOne;
         $plan_two = $params->planTwo;
@@ -80,6 +81,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "type = '$type',";
             $query .= "amount = ".($amount == '' ? "NULL" : "'$amount'").",";
             $query .= "gift = ".($gift == '' ? "NULL" : "'$gift'").",";
+            $query .= "coverage = ".($coverage == '' ? "NULL" : "'$coverage'").",";
             $query .= "code = '$code',";
             $query .= "end_date = '$end_date'";
                 

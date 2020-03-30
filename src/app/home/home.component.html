@@ -18,7 +18,7 @@
             <div class="plan-footer" id="gold-footer">
                 <hr width="50%" color="#ddd" />
                 <span id="gold-price" [ngStyle]="priceStyle()" >${{global.plans.gold.price}}</span>
-                <p id="gold-price-promo" *ngIf="global.displayPromo()">${{global.plans.gold.price - global.getPromo.amount}}</p>
+                <p id="gold-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.gold.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
                 <h4 id="gold-discount">-${{global.plans.gold.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('gold')">ORDER NOW</button>
@@ -42,7 +42,7 @@
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
                 <span id="platinum-price" [ngStyle]="priceStyle()">${{global.plans.platinum.price}}</span>
-                <p id="platinum-price-promo" *ngIf="global.displayPromo()">${{global.plans.platinum.price - global.getPromo.amount}}</p>
+                <p id="platinum-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.platinum.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
                 <h4 id="platinum-discount">-${{global.plans.platinum.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('platinum')">ORDER NOW</button>
@@ -78,7 +78,7 @@
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
                 <span id="diamond-price" [ngStyle]="priceStyle()">${{global.plans.diamond.price}}</span>
-                <p id="diamond-price-promo" *ngIf="global.displayPromo()">${{global.plans.diamond.price - global.getPromo.amount}}</p>
+                <p id="diamond-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.diamond.price - global.getPromo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
                 <h4 id="diamond-discount">-${{global.plans.diamond.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('diamond')">ORDER NOW</button>
