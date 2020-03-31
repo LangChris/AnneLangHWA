@@ -191,8 +191,6 @@ export class OrderFormComponent implements OnInit {
         }
       }
 
-
-
       this.updateOrderTotal();
     }, 100);
     
