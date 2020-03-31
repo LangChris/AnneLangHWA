@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-claims',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClaimsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private global: GlobalService) { }
 
   ngOnInit(): void {
+    this.global.setShowPortal(false);
   }
 
 }
