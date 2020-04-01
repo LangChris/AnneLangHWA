@@ -21,6 +21,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $owner = $params->owner;
         $phone = $params->phone;
         $email = $params->email;
+        $reset_email = $params->passwordResetEmail;
         $default_sort = $params->defaultSort;
         $default_filename = $params->defaultFilename;
         $send_email = $params->sendEmail;
@@ -67,6 +68,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "order_message = '$order_message',";
             $query .= "owner = '$owner',";
             $query .= "email = '$email',";
+            $query .= "password_reset_email = '$reset_email',";
             $query .= "phone_number = '$phone',";
             $query .= "default_sort_order = '$default_sort',";
             $query .= "default_filename = '$default_filename',";

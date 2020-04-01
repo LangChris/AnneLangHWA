@@ -51,6 +51,7 @@ export class GlobalService {
   generalSettings = {
     phoneNumber: '',
     email: '',
+    passwordResetEmail: '',
     owner: '',
     webpageTitle: '',
     webpageSubTitle: '',
@@ -221,6 +222,7 @@ export class GlobalService {
       response => {
         this.generalSettings.phoneNumber = response[0].phone_number;
         this.generalSettings.email = response[0].email;
+        this.generalSettings.passwordResetEmail = response[0].password_reset_email;
         this.generalSettings.owner = response[0].owner;
         this.generalSettings.webpageTitle = response[0].webpage_title;
         this.generalSettings.webpageSubTitle = response[0].webpage_subtitle;
@@ -508,7 +510,8 @@ export class GlobalService {
   
     this.generalSettings = {
       phoneNumber: '703-123-1234',
-      email: 'tina.flowers@homewarrantyamerica.com',
+      email: 'anne.lang@homewarrantyamerica.com',
+      passwordResetEmail: 'anne@annelanghwa.com',
       owner: 'Tina Flowers',
       webpageTitle: 'HWA Home Warranty',
       webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',

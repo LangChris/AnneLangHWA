@@ -13,7 +13,9 @@ export class LoginComponent implements OnInit {
 
   resetPasswordForm = new FormGroup({
     password: new FormControl(),
-    email: new FormControl()
+    email: new FormControl(),
+    fromEmail: new FormControl(),
+    adminName: new FormControl()
   });
 
   passwordResetSent: boolean;
@@ -30,6 +32,8 @@ export class LoginComponent implements OnInit {
 
     this.resetPasswordForm.controls.password.setValue(newPassword);
     this.resetPasswordForm.controls.email.setValue(this.global.getGeneralSettings.email);
+    this.resetPasswordForm.controls.fromEmail.setValue(this.global.getGeneralSettings.passwordResetEmail);
+    this.resetPasswordForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
     return this.database.resetPassword(this.resetPasswordForm).subscribe(
       response => {
         this.passwordResetSent = true;

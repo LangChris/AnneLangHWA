@@ -14,7 +14,9 @@ switch($_SERVER['REQUEST_METHOD']){
         $params = json_decode($json);
 
         $email = $params->email;
-        $passwordReset = $params->password;
+        $password_reset = $params->password;
+        $from_email = $params->fromEmail;
+        $admin_name = $params->adminName;
 
         $msg = "
         <html>
@@ -65,7 +67,7 @@ switch($_SERVER['REQUEST_METHOD']){
             </head>
             <body>
                 <h3 class='padding-top'>Password Reset</h3>
-                <p>Your new password is: ".base64_decode($passwordReset)."</p>
+                <p>Your new password is: ".base64_decode($password_reset)."</p>
             </body>
             </html>";
 
@@ -73,9 +75,9 @@ switch($_SERVER['REQUEST_METHOD']){
 
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        //$headers .= 'From: '.$email.">\r\n".
-        //'Reply-To: '.$email."\r\n" .
-        $headers .= 'X-Mailer: PHP/' . phpversion();
+        $headers .= 'From: '.$admin_name."<".$from_email.">\r\n".
+        'Reply-To: '.$from_email."\r\n" .
+        'X-Mailer: PHP/' . phpversion();
 
         $mail_response = mail($email, $subject, $msg, $headers);
 
@@ -97,7 +99,7 @@ switch($_SERVER['REQUEST_METHOD']){
         if(mysqli_ping($con)) {
             //connected
 
-            $query = "UPDATE $table SET password = '$passwordReset'";
+            $query = "UPDATE $table SET password = '$password_reset'";
 
             $result = mysqli_query($con, $query);
 

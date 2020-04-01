@@ -18,6 +18,7 @@ export class SettingsComponent implements OnInit {
     orderDescription: new FormControl(this.global.getGeneralSettings.orderDescription, [Validators.required]),
     orderMessage: new FormControl(this.global.getGeneralSettings.orderMessage, [Validators.required]),
     email: new FormControl(this.global.getGeneralSettings.email, [Validators.required]),
+    passwordResetEmail: new FormControl(this.global.getGeneralSettings.passwordResetEmail, [Validators.required]),
     phone: new FormControl(this.global.getGeneralSettings.phoneNumber, [Validators.required]),
     owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),
     defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
@@ -137,6 +138,9 @@ export class SettingsComponent implements OnInit {
           this.global.updatePlans();
           this.global.updatePromo();
           this.global.updateLogin();
+          setTimeout(()=>{
+            this.admin.updateDisplay('DASHBOARD');
+          },1000);
         },
         error => {
           this.admin.showError = true;
