@@ -1,10 +1,14 @@
 <div id="nav">
   <a href="" alt="logo"><div id="logo"></div></a>
-  <div id="contact-info-box">
+  <div id="contact-info-container">
+    <div id="contact-info-box">
       <div id="anne-picture"></div>  
       <div id="anne-logo"></div>
-      <span class="contact-info">Tel: <a class="telephone" href="tel:{{global.getGeneralSettings.phoneNumber}}"></a></span>
-      <span class="contact-info">Email: <a class="email" href="mailTo:{{global.getGeneralSettings.email}}"></a></span>
-      <span class="contact-info">Claims: <span class="claims" (click)="navigateToClaims()"></span></span>
+  </div>
+  <div id="contact-info-box">
+    <div class="info tooltip"><a class="telephone" href="tel:{{global.getGeneralSettings.phoneNumber}}"></a><span class="tooltiptext">Call Me!</span></div>
+    <div class="info tooltip"><a class="email" href="mailTo:{{global.getGeneralSettings.email}}"></a><span class="tooltiptext">Email Me!</span></div>
+    <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info!</span></div>
+  </div>
   </div>
 </div>

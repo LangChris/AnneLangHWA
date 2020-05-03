@@ -161,12 +161,17 @@ button:hover {
 
 .email:before {
     content: "\2709";
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .telephone:before {
     content: "\2706";
-    font-size: 20px;
+    font-size: 30px;
+}
+
+.claims:before {
+    content: "\01F4DD";
+    font-size: 30px;
 }
 
 .list:before {
@@ -199,11 +204,6 @@ button:hover {
 
 .minus:before {
     content: "\2212";
-    font-size: 20px;
-}
-
-.claims:before {
-    content: "\01F4DD";
     font-size: 20px;
 }
 

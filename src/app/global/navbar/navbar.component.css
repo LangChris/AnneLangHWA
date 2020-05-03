@@ -8,33 +8,9 @@
     background-repeat: no-repeat;
 	background-size: 100% 100%;
     width: 150px;
+    margin: 25px;
     height: 80px;
-    margin: 25px;
     float: left;
-}
-
-#contact-info-box {
-    width: 255px;
-    height: 120px;
-    margin: 25px;
-    float: right;
-}
-
-.contact-info {
-    font-size: 16px; 
-    font-weight: bold;
-    color: #000;
-    padding-bottom: 25px;
-    padding: 0 5px;
-}
-
-.contact-info a {
-    color: #191e3f;
-    text-decoration: none;
-}
-
-.contact-info span {
-    cursor: pointer;
 }
 
 #anne-picture {
@@ -55,25 +31,69 @@
     float: right;
 }
 
+#contact-info-container {
+    margin: 25px;
+    height: 120px;
+    float: right;
+}
+
+#contact-info-box {
+    width: auto;
+    display: block;
+}
+
+.info {
+    opacity: 0.6;
+    display: inline-block;
+    padding: 10px;
+}
+
+.info a,span {
+    color: #191e3f;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.info:hover {
+    opacity: 1.0;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #191e3f;
+    opacity: 0.6;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    width: 120px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
 @media screen and (max-width: 550px) {
-    
-    #contact-info-box {
-        width: 175px;
-    }
-    
-    .contact-info {
-        font-size: 10px;
-    }
-    
     #logo {
         width: 100px;
     }
     
     #anne-logo {
         width: 110px;
-    }
-    
-    #contact-info {
-        width: 175px;
     }
 }
