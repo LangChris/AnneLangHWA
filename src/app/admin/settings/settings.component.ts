@@ -50,6 +50,21 @@ export class SettingsComponent implements OnInit {
       this.admin.showSuccess = false;
       this.admin.showError = false;
     });
+
+    setTimeout(() => {
+      if(this.settingsForm.controls.promoType.value == 'Free Coverage Multi') {
+        let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
+        let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
+        let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
+        let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
+  
+        coverage1.value = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
+        coverage2.value = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
+  
+        code1.value = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+        code2.value = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+      }
+    }, 1000);
   }
 
   showPromoType(type: string) {
@@ -90,8 +105,18 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.settingsForm.valid) {
+    if(this.settingsForm.controls.promoType.value == "Free Coverage Multi") {
+      let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
+      let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
+      let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
+      let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
 
+      this.settingsForm.controls.promoCoverage.setValue(coverage1.value + "," + coverage2.value);
+      this.settingsForm.controls.promoCode.setValue(code1.value + "," + code2.value);
+    }
+
+    if(this.settingsForm.valid) {
+      console.log(this.settingsForm.value);
       if(this.settingsForm.controls.promoType.value == "Money Off") {
         this.settingsForm.controls.promoGift.setValue('');
         this.settingsForm.controls.promoCoverage.setValue('Select One');
@@ -99,6 +124,9 @@ export class SettingsComponent implements OnInit {
         this.settingsForm.controls.promoAmount.setValue('');
         this.settingsForm.controls.promoCoverage.setValue('Select One');
       } else if(this.settingsForm.controls.promoType.value == "Free Coverage") {
+        this.settingsForm.controls.promoAmount.setValue('');
+        this.settingsForm.controls.promoGift.setValue('');
+      } else if(this.settingsForm.controls.promoType.value == "Free Coverage Multi") {
         this.settingsForm.controls.promoAmount.setValue('');
         this.settingsForm.controls.promoGift.setValue('');
       }

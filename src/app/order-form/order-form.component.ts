@@ -101,7 +101,12 @@ export class OrderFormComponent implements OnInit {
 
         if(this.global.getPromo.active) {
           var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
-          promoInput.value = this.global.getPromo.code;
+          if(this.global.getPromo.type == 'Free Coverage Multi') {
+            let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+            promoInput.value = code1;
+          } else {
+            promoInput.value = this.global.getPromo.code;
+          }
           this.updatePromoStatus(null);
         }
 
@@ -151,11 +156,31 @@ export class OrderFormComponent implements OnInit {
       var promoInputValue = promoInput.value;
       var promoStatus = document.getElementById('promo-status');
       if(promoInputValue) {
-          if(this.global.getPromo.active && this.global.getPromo.code === promoInputValue.toUpperCase()) {
-              promoInput.style.border = "1px solid green";
-              promoStatus.style.color = "green";
-              promoStatus.innerHTML = " &#10004; Valid";
-              this.validPromo = true;
+        console.log('promoInputValue: ' + promoInputValue);
+        console.log(this.global.getPromo);
+          if(this.global.getPromo.active) {
+              if(this.global.getPromo.type = 'Free Coverage Multi' ) {
+                let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+                let code2 = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+                console.log(code1);
+                console.log(code2);
+                if(promoInputValue === code1 || promoInputValue === code2) {
+                  promoInput.style.border = "1px solid green";
+                  promoStatus.style.color = "green";
+                  promoStatus.innerHTML = " &#10004; Valid";
+                  this.validPromo = true;
+                } else {
+                  promoInput.style.border = "1px solid crimson";
+                  promoStatus.style.color = "crimson";
+                  promoStatus.innerHTML = " Invalid";   
+                  this.validPromo = false;
+                }
+              } else if(this.global.getPromo.code === promoInputValue) {
+                promoInput.style.border = "1px solid green";
+                promoStatus.style.color = "green";
+                promoStatus.innerHTML = " &#10004; Valid";
+                this.validPromo = true;
+              }
           } else {
               promoInput.style.border = "1px solid crimson";
               promoStatus.style.color = "crimson";
@@ -172,6 +197,30 @@ export class OrderFormComponent implements OnInit {
         for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
           let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
           if(value.toString().includes(this.global.getPromo.coverage)) {
+            this.optionalCoverageMultiSelect.options.items.get(i).selected = true;
+            this.optionalCoverageChange(null);
+
+            let result = document.getElementById('multi-select').getElementsByClassName('si-result')[0];
+            let list = document.getElementById('multi-select').getElementsByClassName('si-list')[0].getElementsByTagName('ul')[0].getElementsByTagName('li');
+
+            result.innerHTML = value;
+
+            for(var i  = 0; i < list.length; i++) {
+              if(value.indexOf(list[i].innerHTML) >= 0) {
+                if(!list[i].classList.contains('si-selected')) {
+                  list[i].classList.add('si-selected');
+                }
+              }
+            }
+          }
+        }
+      } else if(this.validPromo && this.global.getPromo.active && this.global.getPromo.type == 'Free Coverage Multi') {
+        for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
+          let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
+
+          let coverage1 = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
+
+          if(value.toString().includes(coverage1)) {
             this.optionalCoverageMultiSelect.options.items.get(i).selected = true;
             this.optionalCoverageChange(null);
 
@@ -308,8 +357,23 @@ export class OrderFormComponent implements OnInit {
         if(optionalCoverageSelect.options[i].selected) {
           let option = optionalCoverageSelect.options[i].text;
           let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
-          if(this.global.getPromo.type != 'Free Coverage' || !option.includes(this.global.getPromo.coverage) || !this.validPromo) {
+
+          if(!this.validPromo) {
             this.total += +price;
+          } else {
+            if(this.global.getPromo.type == 'Free Coverage' && this.orderForm.controls.promo.value != '') {
+              if(!option.includes(this.global.getPromo.coverage)) {
+                this.total += +price;
+              }
+            } else if(this.global.getPromo.type == 'Free Coverage Multi' && this.orderForm.controls.promo.value != '') {
+              let coverage1 = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
+              let coverage2 = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
+              if(!option.includes(coverage1) && !option.includes(coverage2)) {
+                this.total += +price;
+              }
+            } else {
+              this.total += +price;
+            }
           }
         }
       }

@@ -251,6 +251,22 @@ export class GlobalService {
     );
   }
 
+  get getMultiCoverage1() {
+    return this.promo.coverage.substring(0, this.promo.coverage.indexOf(','));
+  }
+
+  get getMultiCoverage2() {
+    return this.promo.coverage.substring(this.promo.coverage.indexOf(',') + 1);
+  }
+
+  get getMultiCode1() {
+    return this.promo.code.substring(0, this.promo.code.indexOf(','));
+  }
+
+  get getMultiCode2() {
+    return this.promo.code.substring(this.promo.code.indexOf(',') + 1);
+  }
+
   setTestData() {
     console.log('setting test data...');
 
@@ -428,12 +444,12 @@ export class GlobalService {
     this.promo = {
       active: true,
       amount: null,
-      type: 'Free Coverage',
+      type: 'Free Coverage Multi',
       gift: null,
-      coverage: 'Green Plus',
-      endDate: "2020-03-31",
-      endDateString: "03/31/2020",
-      code: "FREEGP$70"
+      coverage: 'Second Refrigerator,Well Pump',
+      endDate: "2020-05-31",
+      endDateString: "05/31/2020",
+      code: "2ndFridge,WellPump"
     };
 
     this.plans = {
