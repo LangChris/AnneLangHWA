@@ -315,6 +315,8 @@ export class OrderFormComponent implements OnInit {
     let plan = document.getElementById('plan') as HTMLSelectElement;
     let homeTypeTH = document.getElementById('home-type-th') as HTMLInputElement;
     let isTownhome = homeTypeTH.checked;
+    var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
+    this.orderForm.controls.promo.setValue(promoInput.value);
     
     switch(plan.value) {
       case "Gold": {
@@ -357,7 +359,6 @@ export class OrderFormComponent implements OnInit {
         if(optionalCoverageSelect.options[i].selected) {
           let option = optionalCoverageSelect.options[i].text;
           let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
-
           if(!this.validPromo) {
             this.total += +price;
           } else {
@@ -368,9 +369,14 @@ export class OrderFormComponent implements OnInit {
             } else if(this.global.getPromo.type == 'Free Coverage Multi' && this.orderForm.controls.promo.value != '') {
               let coverage1 = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
               let coverage2 = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
-              if(!option.includes(coverage1) && !option.includes(coverage2)) {
+              let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+              let code2 = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+
+              if( (!option.includes(coverage1) && !option.includes(coverage2))  ||
+                  (option.includes(coverage1) && this.orderForm.controls.promo.value != code1) ||
+                  (option.includes(coverage2) && this.orderForm.controls.promo.value != code2)) {
                 this.total += +price;
-              }
+              } 
             } else {
               this.total += +price;
             }
