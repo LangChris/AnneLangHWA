@@ -1,3 +1,37 @@
 .order-total {
     color: #eb5e17;
 }
+
+progress {
+    width: 60%;
+    min-width: 400px;
+}
+
+.popout {
+    margin: 0px auto;
+    border-radius: 5px;
+    width: 60%;
+    min-width: 400px;
+    padding-top: 10px;
+    background-color: #fff;
+    border: 2px solid #eee;
+}
+
+.popout-header {
+    color: #000;
+    font-size: 25px;
+    text-align: center;
+}
+
+.navigation {
+    margin: 0px auto;
+    width: 60%;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left;
+}

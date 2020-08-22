@@ -22,6 +22,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $city = $params->city;
         $state = $params->state;
         $zip = $params->zip;
+        $special_request = $params->specialRequest;
         $seller_name = $params->sellerName;
         $seller_email = $params->sellerEmail;
         $seller_phone = $params->sellerPhone;
@@ -170,7 +171,16 @@ switch($_SERVER['REQUEST_METHOD']){
                 <tr>
                     <th class='group-label'>Office Zip:</th>
                     <td>".clean_string($realtor_zip)."</td>
-                </tr>
+                </tr>";
+                foreach($special_request as $request) {
+                    $msg .= "
+                            <tr>
+                                <th>Special Request:</th>
+                                <td>".clean_string($request)."</td>
+                            </tr>";
+                }
+
+                $msg .= "
                 </table>
                 <h3>Order Total: ".clean_string($order_total)."</h3>
             </body>
@@ -214,6 +224,12 @@ switch($_SERVER['REQUEST_METHOD']){
         if(mysqli_ping($con)) {
             //connected
 
+            $special_request_string = '';
+            foreach($special_request as $request) {
+                $special_request_string .= $request .", ";
+            }
+            $special_request_string = empty($special_request_string) ? null : substr($special_request_string, 0, -2);
+
             $query = "INSERT INTO $table VALUES(";
             $query .= "'',";
             $query .= "'$name',";
@@ -233,7 +249,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= ($seller_phone == '' ? "NULL" : "'$seller_phone'").",";
             $query .= ($start_date == '' ? "NULL" : "'$start_date'").",";
             $query .= "NULL,";
-            $query .= "NULL,";
+            $query .= ($special_request_string == '' ? "NULL" : "'$special_request_string'").",";
             $query .= ($hvac_coverage == '' ? "NULL" : "'$hvac_coverage'").",";
             $query .= ($realtor_name == '' ? "NULL" : "'$realtor_name'").",";
             $query .= ($realtor_email == '' ? "NULL" : "'$realtor_email'").",";

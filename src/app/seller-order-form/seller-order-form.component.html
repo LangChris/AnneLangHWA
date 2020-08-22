@@ -6,99 +6,149 @@
   <div class="section" *ngIf="showForm">
       <h2>Free Sellers Coverage</h2>
       <p class="small-text" >Good for 6 months and up to $1,500 in paid claims.</p>
+      <progress value={{progressStep}} max=4></progress>
       <form id="sellerOrderForm" [formGroup]="sellerOrderForm" novalidate (ngSubmit)="submitOrder()">
-        <table class="order-form">
+        
+        <div class="popout" [hidden]="progressStep != 1">
+          <p class="popout-header">Let's start with you...</p>
+          <hr width="50%" color="#ddd" />
+            <table class="order-form">
+              <tr>
+                <th class="required">Name*</th>
+                <td>
+                  <input type="text" class="large" id="name" name="name" formControlName="name"/>
+                  <span *ngIf="validateName && !sellerOrderForm.controls.name.valid" class="required small-text" ><br /> Name is Required!</span>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">Email*</th>
+                <td>
+                  <input type="email" class="large" id="email" name="email" formControlName="email"/>
+                  <span *ngIf="validateEmail && !sellerOrderForm.controls.email.valid" class="required small-text" ><br /> Email is Invalid!</span>
+                </td>
+              </tr>
+            </table>
+            
+        </div>
+
+        <div class="popout" [hidden]="progressStep != 2">
+          <p class="popout-header">What property do you need coverage for?</p>
+          <hr width="50%" color="#ddd" />
+            <table class="order-form">
+              <tr>
+                <th>Home Type</th>
+                <td>
+                  <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType" checked/>Single Family<br />
+                  <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+              </tr>
+              <tr>
+                <th>Address Line</th>   
+                <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
+              </tr>
+              <tr>
+                <th>City</th>   
+                <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
+              </tr>
+              <tr>
+                <th>Zip</th>   
+                <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
+              </tr>
+              <tr>
+                <th class="group-header">Special Request(Quote Needed)</th>
+              </tr>
+              <tr *ngFor="let request of global.getSpecialRequest; let i = index">
+                <th class="group-label">{{request}}</th>
+                <td>
+                  <div class="checkbox">
+                    <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}" (change)="checkSpecialRequests()"/>
+                    <label for="special-request-{{i}}"></label>
+                  </div>
+                </td>
+              </tr>
+            </table>
+        </div>
+
+        <div class="popout" [hidden]="progressStep != 3">
+          <p class="popout-header">Select your coverage options:</p>
+          <hr width="50%" color="#ddd" />
+            <table class="order-form">
+              <tr>
+                <th>Plan</th>
+                <td>
+                    <select id="plan" name="plan" formControlName="plan">
+                        <option value="Free Sellers Coverage" selected>Free Sellers Coverage</option>
+                    </select>  
+                </td>
+              </tr>
+              <tr>
+                <th>HVAC Coverage (+$50.00)</th>
+                <td>
+                    <select id="hvac-coverage" name="hvacCoverage" formControlName="hvacCoverage">
+                        <option value="No" selected>No</option>
+                        <option value="Yes">Yes</option>
+                    </select>  
+                </td>
+              </tr>
+              <tr>
+                <th class="required">Start Date*</th>   
+                <td>
+                  <input type="date" class="large" id="start-date" name="startDate" formControlName="startDate"/>
+                  <span *ngIf="validateDate && !sellerOrderForm.controls.startDate.valid" class="required small-text" ><br /> Start Date is Required!</span>
+                </td>   
+              </tr>
+            </table>
+        </div>
+
+        <div class="popout" [hidden]="progressStep != 4">
+          <p class="popout-header">Seller/Realtor info</p>
+          <hr width="50%" color="#ddd" />
+            <table class="order-form">
+              <tr>
+                <th class="group-header">Seller</th>
+              </tr>
+              <tr>
+                <th class="group-label">Name</th>   
+                <td><input type="text" class="large" id="seller-name" name="sellerName" formControlName="sellerName"/></td>   
+              </tr>
+              <tr>
+                <th class="group-label">Email</th>   
+                <td><input type="email" class="large" id="seller-email" name="sellerEmail" formControlName="sellerEmail"/></td>   
+              </tr>
+              <tr>
+                <th class="group-label">Phone</th>   
+                <td><input type="tel" class="large" id="seller-phone" name="sellerPhone" formControlName="sellerPhone"/></td>   
+              </tr>
+              <tr>
+                <th class="group-header">Referring Realtor</th>
+              </tr>
+              <tr>
+                <th class="group-label">Name</th>   
+                <td><input type="text" class="large" id="realtor-name" name="realtorName" formControlName="realtorName"/></td>   
+              </tr>
+              <tr>
+                <th class="group-label">Email</th>   
+                <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
+              </tr>
+              <tr>
+                <th class="group-label">Company</th>   
+                <td><input type="text" class="large" id="realtor-company" name="realtorCompany" formControlName="realtorCompany"/></td>   
+              </tr>
+              <tr>
+                <th class="group-label">Office Zip</th>   
+                <td><input type="text" class="medium" id="realtor-zip" name="realtorZip" maxlength="5" formControlName="realtorZip"/></td>   
+              </tr>
+            </table>
+        </div>
+       
+        <table class="navigation">
           <tr>
-            <th class="required">Your Name*</th>
-            <td>
-              <input type="text" class="large" id="name" name="name" formControlName="name"/>
-              <span *ngIf="validateName && !sellerOrderForm.controls.name.valid" class="required small-text" ><br /> Name is Required!</span>
-            </td>
+            <td class="left"><span [hidden]="progressStep == 1" class="button top-margin back" (click)="makeProgressStep('PREV')"> Back</span></td>
+            <td class="right"><span [hidden]="progressStep == 4" class="button top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
           </tr>
-          <tr>
-            <th class="required">Your Email*</th>
-            <td>
-              <input type="email" class="large" id="email" name="email" formControlName="email"/>
-              <span *ngIf="validateEmail && !sellerOrderForm.controls.email.valid" class="required small-text" ><br /> Email is Invalid!</span>
-            </td>
-          </tr>
-          <tr>
-            <th>Plan</th>
-            <td>
-                <select id="plan" name="plan" formControlName="plan">
-                    <option value="Free Sellers Coverage" selected>Free Sellers Coverage</option>
-                </select>  
-            </td>
-          </tr>
-          <tr>
-            <th>HVAC Coverage (+$50.00)</th>
-            <td>
-                <select id="hvac-coverage" name="hvacCoverage" formControlName="hvacCoverage">
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
-                </select>  
-            </td>
-          </tr>
-          <tr>
-            <th>Start Date</th>   
-            <td><input type="date" class="large" id="start-date" name="startDate" formControlName="startDate"/></td>   
-          </tr>
-          <tr>
-              <th>Home Type</th>
-              <td>
-                <input type="radio" name="homeType" id="home-type-sf" formControlName="homeType" value="Single Family Home" checked/>Single Family<br />
-                <input type="radio" name="homeType" id="home-type-th" formControlName="homeType" value="Townhome/Condo" />Townhome/Condo
-              </td>
-          </tr>
-          <tr>
-            <th>Address Line</th>   
-            <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
-          </tr>
-          <tr>
-            <th>City</th>   
-            <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
-          </tr>
-          <tr>
-            <th>Zip</th>   
-            <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
-          </tr>
-          <tr>
-            <th class="group-header">Seller</th>
-          </tr>
-          <tr>
-            <th class="group-label">Name</th>   
-            <td><input type="text" class="large" id="seller-name" name="sellerName" formControlName="sellerName"/></td>   
-          </tr>
-          <tr>
-            <th class="group-label">Email</th>   
-            <td><input type="email" class="large" id="seller-email" name="sellerEmail" formControlName="sellerEmail"/></td>   
-          </tr>
-          <tr>
-            <th class="group-label">Phone</th>   
-            <td><input type="tel" class="large" id="seller-phone" name="sellerPhone" formControlName="sellerPhone"/></td>   
-          </tr>
-          <tr>
-            <th class="group-header">Referring Realtor</th>
-          </tr>
-          <tr>
-            <th class="group-label">Name</th>   
-            <td><input type="text" class="large" id="realtor-name" name="realtorName" formControlName="realtorName"/></td>   
-          </tr>
-          <tr>
-            <th class="group-label">Email</th>   
-            <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
-          </tr>
-          <tr>
-            <th class="group-label">Company</th>   
-            <td><input type="text" class="large" id="realtor-company" name="realtorCompany" formControlName="realtorCompany"/></td>   
-          </tr>
-          <tr>
-            <th class="group-label">Office Zip</th>   
-            <td><input type="text" class="medium" id="realtor-zip" name="realtorZip" maxlength="5" formControlName="realtorZip"/></td>   
-          </tr>
-      </table>
+        </table>
+        
       <div class="header order-total">Order Total: {{total}}</div>
-      <button class="top-margin" type="submit" form="sellerOrderForm">PLACE ORDER</button>
+      <button [hidden]="progressStep < 4" class="top-margin" type="submit" form="sellerOrderForm">PLACE ORDER</button>
   </form>
   <p class="required extra-padding">* Field is required to get back in contact with you</p>
   </div> 

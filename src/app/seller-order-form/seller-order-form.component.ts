@@ -21,10 +21,11 @@ export class SellerOrderFormComponent implements OnInit {
     city: new FormControl(),
     state: new FormControl(),
     zip: new FormControl(),
+    specialRequest: new FormControl(),
     sellerName: new FormControl(),
     sellerEmail: new FormControl(),
     sellerPhone: new FormControl(),
-    startDate: new FormControl(),
+    startDate: new FormControl('', [Validators.required]),
     hvacCoverage: new FormControl(),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
@@ -40,8 +41,11 @@ export class SellerOrderFormComponent implements OnInit {
   showForm = true;
   validateName = false;
   validateEmail = false;
+  validateDate = false;
 
   total = 'FREE';
+
+  progressStep = 1;
 
   constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
@@ -87,9 +91,18 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   submitOrder() {
-    this.validateName = true;
-    this.validateEmail = true;
     if(this.sellerOrderForm.valid) {
+
+      let selectedSpecialRequests = [];
+      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+        var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
+        if(specialRequest.checked) {
+          selectedSpecialRequests.push(this.global.getSpecialRequest[i]);
+        }
+      }
+      
+      this.sellerOrderForm.controls.specialRequest.setValue(selectedSpecialRequests);
+
       var plan = document.getElementById('plan') as HTMLSelectElement;
       this.sellerOrderForm.controls.plan.setValue(plan.value);
 
@@ -131,6 +144,43 @@ export class SellerOrderFormComponent implements OnInit {
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+  }
+
+  makeProgressStep(direction) {
+    switch(direction) {
+      case "PREV": this.progressStep--; break;
+      case "NEXT": { 
+        if(this.progressStep == 1) {
+          this.validateName = true;
+          this.validateEmail = true;
+        } else if(this.progressStep == 3) {
+          this.validateDate = true;
+        }
+        
+        if( (this.progressStep != 1 && this.progressStep != 3) || (this.progressStep == 1 && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) || this.sellerOrderForm.valid) {
+          this.progressStep++; 
+        } else {
+          if(!this.sellerOrderForm.controls.email.valid) {
+            var email = document.getElementById('email') as HTMLInputElement;
+            email.style.border = "1px solid crimson";
+            var location = this.getElementLocation(email);
+            window.scrollTo(location.left, location.top);
+          }
+          if(!this.sellerOrderForm.controls.name.valid) {
+            var name = document.getElementById('name') as HTMLInputElement;
+            name.style.border = "1px solid crimson";
+            var location = this.getElementLocation(name);
+            window.scrollTo(location.left, location.top);
+          }
+          if(this.progressStep == 3 && !this.sellerOrderForm.controls.startDate.valid) {
+            var startDate = document.getElementById('startDate') as HTMLInputElement;
+            name.style.border = "1px solid crimson";
+            var location = this.getElementLocation(startDate);
+            window.scrollTo(location.left, location.top);
+          }
+        }
+      } break;
+    }
   }
 
 }

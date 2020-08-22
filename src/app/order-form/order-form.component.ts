@@ -26,7 +26,7 @@ export class OrderFormComponent implements OnInit {
     buyerName: new FormControl(),
     buyerEmail: new FormControl(),
     buyerPhone: new FormControl(),
-    closeStartDate: new FormControl(),
+    closeStartDate: new FormControl('', [Validators.required]),
     optionalCoverage: new FormControl([]),
     realtorName: new FormControl(),
     realtorEmail: new FormControl(),
@@ -46,10 +46,13 @@ export class OrderFormComponent implements OnInit {
   validPromo = false;
   validateName = false;
   validateEmail = false;
+  validateDate = false;
 
   total: number = 0;
 
   optionalCoverageMultiSelect: any;
+
+  progressStep = 1;
 
   constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
@@ -86,7 +89,6 @@ export class OrderFormComponent implements OnInit {
 
     if(this.showForm) {
       setTimeout(()=>{
-
         let selectedPlan = this.route.snapshot.paramMap.get('plan');
         var plan = document.getElementById('plan') as HTMLSelectElement;
         if(selectedPlan) {
@@ -99,7 +101,7 @@ export class OrderFormComponent implements OnInit {
         var homeType = document.getElementById('home-type-sf') as HTMLInputElement;
         homeType.checked = true;
 
-        if(this.global.getPromo.active) {
+        if(this.global.displayPromo()) {
           var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
           if(this.global.getPromo.type == 'Free Coverage Multi') {
             let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
@@ -109,12 +111,9 @@ export class OrderFormComponent implements OnInit {
           }
           this.updatePromoStatus(null);
         }
-
         this.updateOrderTotal();
-
         this.updateOptionalCoverageSelect();
-
-      }, 100);
+      }, 100)
     }
   }
 
@@ -158,7 +157,7 @@ export class OrderFormComponent implements OnInit {
       if(promoInputValue) {
         console.log('promoInputValue: ' + promoInputValue);
         console.log(this.global.getPromo);
-          if(this.global.getPromo.active) {
+          if(this.global.displayPromo()) {
               if(this.global.getPromo.type = 'Free Coverage Multi' ) {
                 let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
                 let code2 = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
@@ -246,8 +245,6 @@ export class OrderFormComponent implements OnInit {
   }
 
   submitOrder() {
-    this.validateName = true;
-    this.validateEmail = true;
     if(this.orderForm.valid) {
       var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
       var selectedOptions = [];
@@ -308,6 +305,43 @@ export class OrderFormComponent implements OnInit {
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+  }
+
+  makeProgressStep(direction) {
+    switch(direction) {
+      case "PREV": this.progressStep--; break;
+      case "NEXT": { 
+        if(this.progressStep == 1) {
+          this.validateName = true;
+          this.validateEmail = true;
+        } else if(this.progressStep == 3) {
+          this.validateDate = true;
+        }
+
+        if( (this.progressStep != 1 && this.progressStep != 3) || (this.progressStep == 1 && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) || this.orderForm.valid) {
+          this.progressStep++; 
+        } else {
+          if(!this.orderForm.controls.email.valid) {
+            var email = document.getElementById('email') as HTMLInputElement;
+            email.style.border = "1px solid crimson";
+            var location = this.getElementLocation(email);
+            window.scrollTo(location.left, location.top);
+          }
+          if(!this.orderForm.controls.name.valid) {
+            var name = document.getElementById('name') as HTMLInputElement;
+            name.style.border = "1px solid crimson";
+            var location = this.getElementLocation(name);
+            window.scrollTo(location.left, location.top);
+          }
+          if(this.progressStep == 3 && !this.orderForm.controls.closeStartDate.valid) {
+            var closeStartDate = document.getElementById('closeStartDate') as HTMLInputElement;
+            name.style.border = "1px solid crimson";
+            var location = this.getElementLocation(closeStartDate);
+            window.scrollTo(location.left, location.top);
+          }
+        }
+      } break;
+    }
   }
 
   updateOrderTotal() {

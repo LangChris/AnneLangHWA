@@ -6,3 +6,37 @@
     width: 30px;
     height: 30px;
 }
+
+progress {
+    width: 60%;
+    min-width: 350px;
+}
+
+.popout {
+    margin: 0px auto;
+    border-radius: 5px;
+    width: 60%;
+    min-width: 350px;
+    padding-top: 10px;
+    background-color: #fff;
+    border: 2px solid #eee;
+}
+
+.popout-header {
+    color: #000;
+    font-size: 25px;
+    text-align: center;
+}
+
+.navigation {
+    margin: 0px auto;
+    width: 60%;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left;
+}
