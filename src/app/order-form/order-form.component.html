@@ -10,7 +10,9 @@
       <form id="orderForm" [formGroup]="orderForm" novalidate (ngSubmit)="submitOrder()" >
         
         <div class="popout" [hidden]="progressStep != 1">
+          <div class="circle" (click)="toggleHelpClicked()" (mouseenter)="toggleHelp(true)" (mouseleave)="toggleHelp(false)"><span class="help"></span></div>
           <p class="popout-header">Let's start with you...</p>
+          <p *ngIf="helpClicked || showHelp" class="popout-subheader">We need to know who is filling out the form in order to get back in contact.</p>
           <hr width="50%" color="#ddd" />
             <table class="order-form">
               <tr>
@@ -32,7 +34,9 @@
         </div>
 
         <div class="popout" [hidden]="progressStep != 2">
+          <div class="circle" (click)="toggleHelpClicked()" (mouseenter)="toggleHelp(true)" (mouseleave)="toggleHelp(false)"><span class="help"></span></div>
           <p class="popout-header">What property do you need coverage for?</p>
+          <p *ngIf="helpClicked || showHelp" class="popout-subheader">We need to know the type of home, and the street address of the property you need coverage for as pricing varies.</p>
           <hr width="50%" color="#ddd" />
             <table class="order-form">
               <tr>
@@ -69,7 +73,9 @@
         </div>
 
         <div class="popout" [hidden]="progressStep != 3">
+          <div class="circle" (click)="toggleHelpClicked()" (mouseenter)="toggleHelp(true)" (mouseleave)="toggleHelp(false)"><span class="help"></span></div>
           <p class="popout-header">Select your coverage options:</p>
+          <p *ngIf="helpClicked || showHelp" class="popout-subheader">Select an available plan and plan length, any additional coverages you need, and closing date or start date of coverage.</p>
           <hr width="50%" color="#ddd" />
             <table class="order-form">
               <tr>
@@ -115,7 +121,9 @@
         </div>
 
         <div class="popout" [hidden]="progressStep != 4">
+          <div class="circle" (click)="toggleHelpClicked()" (mouseenter)="toggleHelp(true)" (mouseleave)="toggleHelp(false)"><span class="help"></span></div>
           <p class="popout-header">Buyer/Realtor info</p>
+          <p *ngIf="helpClicked || showHelp" class="popout-subheader">If you have any buyer, realtor, or title agent info please enter it below.</p>
           <hr width="50%" color="#ddd" />
             <table class="order-form">
               <tr>
