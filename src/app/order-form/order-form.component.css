@@ -45,3 +45,11 @@ progress {
     font-size: 15px;
     font-style: oblique;
 }
+
+.extra-pad {
+    padding: 5px;
+}
+
+.top-margin {
+    margin-top: 10px;
+}
