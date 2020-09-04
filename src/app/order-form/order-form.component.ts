@@ -54,6 +54,9 @@ export class OrderFormComponent implements OnInit {
 
   progressStep = 1;
 
+  helpClicked = false;
+  showHelp = false;
+
   constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -342,6 +345,14 @@ export class OrderFormComponent implements OnInit {
         }
       } break;
     }
+  }
+
+  toggleHelp(showHelp) {
+    this.showHelp = showHelp;
+  }
+
+  toggleHelpClicked() {
+    this.helpClicked = this.helpClicked ? false : true;
   }
 
   updateOrderTotal() {
