@@ -3,12 +3,41 @@
     height: 200px;
 }
 
+.nav-table-wrapper {
+    width: 100%;
+    height: auto;
+}
+
+.nav-table-wrapper td {
+    width: 50%;
+}
+
+.nav-table {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.nav-table td {
+    width: 50%;
+}
+
+.navigation-container {
+    height: auto;
+    width: 257px;
+    float: right;
+    margin-right: 25px;
+}
+
+.navigation-container div {
+    float: left;
+}
+
 #logo {
     background-image: url("../../../assets/images/logo.png");
     background-repeat: no-repeat;
 	background-size: 100% 100%;
     width: 150px;
-    margin: 25px;
+    margin: 25px 25px 0 25px;
     height: 80px;
     float: left;
 }
@@ -31,6 +60,14 @@
     float: right;
 }
 
+.login {
+    background-color: transparent;
+    background-image: url("../../../assets/images/login-icon.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+}
+
 #contact-info-container {
     margin: 25px;
     height: 120px;
@@ -45,13 +82,16 @@
 .info {
     opacity: 0.6;
     display: inline-block;
-    padding: 10px;
+    margin-top: 10px;
+    padding: 0px;
+    height: 40px;
 }
 
 .info a,span {
     color: #191e3f;
     text-decoration: none;
     cursor: pointer;
+    padding: 15px;
 }
 
 .info:hover {
@@ -94,6 +134,10 @@
     }
     
     #anne-logo {
-        width: 110px;
+        width: 133px;
+    }
+
+    .navigation-container {
+        width: 200px;
     }
 }

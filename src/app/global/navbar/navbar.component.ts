@@ -18,4 +18,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['claims']);
   }
 
+  navigateToLogin() {
+    this.router.navigate(['admin-portal']);
+  }
+
 }
