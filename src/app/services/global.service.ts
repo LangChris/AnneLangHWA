@@ -531,7 +531,7 @@ export class GlobalService {
       phoneNumber: '703-123-1234',
       email: 'anne.lang@homewarrantyamerica.com',
       passwordResetEmail: 'anne@annelanghwa.com',
-      owner: 'Tina Flowers',
+      owner: 'Anne Lang',
       webpageTitle: 'HWA Home Warranty',
       webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',
       webpageDescription: 'Welcome get started by viewing our plans, brochures or place an order below.',
