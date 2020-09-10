@@ -3,6 +3,7 @@ import { GlobalService } from '../../services/global.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { DatabaseService } from '../../services/database.service';
 import { DashboardComponent } from '../dashboard.component';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'dashboard-settings',
@@ -37,13 +38,13 @@ export class SettingsComponent implements OnInit {
     promoCoverage: new FormControl(this.global.getPromo.coverage),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
-    loginUsername: new FormControl(this.global.getLogin.username),
-    loginPassword: new FormControl(this.global.getLogin.password),
+    loginUsername: new FormControl(this.login.currentUser.username),
+    loginPassword: new FormControl(this.login.currentUser.password),
     specialRequest: new FormControl(),
     optionalCoverage: new FormControl()
   });
 
-  constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent) { }
+  constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent, public login: LoginService) { }
 
   ngOnInit(): void {
     console.log('DASHBOARD SETTINGS LOADED');
@@ -52,20 +53,22 @@ export class SettingsComponent implements OnInit {
       this.dashboard.showError = false;
     });
 
-    setTimeout(() => {
-      if(this.settingsForm.controls.promoType.value == 'Free Coverage Multi') {
-        let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
-        let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
-        let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
-        let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
-  
-        coverage1.value = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
-        coverage2.value = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
-  
-        code1.value = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
-        code2.value = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
-      }
-    }, 1000);
+    if(this.login.currentUser.type == 'ADMIN') {
+      setTimeout(() => {
+        if(this.settingsForm.controls.promoType.value == 'Free Coverage Multi') {
+          let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
+          let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
+          let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
+          let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
+    
+          coverage1.value = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
+          coverage2.value = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
+    
+          code1.value = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+          code2.value = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+        }
+      }, 1000);
+    }
   }
 
   showPromoType(type: string) {
@@ -166,7 +169,7 @@ export class SettingsComponent implements OnInit {
           this.global.updateGeneralSettings();
           this.global.updatePlans();
           this.global.updatePromo();
-          this.global.updateLogin();
+          this.global.updateUsers();
           setTimeout(()=>{
             this.dashboard.updateDisplay('DASHBOARD');
           },1000);
