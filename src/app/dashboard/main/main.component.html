@@ -1,0 +1,4 @@
+<h1 class="header">Welcome to the {{login.currentUser.type == 'ADMIN' ? 'Admin' : 'User'}} Portal</h1>
+<button class="list" (click)="dashboard.getOrders(); dashboard.updateDisplay('VIEW');"></button>
+<button *ngIf="login.currentUser.type == 'ADMIN'" class="top-margin edit" (click)="dashboard.getOrders(); dashboard.updateDisplay('EDIT');"></button>
+<button class="top-margin settings" (click)="dashboard.updateDisplay('SETTINGS');"></button>

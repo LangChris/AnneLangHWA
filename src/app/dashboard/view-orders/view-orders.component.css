@@ -1,0 +1,180 @@
+table {
+    width: auto;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table th {
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+table td {
+    padding: 10px;
+    font-weight: 300;
+    font-style: oblique;
+}
+
+.top-padding {
+    padding-top: 20px;
+}
+
+.top-margin {
+    margin-top: 20px;
+}
+
+.table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+.table tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.table th {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(235, 94, 23, 0.9);
+}
+
+button {
+    margin: 5px;
+    width: 25%;
+}
+
+.order-entered {
+    float: none;
+}
+
+.order-entered:hover {
+    cursor: pointer;
+}
+
+.top-wrapper {
+    display: block;
+    height: auto;
+    text-align: left;
+}
+
+.bottom-wrapper {
+    display: block;
+    height: auto;
+}
+
+.filter-box {
+    width: 90%;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.sort {
+    display: block;
+    padding-bottom: 20px;
+}
+
+.sort span {
+    display: block;
+}
+
+.filter {
+    display: inline-block;
+    padding: 20px;
+}
+
+.filter span {
+    display: block;
+}
+
+.filter p {
+    display: inline;
+}
+
+.filename {
+    display: block;
+    padding: 20px;
+}
+
+.filename span {
+    display: block;
+}
+
+.filename p {
+    display: inline;
+}
+
+#filename {
+    width: 200px;
+}
+
+#filter-dropdown {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#filter-dropdown::after {
+    font-size: 15px;
+    content: "\25BC";
+}
+
+#filter-dropdown:hover {
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .top-wrapper {
+        float: right;
+    }
+
+    .bottom-wrapper {
+        display: inline-block;
+    }
+
+    table {
+        text-align: left;
+    }
+
+    table th {
+        text-align: right;
+    }
+    
+    .table tr {
+        display: block;
+        padding: 0.7em 2vw;
+    }
+
+    .table td {
+        display: block;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table td:before {
+        content: attr(data-th) ": ";
+        font-weight: bold;
+    }
+
+    .order-entered {
+        float: right;
+    }
+
+}
+
+ @media (max-width: 550px) {
+    .filter {
+        display: block;
+        padding: 5px;
+    }
+
+    .filename {
+        padding: 5px 0 20px 0;
+    }
+
+    .filters {
+        padding-top: 20px;
+    }
+ }

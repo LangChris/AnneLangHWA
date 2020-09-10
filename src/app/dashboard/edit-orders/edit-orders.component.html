@@ -1,0 +1,171 @@
+<h1 class="header">Edit Order &#9999;</h1>
+  
+  <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block">
+    <p>No orders placed yet.</p>
+  </div>
+  <div *ngIf="dashboard.orders && dashboard.orders.length > 0" class="section">
+  <form *ngIf="dashboard.orders && dashboard.orders.length > 0" id="editForm" [formGroup]="editForm" novalidate (ngSubmit)="updateOrder()" >
+    <table class="edit-form">
+    <tr>
+      <th>Order</th>
+      <td>
+        <select id="order-id" class="large" name="orderId" formControlName="orderId">
+          <option selected>Select Order</option>
+          <option *ngFor="let order of global.getOrders; let i = index" value="{{order.id}}">{{i+1}}. {{order.name}}</option>
+        </select>
+      </td>
+    </tr>
+    <tbody *ngIf="editForm.controls.orderId.value != 'Select Order'">
+    <tr>
+      <th>Name</th>
+      <td><input type="text" class="large" id="name" name="name" formControlName="name"/></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><input type="email" class="large" id="email" name="email" formControlName="email"/></td>
+    </tr>
+    <tr>
+      <th>Plan</th>
+      <td>
+          <select id="plan" name="plan" formControlName="plan">
+              <option value="Gold">Gold</option>
+              <option value="Platinum">Platinum</option>
+              <option value="Diamond">Diamond</option>
+              <option value="Free Sellers Coverage">Free Sellers Coverage</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <th>Years</th>
+      <td>
+        <select id="years" name="years" formControlName="years">
+          <option value="13 Months" selected>13 Months</option>
+          <option value="2 Years">2 Years</option>
+          <option value="3 Years">3 Years</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th>Optional Coverage</th>
+      <td>
+          <div class="multi-select large" id="multi-select"></div>
+          <select id="optional-coverage" class="large" name="optionalCoverage" formControlName="optionalCoverage" multiple hidden>
+            <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <th>HVAC Coverage (+$50.00)</th>
+      <td>
+          <select id="hvac-coverage" name="hvacCoverage" formControlName="hvacCoverage">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+          </select>  
+      </td>
+    </tr>
+    <tr>
+      <th>Close/Start Date</th>   
+      <td><input type="date" class="large" id="close-start-date" name="closeStartDate" formControlName="closeStartDate"/></td>   
+    </tr>
+    <tr>
+      <th>Home Type</th>
+      <td>
+        <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType"/>Single Family<br />
+        <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+    </tr>
+    <tr>
+      <th>Address Line</th>   
+      <td><input type="text" class="large" id="address-line" name="addressLine" maxlength="200" formControlName="addressLine"/></td>   
+    </tr>
+    <tr>
+      <th>City</th>   
+      <td><input type="text" class="medium" id="city" name="city" maxlength="50" formControlName="city"/> State <input type="text" class="small" id="state" name="state" maxlength="2" formControlName="state"/></td>   
+    </tr>
+    <tr>
+      <th>Zip</th>   
+      <td><input type="text" class="medium" id="zip" name="zip" maxlength="5" formControlName="zip"/></td>   
+    </tr>
+    <tr>
+      <th class="group-header">Buyer</th>
+    </tr>
+    <tr>
+      <th class="group-label">Name</th>   
+      <td><input type="text" class="large" id="buyer-name" name="buyerName" formControlName="buyerName"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Email</th>   
+      <td><input type="email" class="large" id="buyer-email" name="buyerEmail" formControlName="buyerEmail"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Phone</th>   
+      <td><input type="tel" class="large" id="buyer-phone" name="buyerPhone" formControlName="buyerPhone"/></td>   
+    </tr>
+    <tr>
+      <th class="group-header">Seller</th>
+    </tr>
+    <tr>
+      <th class="group-label">Name</th>   
+      <td><input type="text" class="large" id="seller-name" name="sellerName" formControlName="sellerName"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Email</th>   
+      <td><input type="email" class="large" id="seller-email" name="sellerEmail" formControlName="sellerEmail"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Phone</th>   
+      <td><input type="tel" class="large" id="seller-phone" name="sellerPhone" formControlName="sellerPhone"/></td>   
+    </tr>
+    <tr>
+      <th class="group-header">Referring Realtor</th>
+    </tr>
+    <tr>
+      <th class="group-label">Name</th>   
+      <td><input type="text" class="large" id="realtor-name" name="realtorName"  formControlName="realtorName"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Email</th>   
+      <td><input type="email" class="large" id="realtor-email" name="realtorEmail" formControlName="realtorEmail"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Company</th>   
+      <td><input type="text" class="large" id="realtor-company" name="realtorCompany" formControlName="realtorCompany"/></td>   
+    </tr>
+    <tr>
+      <th class="group-label">Zip</th>   
+      <td><input type="text" class="medium" id="realtor-zip" name="realtorZip" formControlName="realtorZip"/></td>   
+    </tr>
+    <tr>
+      <th>Title Agent Email</th>   
+      <td><input type="email" class="large" id="title-agent-email" name="titleAgentEmail" formControlName="titleAgentEmail"/></td>   
+    </tr>
+    <tr>
+      <th>Promo</th>   
+      <td><input type="text" class="medium" id="promo" name="promo" formControlName="promo"/></td>   
+    </tr>
+    <tr>
+      <th class="group-header">Special Request(Quote Needed)</th>
+    </tr>
+    <tr *ngFor="let request of global.getSpecialRequest; let i = index">
+      <th class="group-label">{{request}}</th>
+      <td>
+        <div class="checkbox">
+          <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}"/>
+          <label for="special-request-{{i}}"></label>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Order Placed Date</th>   
+      <td><input type="date" class="large" id="created-date" name="createdDate" formControlName="createdDate" disabled/></td>    
+    </tr>
+    </tbody>
+</table>
+  <div *ngIf="dashboard.showError" class="error">Error Making Changes</div>
+  <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
+</form>
+</div>
+  <div class="centered-block top-padding">
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin check" type="submit" form="editForm"></button>
+    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder(editForm.controls.orderId.value);"></button>
+    <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
+  </div>
