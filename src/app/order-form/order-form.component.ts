@@ -1,10 +1,10 @@
-import { Component, OnInit, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-order-form',
@@ -39,13 +39,16 @@ export class OrderFormComponent implements OnInit {
     sendEmail: new FormControl(),
     adminName: new FormControl(),
     adminEmail: new FormControl(),
-    orderTotal: new FormControl()
+    orderTotal: new FormControl(),
+    userId: new FormControl()
   }); 
 
   showForm = true;
   validPromo = false;
+
   validateName = false;
   validateEmail = false;
+
   validateDate = false;
 
   total: number = 0;
@@ -55,13 +58,16 @@ export class OrderFormComponent implements OnInit {
   progressStep = 1;
 
   helpClicked = false;
-  showHelp = false;
 
-  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder) {}
+  panel = "LOGIN";
+
+  active = "LOGIN";
+
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private login: LoginService) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
-    
+
     this.orderForm.controls.name.valueChanges.subscribe(value => {
       if(value) {
         var name = document.getElementById('name') as HTMLInputElement;
@@ -116,7 +122,8 @@ export class OrderFormComponent implements OnInit {
         }
         this.updateOrderTotal();
         this.updateOptionalCoverageSelect();
-      }, 100)
+      }, 100);
+
     }
   }
 
@@ -284,9 +291,16 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
-      return this.database.placeOrder(this.orderForm).subscribe(response => {
+      this.orderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
+      console.log(this.orderForm.value);
+      
+      if(!this.global.testing) {
+        return this.database.placeOrder(this.orderForm).subscribe(response => {
+          this.showForm = false;
+        });
+      } else {
         this.showForm = false;
-      });
+      }
     } else {
       if(!this.orderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
@@ -315,13 +329,38 @@ export class OrderFormComponent implements OnInit {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
-          this.validateName = true;
-          this.validateEmail = true;
+
+          // if logged in -> proceed next
+          if(this.login.currentUser != null) {
+            this.toggleActive('LOGIN');
+            this.progressStep++; 
+            break;
+          }
+
+          // validate login
+          if(this.active == "LOGIN") {
+            let username = document.getElementById('login-username') as HTMLInputElement;
+            let password = document.getElementById('login-password') as HTMLInputElement;
+
+            if(this.loginSuccessful(username.value, password.value)) {
+              // update name and email with info
+              this.orderForm.controls.name.setValue(this.login.currentUser.name);
+              this.orderForm.controls.email.setValue(this.login.currentUser.email);
+            } 
+          } else {
+            this.validateName = true;
+            this.validateEmail = true;
+          }
         } else if(this.progressStep == 3) {
           this.validateDate = true;
         }
 
-        if( (this.progressStep != 1 && this.progressStep != 3) || (this.progressStep == 1 && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) || this.orderForm.valid) {
+        if( (this.progressStep != 1 && this.progressStep != 3) || 
+        //guest checkout and email/name valid
+        (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
+        //login and status = successful
+        (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
+        this.orderForm.valid) {
           this.progressStep++; 
         } else {
           if(!this.orderForm.controls.email.valid) {
@@ -336,6 +375,7 @@ export class OrderFormComponent implements OnInit {
             var location = this.getElementLocation(name);
             window.scrollTo(location.left, location.top);
           }
+
           if(this.progressStep == 3 && !this.orderForm.controls.closeStartDate.valid) {
             var closeStartDate = document.getElementById('closeStartDate') as HTMLInputElement;
             name.style.border = "1px solid crimson";
@@ -345,10 +385,6 @@ export class OrderFormComponent implements OnInit {
         }
       } break;
     }
-  }
-
-  toggleHelp(showHelp) {
-    this.showHelp = showHelp;
   }
 
   toggleHelpClicked() {
@@ -428,5 +464,77 @@ export class OrderFormComponent implements OnInit {
           }
         }
       }
+  }
+
+  togglePanel(panel) {
+    let loginText = document.getElementById('login-text');
+    let registerText = document.getElementById('register-text');
+
+    this.panel = panel; 
+
+    switch(panel) {
+      case "LOGIN": {
+        registerText.style.opacity = '0.5'; 
+        registerText.style.fontSize = '10px'; 
+        loginText.style.opacity = '1.0';
+        loginText.style.fontSize = '20px'; 
+      } break;
+      case "REGISTER": {
+        loginText.style.opacity = '0.5'; 
+        loginText.style.fontSize = '10px'; 
+        registerText.style.opacity = '1.0';
+        registerText.style.fontSize = '20px'; 
+      } break;
+    }
+  }
+
+  toggleActive(active) {
+
+    let loginRegisterBox = document.getElementById('login-register-box');
+    let guestCheckoutBox = document.getElementById('guest-checkout-box');
+
+    this.active = active;
+
+    switch(active) {
+      case "GUEST": {
+        loginRegisterBox.style.opacity = '0.25'; 
+        guestCheckoutBox.style.opacity = '1.0'; 
+        guestCheckoutBox.style.background = "#eee"
+      } break;
+      case "LOGIN": {
+        guestCheckoutBox.style.opacity = '0.25'; 
+        loginRegisterBox.style.opacity = '1.0'; 
+        loginRegisterBox.style.background = "#eee"
+      } break;
+    }
+  }
+
+  isLoginActive() {
+    // if logged in -> proceed next
+    if(this.login.currentUser != null && this.progressStep == 1) {
+      this.toggleActive('LOGIN');
+      this.makeProgressStep("NEXT");
+    }
+
+    let loginUsername = document.getElementById('login-username') as HTMLInputElement;
+    let loginPassword = document.getElementById('login-password') as HTMLInputElement;
+
+    if( ((loginUsername.value != null && loginUsername.value != '') || 
+    (loginPassword.value != null && loginPassword.value != '')) ) {
+      this.toggleActive('LOGIN');
+      return true;
+    } 
+
+    this.toggleActive('GUEST');
+    return false;
+  }
+
+  loginSuccessful(user: string, pass: string) {
+      this.login.loginWithoutRedirect(user, pass);
+      if(this.login.getStatus.successful) {
+        return true;
+      }
+    
+    return false;
   }
 }
