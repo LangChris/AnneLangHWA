@@ -39,6 +39,7 @@ switch($_SERVER['REQUEST_METHOD']){
         $admin_name = $params->adminName;
         $admin_email = $params->adminEmail;
         $order_total = $params->orderTotal;
+        $user_id = $params->userId;
 
         function clean_string($string) {
             $bad = array("content-type","bcc:","to:","cc:","href");
@@ -255,6 +256,7 @@ switch($_SERVER['REQUEST_METHOD']){
 
             $query = "INSERT INTO $table VALUES(";
             $query .= "'',";
+            $query .= "'$user_id',";
             $query .= "'$name',";
             $query .= "'$email',";
             $query .= ($plan == '' ? "NULL" : "'$plan'").",";

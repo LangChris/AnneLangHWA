@@ -3,7 +3,7 @@
         $username="anne";
         $password="regina23";
         $db="annelanghwa";
-        $table="login";
+        $table="user";
 
         $con = mysqli_connect($hostname,$username,$password,$db);
 
