@@ -92,12 +92,10 @@ progress {
 
     .order-form {
         margin: 0 auto;
-        /* border: 1px solid gold; */
     }
 
     .order-form th {
         font-size: 12px;
-        /* border: 1px solid blue; */
         text-align: right;
         width: 25%;
     }
@@ -105,7 +103,6 @@ progress {
     .order-form td {
         font-size: 12px;
         width: 60%;
-        /* border: 1px solid green; */
 
     }
 

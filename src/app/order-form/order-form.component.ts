@@ -292,7 +292,6 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
       this.orderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
-      console.log(this.orderForm.value);
       
       if(!this.global.testing) {
         return this.database.placeOrder(this.orderForm).subscribe(response => {
