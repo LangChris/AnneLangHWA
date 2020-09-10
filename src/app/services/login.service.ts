@@ -22,7 +22,7 @@ export class LoginService {
     let foundUser: any = null;
     for(let i = 0; i < this.global.getUsers.length; i++) {
 
-      if(user == this.global.getUsers[i].username) {
+      if(user.toUpperCase() == this.global.getUsers[i].username.toUpperCase() || user.toUpperCase() === this.global.getUsers[i].email.toUpperCase()) {
         foundUser = this.global.getUsers[i];
       }
     }
@@ -63,7 +63,7 @@ export class LoginService {
     let foundUser: any = null;
     for(let i = 0; i < this.global.getUsers.length; i++) {
 
-      if(user == this.global.getUsers[i].username) {
+      if(user.toUpperCase() == this.global.getUsers[i].username.toUpperCase() || user.toUpperCase() === this.global.getUsers[i].email.toUpperCase()) {
         foundUser = this.global.getUsers[i];
       }
     }
