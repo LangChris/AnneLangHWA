@@ -90,8 +90,8 @@ export class DatabaseService {
     return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
   }
 
-  // Get Login
-  getLogin() {
+  // Get Users
+  getUsers() {
     return this.http.get(endpoints.getLogin);
   }
 
