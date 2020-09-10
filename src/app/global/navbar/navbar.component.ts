@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
+import { LoginService } from '../../services/login.service';
+
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public global: GlobalService, public router: Router) { }
+  constructor(public global: GlobalService, public router: Router, public login: LoginService) { }
 
   ngOnInit() {
   }
@@ -19,7 +21,11 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToLogin() {
-    this.router.navigate(['admin-portal']);
+    this.router.navigate(['login']);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['']);
   }
 
 }

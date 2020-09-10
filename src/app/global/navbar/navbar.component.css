@@ -82,7 +82,6 @@
 .info {
     opacity: 0.6;
     display: inline-block;
-    margin-top: 10px;
     padding: 0px;
     height: 40px;
 }
@@ -128,6 +127,23 @@
     visibility: visible;
   }
 
+  .user-wrapper {
+    position: relative;
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 30px;
+  }
+
+  .user {
+      font-weight: bold;
+      text-align: left;
+      width: 180px;
+      position: absolute;
+      right: 0;
+      color: #eb5e17;
+  }
+
 @media screen and (max-width: 550px) {
     #logo {
         width: 100px;
@@ -140,5 +156,9 @@
     .navigation-container {
         width: 200px;
         float: left;
+    }
+
+    .info a {
+        padding: 8px;
     }
 }
