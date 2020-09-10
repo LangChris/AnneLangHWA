@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
       this.global.updateSpecialRequest();
       this.global.updateGeneralSettings();
       this.global.updateOrders();
-      this.global.updateLogin();
+      this.global.updateUsers();
     } else {
       this.global.setTestData();
     }
