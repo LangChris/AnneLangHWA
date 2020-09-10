@@ -2,7 +2,7 @@
     <table>
         <tbody>
             <tr>
-            <td>Username:</td>
+            <td>Email/Username:</td>
             <td>
                 <input type="text" class="large" id="username" (keydown)="checkKey($event)" />
                 <span *ngIf="login.getStatus.bad_user" class="required small-text" ><br /> Invalid Username!</span>
