@@ -21,6 +21,7 @@ export class RegisterService {
       if( (email.toUpperCase() == this.global.getUsers[i].email.toUpperCase()) ||
       (username != null && username.toUpperCase() == this.global.getUsers[i].username.toUpperCase())) {
         foundUser = this.global.getUsers[i];
+        break;
       }
     }
     
@@ -38,7 +39,7 @@ export class RegisterService {
         usersName: name,
         emailAddress: email,
         loginUsername: username,
-        loginPassword: pass
+        loginPassword: btoa(pass)
       };
 
       if(!this.global.testing) {
