@@ -67,7 +67,7 @@ export class GlobalService {
 
   orders: any;
 
-  testing = true;
+  testing = false;
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
@@ -543,8 +543,8 @@ export class GlobalService {
     };
 
     this.users = [
-      {id: 1, name: 'Anne Lang', username: 'Anne.Lang', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'ADMIN', email: 'anne.lang@hwahomewarranty.com', alternateEmail: 'annelang12@gmail.com', phone_number: '(703) 220 5933'},
-      {id: 2, name: 'Chris Lang', username: 'Test', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'USER', email: 'christopherjlang01@gmail.com', alternateEmail: 'cnjneerlang@hotmail.com', phone_number: '(703) 232 8168'}
+      {id: 1, name: 'Anne Lang', username: 'Anne.Lang', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'ADMIN', email: 'anne.lang@hwahomewarranty.com', alternateEmail: 'annelang12@gmail.com', phoneNumber: '(703) 220 5933'},
+      {id: 2, name: 'Chris Lang', username: '', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'USER', email: 'christopherjlang01@gmail.com', alternateEmail: null, phoneNumber: ''}
     ];
 
   }
