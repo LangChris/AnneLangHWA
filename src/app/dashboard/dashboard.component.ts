@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit {
     this.showSuccess = false;
 
     this.display = display;
-    if(display == 'DASHBOARD') {
+    if(display == 'DASHBOARD' && !this.global.testing) {
       this.global.updateOrders();
     }
   }
