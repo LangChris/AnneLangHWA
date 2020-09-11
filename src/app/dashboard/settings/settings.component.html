@@ -1,7 +1,7 @@
 <div class="settings-box">
     <div class="header">Settings &#9881;</div>
 
-    <form id="settingsForm" [formGroup]="settingsForm" novalidate (ngSubmit)="updateSettings()" >
+    <form id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
     <table class="settings-table" *ngIf="login.currentUser.type == 'ADMIN'">
         <tr>
             <th>Title</th>
@@ -191,11 +191,48 @@
          </tr>
         </tbody>
     </table>
+        
+    <table class="settings-table" *ngIf="login.currentUser.type == 'USER'">
+        <tr>
+            <th>Name</th>
+            <td><input type="text" id="users-name" class="medium" name="usersName" formControlName="usersName" /></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" id="email-address" class="medium" name="emailAddress" formControlName="emailAddress" /></td>
+        </tr>
+        <tr>
+            <th>Alternate Email</th>
+            <td><input type="email" id="alternate-email" class="medium" name="alternateEmail" formControlName="alternateEmail" /></td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td><input type="tel" id="phone-number" class="medium" name="phoneNumber" formControlName="phoneNumber" /></td>
+        </tr>
+        <tr>
+            <th class="group-header">Login</th>
+        </tr>
+        <tr>
+            <th class="group-label">Username</th>
+            <td><input type="text" class="medium" name="loginUsername" formControlName="loginUsername" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">Password</th>
+            <td>
+                <input type="password" class="medium" id="login-password" name="loginPassword" formControlName="loginPassword" />
+            </td>
+        </tr>
+        <tr>
+            <th class="group-label">Show Pass</th>
+            <td><input type="checkbox" id="password-toggle" (click)="togglePassword()"></td>
+        </tr>
+    </table>
+
         <div *ngIf="dashboard.showError" class="error">Error Making Changes</div>
         <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
     </form>
 </div>
 <div class="centered-block top-padding">
-    <button class="top-margin check" type="submit" form="settingsForm"></button>
+    <button class="top-margin check" type="submit" form="generalSettingsForm"></button>
     <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
 </div>

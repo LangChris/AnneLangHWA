@@ -12,7 +12,7 @@ import { LoginService } from '../../services/login.service';
 })
 export class SettingsComponent implements OnInit {
 
-  settingsForm = new FormGroup({
+  generalSettingsForm = new FormGroup({
     title: new FormControl(this.global.getGeneralSettings.webpageTitle, [Validators.required]),
     subtitle: new FormControl(this.global.getGeneralSettings.webpageSubTitle, [Validators.required]),
     description: new FormControl(this.global.getGeneralSettings.webpageDescription, [Validators.required]),
@@ -38,24 +38,44 @@ export class SettingsComponent implements OnInit {
     promoCoverage: new FormControl(this.global.getPromo.coverage),
     promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
     promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
-    loginUsername: new FormControl(this.login.currentUser.username),
-    loginPassword: new FormControl(this.login.currentUser.password),
     specialRequest: new FormControl(),
-    optionalCoverage: new FormControl()
+    optionalCoverage: new FormControl(),
+    id: new FormControl(this.login.currentUser.id, [Validators.required]),
+    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
+    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
+    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
+    alternateEmail: new FormControl(this.login.currentUser.alternateEmail),
+    phoneNumber: new FormControl(this.login.currentUser.phoneNumber),
+    loginUsername: new FormControl(this.login.currentUser.username),
+    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
   });
+
+
+  userSettingsForm = new FormGroup({
+    id: new FormControl(this.login.currentUser.id, [Validators.required]),
+    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
+    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
+    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
+    alternateEmail: new FormControl(this.login.currentUser.alternateEmail),
+    phoneNumber: new FormControl(this.login.currentUser.phoneNumber),
+    loginUsername: new FormControl(this.login.currentUser.username),
+    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
+  });
+
+
 
   constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent, public login: LoginService) { }
 
   ngOnInit(): void {
     console.log('DASHBOARD SETTINGS LOADED');
-    this.settingsForm.valueChanges.subscribe(response => {
+    this.generalSettingsForm.valueChanges.subscribe(response => {
       this.dashboard.showSuccess = false;
       this.dashboard.showError = false;
     });
 
     if(this.login.currentUser.type == 'ADMIN') {
       setTimeout(() => {
-        if(this.settingsForm.controls.promoType.value == 'Free Coverage Multi') {
+        if(this.generalSettingsForm.controls.promoType.value == 'Free Coverage Multi') {
           let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
           let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
           let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
@@ -77,7 +97,7 @@ export class SettingsComponent implements OnInit {
   }
 
   promoDisabled() {
-    return this.settingsForm.controls.promoActive.value ? false : true;
+    return this.generalSettingsForm.controls.promoActive.value ? false : true;
   }
 
   newSpecialRequest() {
@@ -109,77 +129,127 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.settingsForm.controls.promoType.value == "Free Coverage Multi") {
-      let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
-      let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
-      let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
-      let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
-
-      this.settingsForm.controls.promoCoverage.setValue(coverage1.value + "," + coverage2.value);
-      this.settingsForm.controls.promoCode.setValue(code1.value + "," + code2.value);
-    }
-
-    if(this.settingsForm.valid) {
-      console.log(this.settingsForm.value);
-      if(this.settingsForm.controls.promoType.value == "Money Off") {
-        this.settingsForm.controls.promoGift.setValue('');
-        this.settingsForm.controls.promoCoverage.setValue('Select One');
-      } else if(this.settingsForm.controls.promoType.value == "Free Gift") {
-        this.settingsForm.controls.promoAmount.setValue('');
-        this.settingsForm.controls.promoCoverage.setValue('Select One');
-      } else if(this.settingsForm.controls.promoType.value == "Free Coverage") {
-        this.settingsForm.controls.promoAmount.setValue('');
-        this.settingsForm.controls.promoGift.setValue('');
-      } else if(this.settingsForm.controls.promoType.value == "Free Coverage Multi") {
-        this.settingsForm.controls.promoAmount.setValue('');
-        this.settingsForm.controls.promoGift.setValue('');
-      }
-
-      let specialRequests = [];
-      let requests = document.getElementsByClassName('specialRequests');
-      for(var i = 0; i < requests.length; i++) {
-        let request = requests[i] as HTMLInputElement;
-        if(request.value != "") {
-          specialRequests.push(request.value);
+    if(this.login.currentUser.type == 'ADMIN') {
+      if(this.generalSettingsForm.valid) {
+        if(this.generalSettingsForm.controls.promoType.value == "Money Off") {
+          this.generalSettingsForm.controls.promoGift.setValue('');
+          this.generalSettingsForm.controls.promoCoverage.setValue('Select One');
+        } else if(this.generalSettingsForm.controls.promoType.value == "Free Gift") {
+          this.generalSettingsForm.controls.promoAmount.setValue('');
+          this.generalSettingsForm.controls.promoCoverage.setValue('Select One');
+        } else if(this.generalSettingsForm.controls.promoType.value == "Free Coverage") {
+          this.generalSettingsForm.controls.promoAmount.setValue('');
+          this.generalSettingsForm.controls.promoGift.setValue('');
+        } else if(this.generalSettingsForm.controls.promoType.value == "Free Coverage Multi") {
+          this.generalSettingsForm.controls.promoAmount.setValue('');
+          this.generalSettingsForm.controls.promoGift.setValue('');
         }
-      }
 
-      let optionalCoverages = [];
-      let coverages = document.getElementsByClassName('optionalCoverages');
-      let prices = document.getElementsByClassName('optionalCoveragePrices');
-      for(var i = 0; i < coverages.length; i++) {
-        let coverage = coverages[i] as HTMLInputElement;
-        let price = prices[i] as HTMLInputElement;
-        let option = {
-          option: coverage.value, 
-          price: price.value
-        };
-        if(option.option != "" && option.price != "") {
-          optionalCoverages.push(option);
+        let specialRequests = [];
+        let requests = document.getElementsByClassName('specialRequests');
+        for(var i = 0; i < requests.length; i++) {
+          let request = requests[i] as HTMLInputElement;
+          if(request.value != "") {
+            specialRequests.push(request.value);
+          }
         }
-      }
-  
-      this.settingsForm.controls.loginPassword.setValue(btoa(this.settingsForm.controls.loginPassword.value));
-      this.settingsForm.controls.specialRequest.setValue(specialRequests);
-      this.settingsForm.controls.optionalCoverage.setValue(optionalCoverages);
 
-      return this.database.saveGeneralSettings(this.settingsForm).subscribe(
-        response => {
+        let optionalCoverages = [];
+        let coverages = document.getElementsByClassName('optionalCoverages');
+        let prices = document.getElementsByClassName('optionalCoveragePrices');
+        for(var i = 0; i < coverages.length; i++) {
+          let coverage = coverages[i] as HTMLInputElement;
+          let price = prices[i] as HTMLInputElement;
+          let option = {
+            option: coverage.value, 
+            price: price.value
+          };
+          if(option.option != "" && option.price != "") {
+            optionalCoverages.push(option);
+          }
+        }
+    
+        this.generalSettingsForm.controls.specialRequest.setValue(specialRequests);
+        this.generalSettingsForm.controls.optionalCoverage.setValue(optionalCoverages);
+
+        this.userSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
+
+        if(!this.global.testing) {
+          return this.database.saveSettings(this.generalSettingsForm).subscribe(
+            response => {
+              this.dashboard.showSuccess = true;
+              this.global.updateGeneralSettings();
+              this.global.updatePlans();
+              this.global.updatePromo();
+              this.global.updateUsers();
+              setTimeout(()=>{
+                this.dashboard.updateDisplay('DASHBOARD');
+              },1000);
+            },
+            error => {
+              this.dashboard.showError = true;
+            }
+          );
+        } else {
+          console.log(this.generalSettingsForm.value);
           this.dashboard.showSuccess = true;
-          this.global.updateGeneralSettings();
-          this.global.updatePlans();
-          this.global.updatePromo();
-          this.global.updateUsers();
           setTimeout(()=>{
             this.dashboard.updateDisplay('DASHBOARD');
           },1000);
-        },
-        error => {
-          this.dashboard.showError = true;
         }
-      );
+      } else {
+        this.dashboard.showError = true;
+      }
+
     } else {
-      this.dashboard.showError = true;
+
+      this.userSettingsForm.controls.id.setValue(this.generalSettingsForm.controls.id.value);
+      this.userSettingsForm.controls.usersType.setValue(this.generalSettingsForm.controls.usersType.value);
+      this.userSettingsForm.controls.usersName.setValue(this.generalSettingsForm.controls.usersName.value);
+      this.userSettingsForm.controls.emailAddress.setValue(this.generalSettingsForm.controls.emailAddress.value);
+      this.userSettingsForm.controls.alternateEmail.setValue(this.generalSettingsForm.controls.alternateEmail.value);
+      this.userSettingsForm.controls.phoneNumber.setValue(this.generalSettingsForm.controls.phoneNumber.value);
+      this.userSettingsForm.controls.loginUsername.setValue(this.generalSettingsForm.controls.loginUsername.value);
+      this.userSettingsForm.controls.loginPassword.setValue(this.generalSettingsForm.controls.loginPassword.value);
+
+      if(this.userSettingsForm.valid) {
+        this.userSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
+
+        if(!this.global.testing) {
+          return this.database.saveSettings(this.generalSettingsForm).subscribe(
+            response => {
+              this.dashboard.showSuccess = true;
+              this.global.updateGeneralSettings();
+              this.global.updatePlans();
+              this.global.updatePromo();
+              this.global.updateUsers();
+              setTimeout(()=>{
+                this.dashboard.updateDisplay('DASHBOARD');
+              },1000);
+            },
+            error => {
+              this.dashboard.showError = true;
+            }
+          );
+        } else {
+          console.log(this.generalSettingsForm.value);
+          this.dashboard.showSuccess = true;
+          setTimeout(()=>{
+            this.dashboard.updateDisplay('DASHBOARD');
+          },1000);
+        }
+      } else {
+        this.dashboard.showError = true;
+      }
+    }
+  }
+
+  togglePassword() {
+    var pass = document.getElementById("login-password") as HTMLInputElement;
+    if (pass.type === "password") {
+      pass.type = "text";
+    } else {
+      pass.type = "password";
     }
   }
 
