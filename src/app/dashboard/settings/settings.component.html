@@ -57,11 +57,15 @@
         </tr>
         <tr>
             <th class="group-label">Username</th>
-            <td><input type="text" class="medium" name="loginUsername" formControlName="loginUsername" disabled/></td>
+            <td><input type="text" class="medium" name="loginUsername" formControlName="loginUsername" /></td>
         </tr>
         <tr>
             <th class="group-label">Password</th>
-            <td><input type="text" class="medium" name="loginPassword" formControlName="loginPassword" /></td>
+            <td><input type="password" class="medium" name="loginPassword" formControlName="loginPassword" /></td>
+        </tr>
+        <tr>
+            <th class="group-label">Show Pass</th>
+            <td><input type="checkbox" id="password-toggle" (click)="togglePassword()"></td>
         </tr>
         <tr>
             <th>Receive Emails</th>

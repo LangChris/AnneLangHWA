@@ -44,8 +44,8 @@ export class SettingsComponent implements OnInit {
     usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
     usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
     emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.login.currentUser.alternateEmail),
-    phoneNumber: new FormControl(this.login.currentUser.phoneNumber),
+    alternateEmail: new FormControl(this.login.currentUser.alternate_email),
+    phoneNumber: new FormControl(this.login.currentUser.phone_number),
     loginUsername: new FormControl(this.login.currentUser.username),
     loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
   });
