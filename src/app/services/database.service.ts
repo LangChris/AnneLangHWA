@@ -18,6 +18,7 @@ const endpoints = {
   updateGeneralSettings: "/assets/database/update-general-settings.php",
   updateSettings: "/assets/database/update-settings.php",
   getLogin: "/assets/database/get-login.php",
+  saveUser: "/assets/database/save-user.php",
   resetPassword: "/assets/database/reset-password.php"
 };
 
@@ -99,6 +100,11 @@ export class DatabaseService {
   // Get Users
   getUsers() {
     return this.http.get(endpoints.getLogin);
+  }
+
+  // Save User
+  saveUser(user: any) {
+    return this.http.post(endpoints.saveUser, user);
   }
 
   // Reset Password
