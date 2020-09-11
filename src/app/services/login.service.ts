@@ -18,12 +18,12 @@ export class LoginService {
 
   login(user: string, pass: string): any {
     this.currentUser = null;
-
+    
     let foundUser: any = null;
     for(let i = 0; i < this.global.getUsers.length; i++) {
-
-      if(user.toUpperCase() == this.global.getUsers[i].username.toUpperCase() || user.toUpperCase() === this.global.getUsers[i].email.toUpperCase()) {
+      if(user.toUpperCase() == this.global.getUsers[i].email.toUpperCase() || user.toUpperCase() == this.global.getUsers[i].username.toUpperCase()) {
         foundUser = this.global.getUsers[i];
+        break;
       }
     }
     
@@ -63,7 +63,7 @@ export class LoginService {
     let foundUser: any = null;
     for(let i = 0; i < this.global.getUsers.length; i++) {
 
-      if(user.toUpperCase() == this.global.getUsers[i].username.toUpperCase() || user.toUpperCase() === this.global.getUsers[i].email.toUpperCase()) {
+      if(user.toUpperCase() == this.global.getUsers[i].email.toUpperCase() || user.toUpperCase() == this.global.getUsers[i].username.toUpperCase()) {
         foundUser = this.global.getUsers[i];
       }
     }

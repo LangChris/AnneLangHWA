@@ -156,7 +156,7 @@ switch($_SERVER['REQUEST_METHOD']){
             $query .= "email = '$users_email',";
             $query .= "alternate_email = ".($users_alternate_email == '' ? "NULL" : "'$users_alternate_email'").",";
             $query .= "phone_number = ".($users_phone == '' ? "NULL" : "'$users_phone'").",";
-            $query .= "username = ".($login_user == '' ? "NULL" : "'$login_user'").",";
+            $query .= "username = ".($login_username == '' ? "NULL" : "'$login_username'").",";
             $query .= "password = '$login_password'";
             $query .= " WHERE id = $users_id";
                 
