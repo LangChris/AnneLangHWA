@@ -64,6 +64,11 @@ export class OrderFormComponent implements OnInit {
 
   active = "LOGIN";
 
+  registerLogin = {
+    username: "",
+    password: ""
+  };
+
   constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
 
   ngOnInit() {
@@ -292,8 +297,12 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
+      if(!this.global.testing && this.active == 'REGISTER') {
+          this.loginSuccessful(this.registerLogin.username, this.registerLogin.password);
+      }
+
       this.orderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
-      
+
       if(!this.global.testing) {
         return this.database.placeOrder(this.orderForm).subscribe(response => {
           this.showForm = false;
@@ -325,6 +334,7 @@ export class OrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
+    this.global.updateUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
@@ -358,26 +368,20 @@ export class OrderFormComponent implements OnInit {
                 (regEmail.value != null && regEmail.value != '') &&
                 (regPassword.value != null && regPassword.value != '')) {
 
-                // try register
-                if(this.registerSuccessful(regName.value, regEmail.value, regUsername.value, regPassword.value)) {
-                  if(!this.global.testing) {
-                    this.global.updateUsers();
-                  }
+                this.registerLogin = {
+                  username: regEmail.value,
+                  password: regPassword.value
+                };
 
-                  if(this.global.testing || this.loginSuccessful(regEmail.value, regPassword.value)) {
-                    // update name and email with info
-                    this.orderForm.controls.name.setValue(regName.value);
-                    this.orderForm.controls.email.setValue(regEmail.value);
-                  } else {
-                    // login attempt failed
-                    break;
-                  }
-                } else {
-                  // register unsuccessful let user know why
-                }
-  
+                // register
+                this.register.registerUser(regName.value, regEmail.value, regUsername.value, regPassword.value);
+
+                this.orderForm.controls.name.setValue(regName.value);
+                this.orderForm.controls.email.setValue(regEmail.value);
+
             } else {
               // let user know they are missing info for register
+              console.log('info missing...');
             }
             
           } else {
@@ -394,7 +398,7 @@ export class OrderFormComponent implements OnInit {
         (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         //login and status = successful
         (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
-        (this.progressStep == 1 && this.active == 'REGISTER' && this.register.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'REGISTER') ||
         this.orderForm.valid) {
           this.progressStep++; 
         } else {
@@ -572,14 +576,5 @@ export class OrderFormComponent implements OnInit {
       }
     
     return false;
-  }
-
-  registerSuccessful(name: string, email: string, username: string, pass: string) {
-    this.register.registerUser(name, email, username, pass);
-    if(this.register.getStatus.successful) {
-      return true;
-    }
-  
-  return false;
   }
 }

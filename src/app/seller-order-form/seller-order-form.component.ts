@@ -56,6 +56,11 @@ export class SellerOrderFormComponent implements OnInit {
 
   active = "LOGIN";
 
+  registerLogin = {
+    username: "",
+    password: ""
+  };
+
   constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
 
   ngOnInit() {
@@ -129,6 +134,10 @@ export class SellerOrderFormComponent implements OnInit {
       this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
       this.sellerOrderForm.controls.orderTotal.setValue(this.total);
 
+      if(!this.global.testing && this.active == 'REGISTER') {
+        this.loginSuccessful(this.registerLogin.username, this.registerLogin.password);
+      }
+
       this.sellerOrderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
       
       if(!this.global.testing) {
@@ -162,6 +171,7 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
+    this.global.updateUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
@@ -195,26 +205,20 @@ export class SellerOrderFormComponent implements OnInit {
                 (regEmail.value != null && regEmail.value != '') &&
                 (regPassword.value != null && regPassword.value != '')) {
 
-                // try register
-                if(this.registerSuccessful(regName.value, regEmail.value, regUsername.value, regPassword.value)) {
-                  if(!this.global.testing) {
-                    this.global.updateUsers();
-                  }
+                this.registerLogin = {
+                  username: regEmail.value,
+                  password: regPassword.value
+                };
 
-                  if(this.global.testing || this.loginSuccessful(regEmail.value, regPassword.value)) {
-                    // update name and email with info
-                    this.sellerOrderForm.controls.name.setValue(regName.value);
-                    this.sellerOrderForm.controls.email.setValue(regEmail.value);
-                  } else {
-                    // login attempt failed
-                    break;
-                  }
-                } else {
-                  // register unsuccessful let user know why
-                }
-  
+                // register
+                this.register.registerUser(regName.value, regEmail.value, regUsername.value, regPassword.value);
+
+                this.sellerOrderForm.controls.name.setValue(regName.value);
+                this.sellerOrderForm.controls.email.setValue(regEmail.value);
+
             } else {
               // let user know they are missing info for register
+              console.log('info missing...');
             }
             
           } else {
@@ -224,15 +228,16 @@ export class SellerOrderFormComponent implements OnInit {
         } else if(this.progressStep == 3) {
           this.validateDate = true;
         }
-        
+
+        console.log(this.sellerOrderForm);
         if( (this.progressStep != 1 && this.progressStep != 3) || 
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
         //login and status = successful
         (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
-        (this.progressStep == 1 && this.active == 'REGISTER' && this.register.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'REGISTER') ||
         this.sellerOrderForm.valid) {
-          this.progressStep++;
+          this.progressStep++; 
         } else {
           if(!this.sellerOrderForm.controls.email.valid) {
             var email = document.getElementById('email') as HTMLInputElement;
@@ -332,15 +337,6 @@ export class SellerOrderFormComponent implements OnInit {
       }
     
     return false;
-  }
-
-  registerSuccessful(name: string, email: string, username: string, pass: string) {
-    this.register.registerUser(name, email, username, pass);
-    if(this.register.getStatus.successful) {
-      return true;
-    }
-  
-  return false;
   }
 
 }
