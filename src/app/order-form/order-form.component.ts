@@ -5,6 +5,7 @@ import { DatabaseService } from '../services/database.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
 import { LoginService } from '../services/login.service';
+import { RegisterService } from '../services/register.service';
 
 @Component({
   selector: 'app-order-form',
@@ -63,7 +64,7 @@ export class OrderFormComponent implements OnInit {
 
   active = "LOGIN";
 
-  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private login: LoginService) {}
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -337,7 +338,7 @@ export class OrderFormComponent implements OnInit {
           }
 
           // validate login
-          if(this.active == "LOGIN") {
+          if(this.active == 'LOGIN') {
             let username = document.getElementById('login-username') as HTMLInputElement;
             let password = document.getElementById('login-password') as HTMLInputElement;
 
@@ -346,6 +347,39 @@ export class OrderFormComponent implements OnInit {
               this.orderForm.controls.name.setValue(this.login.currentUser.name);
               this.orderForm.controls.email.setValue(this.login.currentUser.email);
             } 
+          } else if(this.active == 'REGISTER') {
+            let regName = document.getElementById('register-name') as HTMLInputElement;
+            let regEmail = document.getElementById('register-email') as HTMLInputElement;
+            let regUsername = document.getElementById('register-username') as HTMLInputElement;
+            let regPassword = document.getElementById('register-password') as HTMLInputElement;
+
+            // register 
+            if( (regName.value != null && regName.value != '') &&
+                (regEmail.value != null && regEmail.value != '') &&
+                (regPassword.value != null && regPassword.value != '')) {
+
+                // try register
+                if(this.registerSuccessful(regName.value, regEmail.value, regUsername.value, regPassword.value)) {
+                  if(!this.global.testing) {
+                    this.global.updateUsers();
+                  }
+
+                  if(this.global.testing || this.loginSuccessful(regEmail.value, regPassword.value)) {
+                    // update name and email with info
+                    this.orderForm.controls.name.setValue(regName.value);
+                    this.orderForm.controls.email.setValue(regEmail.value);
+                  } else {
+                    // login attempt failed
+                    break;
+                  }
+                } else {
+                  // register unsuccessful let user know why
+                }
+  
+            } else {
+              // let user know they are missing info for register
+            }
+            
           } else {
             this.validateName = true;
             this.validateEmail = true;
@@ -354,11 +388,13 @@ export class OrderFormComponent implements OnInit {
           this.validateDate = true;
         }
 
+        console.log(this.orderForm);
         if( (this.progressStep != 1 && this.progressStep != 3) || 
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         //login and status = successful
         (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'REGISTER' && this.register.getStatus.successful) ||
         this.orderForm.valid) {
           this.progressStep++; 
         } else {
@@ -492,15 +528,16 @@ export class OrderFormComponent implements OnInit {
     let loginRegisterBox = document.getElementById('login-register-box');
     let guestCheckoutBox = document.getElementById('guest-checkout-box');
 
-    this.active = active;
-
     switch(active) {
       case "GUEST": {
+        this.active = active;
         loginRegisterBox.style.opacity = '0.25'; 
         guestCheckoutBox.style.opacity = '1.0'; 
         guestCheckoutBox.style.background = "#eee"
       } break;
-      case "LOGIN": {
+      case "LOGIN":
+      case "REGISTER": {
+        this.active = this.panel;
         guestCheckoutBox.style.opacity = '0.25'; 
         loginRegisterBox.style.opacity = '1.0'; 
         loginRegisterBox.style.background = "#eee"
@@ -535,5 +572,14 @@ export class OrderFormComponent implements OnInit {
       }
     
     return false;
+  }
+
+  registerSuccessful(name: string, email: string, username: string, pass: string) {
+    this.register.registerUser(name, email, username, pass);
+    if(this.register.getStatus.successful) {
+      return true;
+    }
+  
+  return false;
   }
 }
