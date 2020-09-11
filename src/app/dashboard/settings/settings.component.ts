@@ -213,7 +213,7 @@ export class SettingsComponent implements OnInit {
       this.userSettingsForm.controls.loginPassword.setValue(this.generalSettingsForm.controls.loginPassword.value);
 
       if(this.userSettingsForm.valid) {
-        this.userSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
+        this.generalSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
 
         if(!this.global.testing) {
           return this.database.saveSettings(this.generalSettingsForm).subscribe(
