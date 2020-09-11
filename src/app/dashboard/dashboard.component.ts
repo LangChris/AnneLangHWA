@@ -30,6 +30,10 @@ export class DashboardComponent implements OnInit {
   constructor(public login: LoginService, private global: GlobalService) { }
 
   ngOnInit(): void {
+    if(!this.global.testing) {
+      this.global.updateOrders();
+      this.global.updateUsers();
+    }
   }
 
   getOrders() {
