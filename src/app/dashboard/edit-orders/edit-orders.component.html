@@ -11,7 +11,7 @@
       <td>
         <select id="order-id" class="large" name="orderId" formControlName="orderId">
           <option selected>Select Order</option>
-          <option *ngFor="let order of global.getOrders; let i = index" value="{{order.id}}">{{i+1}}. {{order.name}}</option>
+          <option *ngFor="let order of dashboard.orders; let i = index" value="{{order.id}}">{{i+1}}. {{order.name}}</option>
         </select>
       </td>
     </tr>
