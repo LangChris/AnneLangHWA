@@ -1,3 +1,29 @@
+.filter-table-wrapper {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.filter-table {
+    padding: 5px;
+    width: 80%;
+    max-width: 350px;
+}
+
+.filter-table th {
+    width: 25%;
+}
+
+.filter-table td {
+    width: 75%;
+    text-align: left;
+}
+
+#filename {
+    max-width: 150px;        
+}
+
+
 table {
     width: auto;
     margin: 0 auto;
@@ -69,61 +95,32 @@ button {
     text-align: center;
 }
 
-.sort {
-    display: block;
-    padding-bottom: 20px;
-}
-
-.sort span {
-    display: block;
-}
-
-.filter {
-    display: inline-block;
-    padding: 20px;
-}
-
-.filter span {
-    display: block;
-}
-
-.filter p {
-    display: inline;
-}
-
-.filename {
-    display: block;
-    padding: 20px;
-}
-
-.filename span {
-    display: block;
-}
-
-.filename p {
-    display: inline;
-}
-
-#filename {
-    width: 200px;
-}
-
 #filter-dropdown {
     text-align: center;
     font-weight: bold;
     font-size: 20px;
 }
 
-#filter-dropdown::after {
+.open::after {
     font-size: 15px;
     content: "\25BC";
+}
+
+.closed::after {
+    font-size: 15px;
+    content: "\25B6";
 }
 
 #filter-dropdown:hover {
     cursor: pointer;
 }
 
+small {
+    font-style: oblique;
+}
+
 @media (max-width: 800px) {
+    
     .top-wrapper {
         float: right;
     }
@@ -165,16 +162,11 @@ button {
 }
 
  @media (max-width: 550px) {
-    .filter {
+    #filename {
+        max-width: 100px;        
+    }
+
+    .filter-table-wrapper td {
         display: block;
-        padding: 5px;
-    }
-
-    .filename {
-        padding: 5px 0 20px 0;
-    }
-
-    .filters {
-        padding-top: 20px;
     }
  }

@@ -20,8 +20,6 @@ export class ViewOrdersComponent implements OnInit {
   enteredOrders = [];
 
   ngOnInit() {
-    let sort = document.getElementById('sort') as HTMLSelectElement;
-    sort.selectedIndex = sort.options[0].value == this.dashboard.filter.sort ? 0 : 1;
     this.updateEnteredOrders();
   }
 
@@ -34,6 +32,8 @@ export class ViewOrdersComponent implements OnInit {
 
   toggleFilters() {
     this.showFilters = this.showFilters ? false : true;
+    let dropdown = document.getElementById('filter-dropdown') as HTMLSpanElement;
+    dropdown.className = this.showFilters ? 'open' : 'closed';
   }
 
   filter() {
