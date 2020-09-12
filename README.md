@@ -8,9 +8,9 @@
 - [X] Buyer Order Form For Plan(s) `Gold, Platinum, Diamond`
 - [X] Seller Order Form For Plan(s) `Free Sellers Coverage`
 - [X] HWA Brochures For Language(s) `English, Spanish`
-- [X] Admin Portal 
+- [X] User Portal 
   - View Orders Table
-  - Edit Orders Table With Function(s) `Update, Delete`
+  - Edit Orders Table With Function(s) `Update, Delete` (Admin Only)
   - Export to Excel
   - Settings
 
