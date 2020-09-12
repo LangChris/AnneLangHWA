@@ -63,10 +63,7 @@ export class GlobalService {
     sendEmail: true
   };
 
-  login = {
-    username: '',
-    password: ''
-  };
+  users: any;
 
   orders: any;
 
@@ -237,18 +234,18 @@ export class GlobalService {
     );
   }
 
-  get getLogin() {
-    return this.login;
+  get getUsers() {
+    return this.users;
   }
 
-  updateLogin() {
-    this.database.getLogin().subscribe(
-      response => {
-        this.login.username = response[0].username;
-        this.login.password = atob(response[0].password);
+  updateUsers() {
+    this.database.getUsers().subscribe(
+      data => { 
+        this.users = data;
       },
-      error => console.log(error)
-    );
+      error => {
+        console.log(error);
+      });
   }
 
   get getMultiCoverage1() {
@@ -273,6 +270,7 @@ export class GlobalService {
     this.orders = [
       {
         id: 1,
+        user_id: null,
         name: "Test Name 1",
         email: "testemail@gmail.com",
         plan: "Gold",
@@ -301,6 +299,7 @@ export class GlobalService {
       },
       {
         id: 2,
+        user_id: null,
         name: "Test Name 2",
         email: "testemail@gmail.com",
         plan: "Free Sellers Coverage",
@@ -329,6 +328,7 @@ export class GlobalService {
       },
       {
         id: 3,
+        user_id: null,
         name: "Test Name 3",
         email: "testemail@gmail.com",
         plan: "Diamond",
@@ -357,6 +357,7 @@ export class GlobalService {
       },
       {
         id: 4,
+        user_id: 1,
         name: "Test Name 4",
         email: "testemail@gmail.com",
         plan: "Gold",
@@ -385,6 +386,7 @@ export class GlobalService {
       },
       {
         id: 5,
+        user_id: 2,
         name: "Test Name 5",
         email: "testemail@gmail.com",
         plan: "Free Sellers Coverage",
@@ -413,6 +415,7 @@ export class GlobalService {
       },
       {
         id: 6,
+        user_id: 2,
         name: "Test Name 6",
         email: "testemail@gmail.com",
         plan: "Platinum",
@@ -528,7 +531,7 @@ export class GlobalService {
       phoneNumber: '703-123-1234',
       email: 'anne.lang@homewarrantyamerica.com',
       passwordResetEmail: 'anne@annelanghwa.com',
-      owner: 'Tina Flowers',
+      owner: 'Anne Lang',
       webpageTitle: 'HWA Home Warranty',
       webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',
       webpageDescription: 'Welcome get started by viewing our plans, brochures or place an order below.',
@@ -539,10 +542,10 @@ export class GlobalService {
       sendEmail: false
     };
 
-    this.login = {
-      username: 'Anne.Lang',
-      password: 'Regina23!'
-    };
+    this.users = [
+      {id: 1, name: 'Anne Lang', username: 'Anne.Lang', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'ADMIN', email: 'anne.lang@hwahomewarranty.com', alternateEmail: 'annelang12@gmail.com', phoneNumber: '(703) 220 5933'},
+      {id: 2, name: 'Chris Lang', username: '', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'USER', email: 'christopherjlang01@gmail.com', alternateEmail: null, phoneNumber: ''}
+    ];
 
   }
 

@@ -2,16 +2,21 @@
     color: #eb5e17;
 }
 
+.small-btn {
+    width: 30px;
+    height: 30px;
+}
+
 progress {
     width: 60%;
-    min-width: 400px;
+    min-width: 350px;
 }
 
 .popout {
     margin: 0px auto;
     border-radius: 5px;
     width: 60%;
-    min-width: 400px;
+    min-width: 350px;
     padding-top: 10px;
     background-color: #fff;
     border: 2px solid #eee;
@@ -21,6 +26,17 @@ progress {
     color: #000;
     font-size: 25px;
     text-align: center;
+}
+
+.popout-header-double {
+    color: #eb5e17;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.popout-header-double span:hover {
+    cursor: pointer;
 }
 
 .navigation {
@@ -47,4 +63,47 @@ progress {
 
 .top-margin {
     margin-top: 10px;
+}
+
+.double-section {
+    width: 100%;
+}
+
+.section-box {
+    width: 50%;
+}
+
+.section-box:hover {
+    background: #eee;
+    cursor: pointer;
+}
+
+#register-text {
+    opacity: 0.5;
+    font-size: 10px;
+}
+
+@media screen and (max-width: 1150px) {
+    .section-box {
+        width: 99%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .order-form {
+        margin: 0 auto;
+    }
+
+    .order-form th {
+        font-size: 12px;
+        text-align: right;
+        width: 25%;
+    }
+
+    .order-form td {
+        font-size: 12px;
+        width: 60%;
+
+    }
+
 }

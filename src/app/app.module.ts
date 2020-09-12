@@ -11,19 +11,18 @@ import { OrderFormComponent } from './order-form/order-form.component';
 import { SellerOrderFormComponent } from './seller-order-form/seller-order-form.component';
 import { PromoComponent } from './global/promo/promo.component';
 import { FooterComponent } from './global/footer/footer.component';
-import { AdminComponent } from './admin/admin.component';
-
+import { ClaimsComponent } from './claims/claims.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { MainComponent } from './dashboard/main/main.component';
+import { SettingsComponent } from './dashboard/settings/settings.component';
+import { EditOrdersComponent } from './dashboard/edit-orders/edit-orders.component';
+import { ViewOrdersComponent } from './dashboard/view-orders/view-orders.component';
 import { GlobalService } from './services/global.service';
 import { DatabaseService } from './services/database.service';
 import { LoginService } from './services/login.service';
-import { DatePipe } from '@angular/common';
-import { LoginComponent } from './admin/login/login.component';
-import { ViewOrdersComponent } from './admin/view-orders/view-orders.component';
-import { EditOrdersComponent } from './admin/edit-orders/edit-orders.component';
-import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { SettingsComponent } from './admin/settings/settings.component';
-import { ClaimsComponent } from './claims/claims.component';
 
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -39,8 +38,12 @@ const routes: Routes = [
     component: SellerOrderFormComponent
   },
   {
-    path: "admin-portal",
-    component: AdminComponent
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "dashboard",
+    component: DashboardComponent
   },
   {
     path: "claims",
@@ -61,13 +64,13 @@ const routes: Routes = [
     SellerOrderFormComponent,
     PromoComponent,
     FooterComponent,
-    AdminComponent,
     LoginComponent,
     ViewOrdersComponent,
     EditOrdersComponent,
     DashboardComponent,
     SettingsComponent,
-    ClaimsComponent
+    ClaimsComponent,
+    MainComponent
   ],
   imports: [
     ReactiveFormsModule,

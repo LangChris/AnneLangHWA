@@ -3,6 +3,8 @@ import { DatabaseService } from '../services/database.service';
 import { GlobalService } from '../services/global.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { LoginService } from '../services/login.service';
+import { RegisterService } from '../services/register.service';
 
 @Component({
   selector: 'app-seller-order-form',
@@ -35,7 +37,8 @@ export class SellerOrderFormComponent implements OnInit {
     sendEmail: new FormControl(),
     adminName: new FormControl(),
     adminEmail: new FormControl(),
-    orderTotal: new FormControl()
+    orderTotal: new FormControl(),
+    userId: new FormControl()
   }); 
 
   showForm = true;
@@ -48,9 +51,17 @@ export class SellerOrderFormComponent implements OnInit {
   progressStep = 1;
 
   helpClicked = false;
-  showHelp = false;
 
-  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
+  panel = "LOGIN";
+
+  active = "LOGIN";
+
+  registerLogin = {
+    username: "",
+    password: ""
+  };
+
+  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -123,9 +134,19 @@ export class SellerOrderFormComponent implements OnInit {
       this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
       this.sellerOrderForm.controls.orderTotal.setValue(this.total);
 
-      return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
+      if(!this.global.testing && this.active == 'REGISTER') {
+        this.loginSuccessful(this.registerLogin.username, this.registerLogin.password);
+      }
+
+      this.sellerOrderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
+      
+      if(!this.global.testing) {
+        return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
+          this.showForm = false;
+        });
+      } else {
         this.showForm = false;
-      });
+      }
     } else {
       if(!this.sellerOrderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
@@ -150,17 +171,72 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
+    this.global.updateUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
-          this.validateName = true;
-          this.validateEmail = true;
+
+          // if logged in -> proceed next
+          if(this.login.currentUser != null) {
+            this.toggleActive('LOGIN');
+            this.progressStep++; 
+            break;
+          }
+
+          // validate login
+          if(this.active == 'LOGIN') {
+            let username = document.getElementById('login-username') as HTMLInputElement;
+            let password = document.getElementById('login-password') as HTMLInputElement;
+
+            if(this.loginSuccessful(username.value, password.value)) {
+              // update name and email with info
+              this.sellerOrderForm.controls.name.setValue(this.login.currentUser.name);
+              this.sellerOrderForm.controls.email.setValue(this.login.currentUser.email);
+            } 
+          } else if(this.active == 'REGISTER') {
+            let regName = document.getElementById('register-name') as HTMLInputElement;
+            let regEmail = document.getElementById('register-email') as HTMLInputElement;
+            let regUsername = document.getElementById('register-username') as HTMLInputElement;
+            let regPassword = document.getElementById('register-password') as HTMLInputElement;
+
+            // register 
+            if( (regName.value != null && regName.value != '') &&
+                (regEmail.value != null && regEmail.value != '') &&
+                (regPassword.value != null && regPassword.value != '')) {
+
+                this.registerLogin = {
+                  username: regEmail.value,
+                  password: regPassword.value
+                };
+
+                // register
+                this.register.registerUser(regName.value, regEmail.value, regUsername.value, regPassword.value);
+
+                this.sellerOrderForm.controls.name.setValue(regName.value);
+                this.sellerOrderForm.controls.email.setValue(regEmail.value);
+
+            } else {
+              // let user know they are missing info for register
+              console.log('info missing...');
+            }
+            
+          } else {
+            this.validateName = true;
+            this.validateEmail = true;
+          }
         } else if(this.progressStep == 3) {
           this.validateDate = true;
         }
-        
-        if( (this.progressStep != 1 && this.progressStep != 3) || (this.progressStep == 1 && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) || this.sellerOrderForm.valid) {
+
+        console.log(this.sellerOrderForm);
+        if( (this.progressStep != 1 && this.progressStep != 3) || 
+        //guest checkout and email/name valid
+        (this.progressStep == 1 && this.active == 'GUEST' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
+        //login and status = successful
+        (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'REGISTER') ||
+        this.sellerOrderForm.valid) {
           this.progressStep++; 
         } else {
           if(!this.sellerOrderForm.controls.email.valid) {
@@ -186,12 +262,81 @@ export class SellerOrderFormComponent implements OnInit {
     }
   }
 
-  toggleHelp(showHelp) {
-    this.showHelp = showHelp;
-  }
-
   toggleHelpClicked() {
     this.helpClicked = this.helpClicked ? false : true;
+  }
+
+  togglePanel(panel) {
+    let loginText = document.getElementById('login-text');
+    let registerText = document.getElementById('register-text');
+
+    this.panel = panel; 
+
+    switch(panel) {
+      case "LOGIN": {
+        registerText.style.opacity = '0.5'; 
+        registerText.style.fontSize = '10px'; 
+        loginText.style.opacity = '1.0';
+        loginText.style.fontSize = '20px'; 
+      } break;
+      case "REGISTER": {
+        loginText.style.opacity = '0.5'; 
+        loginText.style.fontSize = '10px'; 
+        registerText.style.opacity = '1.0';
+        registerText.style.fontSize = '20px'; 
+      } break;
+    }
+  }
+
+  toggleActive(active) {
+
+    let loginRegisterBox = document.getElementById('login-register-box');
+    let guestCheckoutBox = document.getElementById('guest-checkout-box');
+
+    switch(active) {
+      case "GUEST": {
+        this.active = active;
+        loginRegisterBox.style.opacity = '0.25'; 
+        guestCheckoutBox.style.opacity = '1.0'; 
+        guestCheckoutBox.style.background = "#eee"
+      } break;
+      case "LOGIN":
+      case "REGISTER": {
+        this.active = this.panel;
+        guestCheckoutBox.style.opacity = '0.25'; 
+        loginRegisterBox.style.opacity = '1.0'; 
+        loginRegisterBox.style.background = "#eee"
+      } break;
+    }
+  }
+
+  isLoginActive() {
+    // if logged in -> proceed next
+    if(this.login.currentUser != null && this.progressStep == 1) {
+      this.toggleActive('LOGIN');
+      this.makeProgressStep("NEXT");
+    }
+
+    let loginUsername = document.getElementById('login-username') as HTMLInputElement;
+    let loginPassword = document.getElementById('login-password') as HTMLInputElement;
+
+    if( ((loginUsername.value != null && loginUsername.value != '') || 
+    (loginPassword.value != null && loginPassword.value != '')) ) {
+      this.toggleActive('LOGIN');
+      return true;
+    } 
+
+    this.toggleActive('GUEST');
+    return false;
+  }
+
+  loginSuccessful(user: string, pass: string) {
+      this.login.loginWithoutRedirect(user, pass);
+      if(this.login.getStatus.successful) {
+        return true;
+      }
+    
+    return false;
   }
 
 }

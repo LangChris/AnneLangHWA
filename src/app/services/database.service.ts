@@ -16,7 +16,9 @@ const endpoints = {
   getSpecialRequest: "/assets/database/get-special-request.php",
   getGeneralSettings: "/assets/database/get-general-settings.php",
   updateGeneralSettings: "/assets/database/update-general-settings.php",
+  updateSettings: "/assets/database/update-settings.php",
   getLogin: "/assets/database/get-login.php",
+  saveUser: "/assets/database/save-user.php",
   resetPassword: "/assets/database/reset-password.php"
 };
 
@@ -90,9 +92,19 @@ export class DatabaseService {
     return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
   }
 
-  // Get Login
-  getLogin() {
+  // Save Settings
+  saveSettings(formGroup: FormGroup) {
+    return this.http.put(endpoints.updateSettings, formGroup.value);
+  }
+
+  // Get Users
+  getUsers() {
     return this.http.get(endpoints.getLogin);
+  }
+
+  // Save User
+  saveUser(user: any) {
+    return this.http.post(endpoints.saveUser, user);
   }
 
   // Reset Password

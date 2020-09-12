@@ -1,18 +1,18 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { AdminComponent } from '../admin.component';
+import { DashboardComponent } from '../dashboard.component';
 import { DatabaseService } from '../../services/database.service';
 import { GlobalService } from '../../services/global.service';
 import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'view-orders',
+  selector: 'dashboard-view',
   templateUrl: './view-orders.component.html',
   styleUrls: ['./view-orders.component.css']
 })
 export class ViewOrdersComponent implements OnInit {
-  @ViewChild('TABLE') TABLE: ElementRef;  
+  @ViewChild('TABLE') TABLE: ElementRef;
 
-  constructor(public global: GlobalService, public admin: AdminComponent, private database: DatabaseService) { }
+  constructor(public global: GlobalService, public dashboard: DashboardComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
   filename: string = this.global.getGeneralSettings.defaultFilename;
@@ -21,7 +21,7 @@ export class ViewOrdersComponent implements OnInit {
 
   ngOnInit() {
     let sort = document.getElementById('sort') as HTMLSelectElement;
-    sort.selectedIndex = sort.options[0].value == this.admin.filter.sort ? 0 : 1;
+    sort.selectedIndex = sort.options[0].value == this.dashboard.filter.sort ? 0 : 1;
     this.updateEnteredOrders();
   }
 
@@ -46,9 +46,9 @@ export class ViewOrdersComponent implements OnInit {
     let realtor = document.getElementById('realtor') as HTMLSelectElement;
 
     if(this.showFilters) {
-      this.admin.filterOrders(sort.value, timeline.value, plan.value, homeType.value, entered.value, years.value, realtor.value);
+      this.dashboard.filterOrders(sort.value, timeline.value, plan.value, homeType.value, entered.value, years.value, realtor.value);
     } else {
-      this.admin.filterOrders(sort.value, "all", "all", "all", "all", "all", "all");
+      this.dashboard.filterOrders(sort.value, "all", "all", "all", "all", "all", "all");
     }
 
     this.updateEnteredOrders();
@@ -73,9 +73,9 @@ export class ViewOrdersComponent implements OnInit {
 
   showOrderEntered(show: boolean, id: any) {
     let enterOrder = document.getElementById('order-entered-' + id);
-    for(var i = 0; i < this.admin.orders.length; i++) {
-      if(this.admin.orders[i]['id'] == id) {
-        if(this.admin.orders[i]['entered'] == 1) {
+    for(var i = 0; i < this.dashboard.orders.length; i++) {
+      if(this.dashboard.orders[i]['id'] == id) {
+        if(this.dashboard.orders[i]['entered'] == 1) {
           return;
         }
       }
@@ -89,26 +89,26 @@ export class ViewOrdersComponent implements OnInit {
 
   orderEntered(id: any) {
     let index;
-    for(var i = 0; i < this.admin.orders.length; i++) {
-      if(this.admin.orders[i]['id'] == id && this.admin.orders[i]['entered'] == 0) {
+    for(var i = 0; i < this.dashboard.orders.length; i++) {
+      if(this.dashboard.orders[i]['id'] == id && this.dashboard.orders[i]['entered'] == 0) {
         index = i;
         if(!this.global.testing) {
           this.database.enterOrder(id).subscribe(
             response => {
-              this.admin.orders[index]['entered'] = 1;
+              this.dashboard.orders[index]['entered'] = 1;
               let enterOrder = document.getElementById('order-entered-' + id);
               enterOrder.style.display = "block";
-              this.enteredOrders.push(this.admin.orders[index]);
+              this.enteredOrders.push(this.dashboard.orders[index]);
             },
             error => {
               console.log(error);
             }
           );
         } else {
-          this.admin.orders[index]['entered'] = 1;
+          this.dashboard.orders[index]['entered'] = 1;
           let enterOrder = document.getElementById('order-entered-' + id);
           enterOrder.style.display = "block";
-          this.enteredOrders.push(this.admin.orders[index]);
+          this.enteredOrders.push(this.dashboard.orders[index]);
         }
       }
     }
@@ -117,11 +117,11 @@ export class ViewOrdersComponent implements OnInit {
   updateEnteredOrders() {
     setTimeout(()=>{
       this.enteredOrders = [];
-      for(var i = 0; i < this.admin.orders.length; i++) {
-        if(this.admin.orders[i]['entered'] == 1) {
-          let enterOrder = document.getElementById('order-entered-' + this.admin.orders[i]['id']);
+      for(var i = 0; i < this.dashboard.orders.length; i++) {
+        if(this.dashboard.orders[i]['entered'] == 1) {
+          let enterOrder = document.getElementById('order-entered-' + this.dashboard.orders[i]['id']);
           enterOrder.style.display = "block";
-          this.enteredOrders.push(this.admin.orders[i]);
+          this.enteredOrders.push(this.dashboard.orders[i]);
         }
       }
     }, 200);

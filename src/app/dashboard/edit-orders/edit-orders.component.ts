@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminComponent } from '../admin.component'; 
+import { DashboardComponent } from '../dashboard.component'; 
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import { DatePipe } from '@angular/common';
 import { GlobalService } from '../../services/global.service';
@@ -7,7 +7,7 @@ import { DatabaseService } from '../../services/database.service';
 import * as MultiSelect from '../../../assets/multi-select-umd';
 
 @Component({
-  selector: 'edit-orders',
+  selector: 'dashboard-edit',
   templateUrl: './edit-orders.component.html',
   styleUrls: ['./edit-orders.component.css']
 })
@@ -45,7 +45,7 @@ export class EditOrdersComponent implements OnInit {
 
   multiSelect = null;
 
-  constructor(private global: GlobalService, private database: DatabaseService, public admin: AdminComponent, private datePipe: DatePipe) { }
+  constructor(private global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.global.setShowPortal(false);
@@ -55,8 +55,8 @@ export class EditOrdersComponent implements OnInit {
       table[0].style.width = "auto";
       setTimeout(()=>{
         if(this.editForm.controls.orderId.value != 'Select Order') {
-          this.admin.showSuccess = false;
-          this.admin.showError = false;
+          this.dashboard.showSuccess = false;
+          this.dashboard.showError = false;
           for(var i = 0; i < this.global.getOrders.length; i++) {
             if(this.global.getOrders[i]['id'] == value) {
               this.updateForm(this.global.getOrders[i]);
@@ -174,9 +174,11 @@ export class EditOrdersComponent implements OnInit {
   resetForm() {
     if(this.global.getOrders && this.global.getOrders.length > 0){
       let orderSelect = document.getElementById('order-id') as HTMLSelectElement;
-      orderSelect.selectedIndex = 0;
-      this.editForm.controls.orderId.setValue('Select Order');
-
+      if(orderSelect != null) {
+        orderSelect.selectedIndex = 0;
+        this.editForm.controls.orderId.setValue('Select Order');
+      }
+      
       this.global.updateOrders();
     }
   }
@@ -204,11 +206,11 @@ export class EditOrdersComponent implements OnInit {
 
     return this.database.updateOrder(this.editForm).subscribe(
       response => {
-        this.admin.showSuccess = true;
+        this.dashboard.showSuccess = true;
         this.global.updateOrders();
       },
       error => {
-        this.admin.showError = true;
+        this.dashboard.showError = true;
       }
     );
   }
@@ -217,11 +219,11 @@ export class EditOrdersComponent implements OnInit {
     return this.database.deleteOrder(id).subscribe(
       response => {
         this.resetForm();
-        this.admin.showSuccess = true;
+        this.dashboard.showSuccess = true;
       },
       error => {
         this.resetForm();
-        this.admin.showError = true;
+        this.dashboard.showError = true;
       }
     );
   }

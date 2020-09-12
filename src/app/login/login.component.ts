@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from '../services/login.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
-import { GlobalService } from '../../services/global.service';
-import { DatabaseService } from '../../services/database.service';
+import { GlobalService } from '../services/global.service';
+import { DatabaseService } from '../services/database.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'admin-login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -20,10 +21,14 @@ export class LoginComponent implements OnInit {
 
   passwordResetSent: boolean;
 
-  constructor(public login: LoginService, private global: GlobalService, private database: DatabaseService) { }
+  constructor(public login: LoginService, private global: GlobalService, private database: DatabaseService, public router: Router) { }
 
   ngOnInit() {
     this.passwordResetSent = false;
+
+    if(this.login.getStatus.successful) {
+      this.router.navigate(['dashboard']);
+    }
   }
 
   passwordReset() {

@@ -69,6 +69,11 @@ button {
    color: green;
 }
 
+#password-toggle {
+    display: inline-block;
+    width: 15px;
+}
+
 @media screen and (max-width: 800px) {
     
     .large {
