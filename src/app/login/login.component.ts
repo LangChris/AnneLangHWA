@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   passwordResetSent: boolean;
 
-  constructor(public login: LoginService, private global: GlobalService, private database: DatabaseService, public router: Router) { }
+  constructor(public login: LoginService, public global: GlobalService, private database: DatabaseService, public router: Router) { }
 
   ngOnInit() {
     this.passwordResetSent = false;
