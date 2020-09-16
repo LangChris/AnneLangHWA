@@ -124,32 +124,32 @@
         </tr>  
       </thead>  
       <tbody>  
-        <tr *ngFor="let order of dashboard.orders" id="{{order.id}}" (mouseenter)="showOrderEntered(true, order.id)" (mouseleave)="showOrderEntered(false, order.id)" >  
+        <tr *ngFor="let order of dashboard.orders" id="{{order.orderId}}" (mouseenter)="showOrderEntered(true, order.orderId)" (mouseleave)="showOrderEntered(false, order.orderId)" >  
           <td data-th="Name">
-            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.id}}" class="check order-entered" (click)="orderEntered(order.id)" ></span></div>
+            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.orderId}}" class="check order-entered" (click)="orderEntered(order.orderId)" ></span></div>
             <div class="bottom-wrapper">{{order.name}}</div>
           </td>  
           <td data-th="Email">{{order.email}}</td>
           <td data-th="Plan">{{formatOrder(order.plan)}}</td>
           <td data-th="Years">{{formatOrder(order.years)}}</td>
-          <td data-th="Optional Coverage">{{formatOrder(order.optional_coverage)}}</td>
-          <td data-th="Hvac Coverage">{{formatOrder(order.hvac_coverage)}}</td>
-          <td data-th="Close/Start Date">{{formatOrder(order.close_start_date)}}</td>
-          <td data-th="Home Type">{{formatOrder(order.home_type)}}</td>
-          <td data-th="Address">{{formatOrder(order.address_line)}}<br />&nbsp;{{formatOrder(order.city)}},{{formatOrder(order.state)}} {{formatOrder(order.zip)}}</td>
-          <td data-th="Buyer Name">{{formatOrder(order.buyer_name)}}</td>
-          <td data-th="Buyer Email">{{formatOrder(order.buyer_email)}}</td>
-          <td data-th="Buyer Phone">{{formatOrder(order.buyer_phone)}}</td>
-          <td data-th="Seller Name">{{formatOrder(order.seller_name)}}</td>
-          <td data-th="Seller Email">{{formatOrder(order.seller_email)}}</td>
-          <td data-th="Seller Phone">{{formatOrder(order.seller_phone)}}</td>
-          <td data-th="Realtor Name">{{formatOrder(order.realtor_name)}}</td>
-          <td data-th="Realtor Email">{{formatOrder(order.realtor_email)}}</td>
-          <td data-th="Realtor Company">{{formatOrder(order.realtor_company)}}</td>
+          <td data-th="Optional Coverage">{{formatOrder(order.optionalCoverage)}}</td>
+          <td data-th="Hvac Coverage">{{formatOrder(order.hvacCoverage)}}</td>
+          <td data-th="Close/Start Date">{{formatOrder(order.closeStartDate)}}</td>
+          <td data-th="Home Type">{{formatOrder(order.homeType)}}</td>
+          <td data-th="Address">{{formatOrder(order.address.addressLine)}}<br />&nbsp;{{formatOrder(order.address.city)}},{{formatOrder(order.address.state)}} {{formatOrder(order.address.zip)}}</td>
+          <td data-th="Buyer Name">{{formatOrder(order.buyers[0].name)}}</td>
+          <td data-th="Buyer Email">{{formatOrder(order.buyers[0].email)}}</td>
+          <td data-th="Buyer Phone">{{formatOrder(order.buyers[0].phone)}}</td>
+          <td data-th="Seller Name">{{formatOrder(order.sellers[0].name)}}</td>
+          <td data-th="Seller Email">{{formatOrder(order.ellers[0].email)}}</td>
+          <td data-th="Seller Phone">{{formatOrder(order.ellers[0].phone)}}</td>
+          <td data-th="Realtor Name">{{formatOrder(order.realtor.name)}}</td>
+          <td data-th="Realtor Email">{{formatOrder(order.realtor.email)}}</td>
+          <td data-th="Realtor Company">{{formatOrder(order.realtor.company)}}</td>
           <td data-th="Realtor Zip">{{formatOrder(order.realtor_zip)}}</td>
-          <td data-th="Title Agent Email">{{formatOrder(order.title_agent_email)}}</td>
+          <td data-th="Title Agent Email">{{formatOrder(order.titleAgent.email)}}</td>
           <td data-th="Promo">{{formatOrder(order.promo)}}</td>
-          <td data-th="Special Request">{{formatOrder(order.special_request)}}</td>
+          <td data-th="Special Request">{{formatOrder(order.specialRequest)}}</td>
         </tr>  
       </tbody>  
     </table> 

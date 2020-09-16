@@ -16,11 +16,11 @@ export class RegisterService {
   registerUser(name: string, email: string, username: string, pass: string): any {
     
     let foundUser: any = null;
-    for(let i = 0; i < this.global.getUsers.length; i++) {
+    for(let i = 0; i < this.global.users.length; i++) {
 
-      if( (email.toUpperCase() == this.global.getUsers[i].email.toUpperCase()) ||
-      (username != null && username.toUpperCase() == this.global.getUsers[i].username.toUpperCase())) {
-        foundUser = this.global.getUsers[i];
+      if( (email.toUpperCase() == this.global.users[i].email.toUpperCase()) ||
+      (username != null && username.toUpperCase() == this.global.users[i].username.toUpperCase())) {
+        foundUser = this.global.users[i];
         break;
       }
     }

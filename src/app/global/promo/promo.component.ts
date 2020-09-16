@@ -12,12 +12,12 @@ export class PromoComponent implements OnInit {
 
   ngOnInit() {
     if(!this.global.testing) {
-      this.global.updatePromo();
+      this.global.hwaGetPromo();
     }
   }
 
   displayPromoType(type: string) {
-    return this.global.getPromo.type == type ? true : false;
+    return this.global.promo.type == type ? true : false;
   }
 
 }

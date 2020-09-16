@@ -30,24 +30,24 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: "order-form",
+    path: "claims",
+    component: ClaimsComponent
+  },
+  {
+    path: "order/buyer",
     component: OrderFormComponent
   },
   {
-    path: "seller-order-form",
+    path: "order/seller",
     component: SellerOrderFormComponent
   },
   {
     path: "login",
-    component: LoginComponent
+    component: DashboardComponent
   },
   {
     path: "dashboard",
     component: DashboardComponent
-  },
-  {
-    path: "claims",
-    component: ClaimsComponent
   },
   {
     path: "**",

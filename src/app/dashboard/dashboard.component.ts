@@ -24,32 +24,32 @@ export class DashboardComponent implements OnInit {
     entered: 'all',
     years: 'all',
     realtor: 'all',
-    sort: this.global.getGeneralSettings.defaultSortOrder
+    sort: 'DESC'
+    //sort: this.global.settings.defaultSortOrder
   };
 
-  constructor(public login: LoginService, private global: GlobalService) { }
+  constructor(public login: LoginService, public global: GlobalService) { }
 
   ngOnInit(): void {
     if(!this.global.testing) {
-      this.global.updateOrders();
-      this.global.updateUsers();
+      this.global.hwaGetOrders();
     }
   }
 
   getOrders() {
     let myOrders: any = [];
-    for(var i = 0; i < this.global.getOrders.length; i++) {
-      if(this.login.currentUser.type == 'USER') {
-        if((this.global.getOrders[i]['user_id'] == null) || (this.login.currentUser.id != this.global.getOrders[i]['user_id'])) {
+    for(var i = 0; i < this.global.orders.length; i++) {
+      if(this.global.currentUser.type == 'USER') {
+        if((this.global.orders[i].userId == null) || (this.global.currentUser.userId != this.global.orders[i].userId)) {
           continue;
         }
       }
 
-      if(!this.realtors.includes(this.global.getOrders[i]['realtor_name'])) {
-        this.realtors.push(this.global.getOrders[i]['realtor_name']);
+      if(!this.realtors.includes(this.global.orders[i].realtor.name)) {
+        this.realtors.push(this.global.orders[i].realtor.name);
       }
 
-      myOrders.push(this.global.getOrders[i]);
+      myOrders.push(this.global.orders[i]);
     }
 
     this.orders = myOrders;
@@ -77,7 +77,7 @@ export class DashboardComponent implements OnInit {
     startDate.setTime(startDate.getTime() - dateOffset);
 
     for(var i = 0; i < this.orders.length; i++) {
-      var createdDate = new Date(this.orders[i].created_date);
+      var createdDate = new Date(this.orders[i].createdDate);
       if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
         filteredOrders.push(this.orders[i]);
       }
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].home_type == this.filter.homeType) {
+      if(this.orders[i].homeType == this.filter.homeType) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -126,7 +126,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].entered == (this.filter.entered == 'entered' ? 1 : 0)) {
+      if(this.orders[i].entered == (this.filter.entered == 'entered' ? true : false)) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].realtor_name == this.filter.realtor) {
+      if(this.orders[i].realtor.name == this.filter.realtor) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
 
     this.display = display;
     if(display == 'DASHBOARD' && !this.global.testing) {
-      this.global.updateOrders();
+      this.global.hwaGetOrders();
     }
   }
 

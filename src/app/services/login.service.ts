@@ -20,9 +20,9 @@ export class LoginService {
     this.currentUser = null;
     
     let foundUser: any = null;
-    for(let i = 0; i < this.global.getUsers.length; i++) {
-      if(user.toUpperCase() == this.global.getUsers[i].email.toUpperCase() || user.toUpperCase() == this.global.getUsers[i].username.toUpperCase()) {
-        foundUser = this.global.getUsers[i];
+    for(let i = 0; i < this.global.users.length; i++) {
+      if(user.toUpperCase() == this.global.users[i].email.toUpperCase() || user.toUpperCase() == this.global.users[i].username.toUpperCase()) {
+        foundUser = this.global.users[i];
         break;
       }
     }
@@ -61,10 +61,10 @@ export class LoginService {
     this.currentUser = null;
 
     let foundUser: any = null;
-    for(let i = 0; i < this.global.getUsers.length; i++) {
+    for(let i = 0; i < this.global.users.length; i++) {
 
-      if(user.toUpperCase() == this.global.getUsers[i].email.toUpperCase() || user.toUpperCase() == this.global.getUsers[i].username.toUpperCase()) {
-        foundUser = this.global.getUsers[i];
+      if(user.toUpperCase() == this.global.users[i].email.toUpperCase() || user.toUpperCase() == this.global.users[i].username.toUpperCase()) {
+        foundUser = this.global.users[i];
       }
     }
 

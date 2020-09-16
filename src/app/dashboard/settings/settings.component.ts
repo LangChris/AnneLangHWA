@@ -13,53 +13,53 @@ import { LoginService } from '../../services/login.service';
 export class SettingsComponent implements OnInit {
 
   generalSettingsForm = new FormGroup({
-    title: new FormControl(this.global.getGeneralSettings.webpageTitle, [Validators.required]),
-    subtitle: new FormControl(this.global.getGeneralSettings.webpageSubTitle, [Validators.required]),
-    description: new FormControl(this.global.getGeneralSettings.webpageDescription, [Validators.required]),
-    orderDescription: new FormControl(this.global.getGeneralSettings.orderDescription, [Validators.required]),
-    orderMessage: new FormControl(this.global.getGeneralSettings.orderMessage, [Validators.required]),
-    email: new FormControl(this.global.getGeneralSettings.email, [Validators.required]),
-    passwordResetEmail: new FormControl(this.global.getGeneralSettings.passwordResetEmail, [Validators.required]),
-    phone: new FormControl(this.global.getGeneralSettings.phoneNumber, [Validators.required]),
-    owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),
-    defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
-    defaultFilename: new FormControl(this.global.getGeneralSettings.defaultFilename, [Validators.required]),
-    sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required]),
-    planOne: new FormControl(this.global.getPlans.gold.header, [Validators.required]),
-    planTwo: new FormControl(this.global.getPlans.platinum.header, [Validators.required]),
-    planThree: new FormControl(this.global.getPlans.diamond.header, [Validators.required]),
-    planOnePrice: new FormControl(this.global.getPlans.gold.price, [Validators.required]),
-    planTwoPrice: new FormControl(this.global.getPlans.platinum.price, [Validators.required]),
-    planThreePrice: new FormControl(this.global.getPlans.diamond.price, [Validators.required]),
-    promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
-    promoType: new FormControl(this.global.getPromo.type, [Validators.required]),
-    promoGift: new FormControl(this.global.getPromo.gift),
-    promoAmount: new FormControl(this.global.getPromo.amount),
-    promoCoverage: new FormControl(this.global.getPromo.coverage),
-    promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
-    promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
+    title: new FormControl(this.global.settings.webpageTitle, [Validators.required]),
+    subtitle: new FormControl(this.global.settings.webpageSubTitle, [Validators.required]),
+    description: new FormControl(this.global.settings.webpageDescription, [Validators.required]),
+    orderDescription: new FormControl(this.global.settings.orderDescription, [Validators.required]),
+    orderMessage: new FormControl(this.global.settings.orderMessage, [Validators.required]),
+    email: new FormControl(this.global.settings.email, [Validators.required]),
+    passwordResetEmail: new FormControl(this.global.settings.alternateEmail, [Validators.required]),
+    phone: new FormControl(this.global.settings.phoneNumber, [Validators.required]),
+    owner: new FormControl(this.global.settings.owner, [Validators.required]),
+    defaultSort: new FormControl('DESC', [Validators.required]),
+    defaultFilename: new FormControl('Orders', [Validators.required]),
+    sendEmail: new FormControl(this.global.settings.sendEmail, [Validators.required]),
+    planOne: new FormControl(this.global.plans[0].plan.name, [Validators.required]),
+    planTwo: new FormControl(this.global.plans[1].plan.name, [Validators.required]),
+    planThree: new FormControl(this.global.plans[2].plan.name, [Validators.required]),
+    planOnePrice: new FormControl(this.global.plans[0].plan.price, [Validators.required]),
+    planTwoPrice: new FormControl(this.global.plans[1].plan.price, [Validators.required]),
+    planThreePrice: new FormControl(this.global.plans[2].plan.price, [Validators.required]),
+    promoActive: new FormControl(this.global.promo.active, [Validators.required]),
+    promoType: new FormControl(this.global.promo.type, [Validators.required]),
+    promoGift: new FormControl(this.global.promo.gift),
+    promoAmount: new FormControl(this.global.promo.amount),
+    promoCoverage: new FormControl(this.global.promo.coverage),
+    promoCode: new FormControl(this.global.promo.code, [Validators.required]),
+    promoEndDate: new FormControl(this.global.promo.endDate, [Validators.required]),
     specialRequest: new FormControl(),
     optionalCoverage: new FormControl(),
-    id: new FormControl(this.login.currentUser.id, [Validators.required]),
-    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
-    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
-    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.login.currentUser.alternate_email),
-    phoneNumber: new FormControl(this.login.currentUser.phone_number),
-    loginUsername: new FormControl(this.login.currentUser.username),
-    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
+    id: new FormControl(this.global.currentUser.id, [Validators.required]),
+    usersType: new FormControl(this.global.currentUser.type, [Validators.required]),
+    usersName: new FormControl(this.global.currentUser.name, [Validators.required]),
+    emailAddress: new FormControl(this.global.currentUser.email, [Validators.required]),
+    alternateEmail: new FormControl(this.global.currentUser.alternate_email),
+    phoneNumber: new FormControl(this.global.currentUser.phone_number),
+    loginUsername: new FormControl(this.global.currentUser.username),
+    loginPassword: new FormControl(atob(this.global.currentUser.password), [Validators.required])
   });
 
 
   userSettingsForm = new FormGroup({
-    id: new FormControl(this.login.currentUser.id, [Validators.required]),
-    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
-    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
-    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.login.currentUser.alternateEmail),
-    phoneNumber: new FormControl(this.login.currentUser.phoneNumber),
-    loginUsername: new FormControl(this.login.currentUser.username),
-    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
+    id: new FormControl(this.global.currentUser.id, [Validators.required]),
+    usersType: new FormControl(this.global.currentUser.type, [Validators.required]),
+    usersName: new FormControl(this.global.currentUser.name, [Validators.required]),
+    emailAddress: new FormControl(this.global.currentUser.email, [Validators.required]),
+    alternateEmail: new FormControl(this.global.currentUser.alternateEmail),
+    phoneNumber: new FormControl(this.global.currentUser.phoneNumber),
+    loginUsername: new FormControl(this.global.currentUser.username),
+    loginPassword: new FormControl(atob(this.global.currentUser.password), [Validators.required])
   });
 
 
@@ -73,7 +73,7 @@ export class SettingsComponent implements OnInit {
       this.dashboard.showError = false;
     });
 
-    if(this.login.currentUser.type == 'ADMIN') {
+    if(this.global.currentUser.type == 'ADMIN') {
       setTimeout(() => {
         if(this.generalSettingsForm.controls.promoType.value == 'Free Coverage Multi') {
           let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
@@ -81,11 +81,11 @@ export class SettingsComponent implements OnInit {
           let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
           let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
     
-          coverage1.value = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
-          coverage2.value = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
+          coverage1.value = this.global.promo.coverage.substring(0, this.global.promo.coverage.indexOf(','));
+          coverage2.value = this.global.promo.coverage.substring(this.global.promo.coverage.indexOf(',') + 1);
     
-          code1.value = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
-          code2.value = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+          code1.value = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
+          code2.value = this.global.promo.code.substring(this.global.promo.code.indexOf(',') + 1);
         }
       }, 1000);
     }
@@ -129,7 +129,7 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.login.currentUser.type == 'ADMIN') {
+    if(this.global.currentUser.type == 'ADMIN') {
       if(this.generalSettingsForm.valid) {
         if(this.generalSettingsForm.controls.promoType.value == "Money Off") {
           this.generalSettingsForm.controls.promoGift.setValue('');
@@ -178,10 +178,10 @@ export class SettingsComponent implements OnInit {
           return this.database.saveSettings(this.generalSettingsForm).subscribe(
             response => {
               this.dashboard.showSuccess = true;
-              this.global.updateGeneralSettings();
-              this.global.updatePlans();
-              this.global.updatePromo();
-              this.global.updateUsers();
+              this.global.hwaGetSettings();
+              this.global.hwaGetPlans();
+              this.global.hwaGetPromo();
+              this.global.hwaGetOrders();
               setTimeout(()=>{
                 this.dashboard.updateDisplay('DASHBOARD');
               },1000);
@@ -219,10 +219,11 @@ export class SettingsComponent implements OnInit {
           return this.database.saveSettings(this.generalSettingsForm).subscribe(
             response => {
               this.dashboard.showSuccess = true;
-              this.global.updateGeneralSettings();
-              this.global.updatePlans();
-              this.global.updatePromo();
-              this.global.updateUsers();
+              this.global.hwaLogin(this.userSettingsForm.controls.loginUsername.value, this.userSettingsForm.controls.loginPassword.value);
+              this.global.hwaGetSettings();
+              this.global.hwaGetPlans();
+              this.global.hwaGetPromo();
+              this.global.hwaGetOrders();
               setTimeout(()=>{
                 this.dashboard.updateDisplay('DASHBOARD');
               },1000);

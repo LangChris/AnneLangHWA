@@ -1,18 +1,18 @@
-<div *ngIf="!login.getStatus.successful">
+<div>
     <table>
         <tbody>
             <tr>
             <td>Email/Username:</td>
             <td>
                 <input type="text" class="large" id="username" (keydown)="checkKey($event)" />
-                <span *ngIf="login.getStatus.bad_user" class="required small-text" ><br /> Invalid Username!</span>
+                <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
             </td>
             </tr>
             <tr>
             <td>Password:</td>
             <td>
                 <input type="password" class="large" id="password" (keydown)="checkKey($event)" />
-                <span *ngIf="login.getStatus.bad_pass" class="required small-text" ><br /> Invalid Password!</span>
+                <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Invalid Password!</span>
             </td>
             </tr>
         </tbody>

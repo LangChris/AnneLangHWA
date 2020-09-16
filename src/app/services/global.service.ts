@@ -10,63 +10,15 @@ const brochures = {
 @Injectable()
 export class GlobalService {
 
-  showPortal: boolean = true;
-
-  promo = {
-    active: false,
-    amount: 0,
-    type: '',
-    gift: '',
-    coverage: '',
-    endDate: null,
-    endDateString: null,
-    code: null
-  };
-
-  plans = {
-    gold: {
-        header: null,
-        price: 0,
-        townhomeDiscount: 0,
-        options: []
-    },
-    platinum: {
-        header: null,
-        price: 0,
-        townhomeDiscount: 0,
-        options: []
-    },
-    diamond: {
-        header: null,
-        price: 0,
-        townhomeDiscount: 0,
-        options: []
-    }
-  };
-
-  optionalCoverage = [];
-
-  specialRequest = [];
-
-  generalSettings = {
-    phoneNumber: '',
-    email: '',
-    passwordResetEmail: '',
-    owner: '',
-    webpageTitle: '',
-    webpageSubTitle: '',
-    webpageDescription: '',
-    orderDescription: '',
-    orderMessage: '',
-    defaultSortOrder: '',
-    defaultFilename: '',
-    sendEmail: true
-  };
-
+  plans: any;
+  promo: any;
+  settings: any;
   users: any;
-
+  currentUser: any;
   orders: any;
-
+  optionalCoverages: any;
+  specialRequests: any;
+  loginStatus = "";
   testing = false;
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
@@ -75,177 +27,155 @@ export class GlobalService {
     return brochures;
   }
 
-  get getOrders() {
-    return this.orders;
+  hwaLogin(username: string, password: string) {
+    let login = {
+      username: username,
+      password: password
+    };
+
+    this.database.HwaLogin(login).subscribe(response => {
+      this.currentUser = response;
+      this.loginStatus = "SUCCESS";
+      console.log(this.currentUser);
+    }, error => {
+      console.log(error);
+
+      if(error.message.includes('Email/Username not found')) {
+        this.loginStatus = "BAD_USER";
+      }
+
+      if(error.message.includes('Invalid password')) {
+        this.loginStatus = "BAD_PASS";
+      }
+
+    });
   }
 
-  updateOrders() {
+  hwaFormatOrders() {
+    console.log(this.orders);
+    console.log('formatting orders for import...');
     this.database.getOrders().subscribe(
       data => { 
         this.orders = data;
         for(var i = 0; i < this.orders.length; i++) {
-          this.orders[i].close_start_date = this.datePipe.transform(this.orders[i].close_start_date, "MM/dd/yyyy");
-        }
-      },
-      error => {
-        console.log(error);
-      });
-  }
 
-  get getPlans() {
-    return this.plans;
-  }
+          let hasBuyers = (this.orders[i].buyer_name == null || this.orders[i].buyer_email == null ? false : true);
+          let hasSellers = (this.orders[i].seller_name == null || this.orders[i].seller_email == null ? false : true);
+          let hasRealtor = (this.orders[i].realtor_name == null || this.orders[i].realtor_email == null ? false : true);
+          let hasTitleAgent = (this.orders[i].title_agent_email == null ? false : true);
 
-  updatePlans() {
-    this.database.getPlans().subscribe(
-      response => {
-        this.plans.gold.header = response[0].name;
-        this.plans.gold.price = response[0].price;
-        this.plans.gold.townhomeDiscount = response[0].townhome_discount;
-
-        this.plans.platinum.header = response[1].name;
-        this.plans.platinum.price = response[1].price;
-        this.plans.platinum.townhomeDiscount = response[1].townhome_discount;
-
-        this.plans.diamond.header = response[2].name;
-        this.plans.diamond.price = response[2].price;
-        this.plans.diamond.townhomeDiscount = response[2].townhome_discount;
-      },
-      error => console.log(error)
-    );
-  }
-
-  updatePlanOptions() {
-    this.database.getPlanOptions().subscribe(
-      response => {
-        let data: any;
-        data = response;
-        for(let i = 0; i < data.length; i++) {
-          switch(data[i].plan) {
-            case "Gold": this.plans.gold.options.push(" " + data[i].plan_option); break;
-            case "Platinum": this.plans.platinum.options.push(" " + data[i].plan_option); break;
-            case "Diamond": this.plans.diamond.options.push(" " + data[i].plan_option); break;
-          }
-        }
-      },
-      error => console.log(error)
-    );
-  }
-
-  updateOptionalCoverage() {
-    this.database.getOptionalCoverage().subscribe(
-      response => {
-        let data: any;
-        data = response;
-        for(let i = 0; i < data.length; i++) {
-          let option = {
-            option: data[i].coverage_option,
-            price: '$' + data[i].price + '/yr.'
+          // TODO: format the object here
+          let order = {
+            orderId: this.orders[i].id,
+            address: {
+              addressLine: this.orders[i].address_line,
+              city: this.orders[i].city,
+              state: this.orders[i].state,
+              zip: this.orders[i].zip
+            },
+            buyers: (!hasBuyers ? null : [
+              {
+                name: this.orders[i].buyer_name,
+                email: this.orders[i].buyer_email,
+                phoneNumber: this.orders[i].buyer_phone
+              }
+            ]),
+            sellers: (!hasSellers ? null : [
+              {
+                name: this.orders[i].seller_name,
+                email: this.orders[i].seller_email,
+                phoneNumber: this.orders[i].seller_phone
+              }
+            ]),
+            closeStartDate: this.orders[i].close_start_date,
+            createdDate: this.orders[i].created_date,
+            email: this.orders[i].email,
+            entered: (this.orders[i].entered == '1' ? true : false),
+            homeType: this.orders[i].home_type.toUpperCase().replaceAll(" ", "_").replaceAll("/", "_"),
+            hvacCoverage: this.orders[i].hvac_coverage,
+            name: this.orders[i].name,
+            optionalCoverage: this.orders[i].optionalCoverage,
+            plan: this.orders[i].plan.toUpperCase().replaceAll(" ", "_"),
+            promo: this.orders[i].promo,
+            realtor: (!hasRealtor ? null : {
+              company: this.orders[i].realtor_company,
+              officeZip: this.orders[i].realtor_zip,
+              name: this.orders[i].realtor_name,
+              email: this.orders[i].realtor_email,
+              phoneNumber: null
+            }),
+            titleAgent: (!hasTitleAgent ? null : {
+              name: null,
+              email: this.orders[i].title_agent_email,
+              phoneNumber: null
+            }),
+            userId: (this.orders[i].user_id == null ? 0 : this.orders[i].user_id),
+            years: this.orders[i].years
           };
-          this.optionalCoverage.push(option);
+          this.orders[i] = order;
         }
-      },
-      error => console.log(error)
-    );
-  }
-  
-  get getOptionalCoverage() {
-    return this.optionalCoverage;
-  }
-
-  updateSpecialRequest() {
-    this.database.getSpecialRequest().subscribe(
-      response => {
-        let data: any;
-        data = response;
-        for(let i = 0; i < data.length; i++) {
-          this.specialRequest.push(data[i].request);
-        }
-      },
-      error => console.log(error)
-    );
-  }
-
-  get getSpecialRequest() {
-    return this.specialRequest;
-  }
-
-  get getPromo() {
-    return this.promo;
-  }
-
-  displayPromo() {
-    let today = new Date();
-    let endDate = new Date(this.getPromo.endDateString + ' 23:59:59');
-
-    let valid = this.getPromo.active && today.getTime() <= endDate.getTime();
-    return valid ? true : false;
-  }
-
-  updatePromo() {
-    this.database.getPromo().subscribe(
-      response => {
-        let data: any;
-        data = response;
-        for(let i = 0; i < data.length; i++) {
-          this.promo.active = data[i].active == "1" ? true : false;
-          this.promo.amount = data[i].amount;
-          this.promo.type = data[i].type;
-          this.promo.gift = data[i].gift;
-          this.promo.coverage = data[i].coverage;
-          this.promo.endDate = data[i].end_date;
-          this.promo.endDateString = this.datePipe.transform(data[i].end_date, "MM/dd/yyyy");
-          this.promo.code = data[i].code;
-        }
-      },
-      error => console.log(error)
-    );
-  }
-
-  get getShowPortal() {
-    return this.showPortal;
-  }
-
-  setShowPortal(showPortal: boolean) {
-    this.showPortal = showPortal;
-  }
-
-  get getGeneralSettings() {
-    return this.generalSettings;
-  }
-
-  updateGeneralSettings() {
-    this.database.getGeneralSettings().subscribe(
-      response => {
-        this.generalSettings.phoneNumber = response[0].phone_number;
-        this.generalSettings.email = response[0].email;
-        this.generalSettings.passwordResetEmail = response[0].password_reset_email;
-        this.generalSettings.owner = response[0].owner;
-        this.generalSettings.webpageTitle = response[0].webpage_title;
-        this.generalSettings.webpageSubTitle = response[0].webpage_subtitle;
-        this.generalSettings.webpageDescription = response[0].webpage_description;
-        this.generalSettings.orderDescription = response[0].order_description;
-        this.generalSettings.orderMessage = response[0].order_message;
-        this.generalSettings.defaultSortOrder = response[0].default_sort_order;
-        this.generalSettings.defaultFilename = response[0].default_filename;
-        this.generalSettings.sendEmail = response[0].send_email == "1" ? true : false;
-      },
-      error => console.log(error)
-    );
-  }
-
-  get getUsers() {
-    return this.users;
-  }
-
-  updateUsers() {
-    this.database.getUsers().subscribe(
-      data => { 
-        this.users = data;
       },
       error => {
         console.log(error);
       });
+  }
+
+  hwaImportOrders() {
+    console.log(this.orders);
+    this.database.HwaImportOrders(this.orders).subscribe(response => {
+      console.log(response);
+    }, error => console.log(error));
+  }
+
+  hwaGetUsers() {
+    this.database.HwaUsers().subscribe(response => {
+      this.users = response;
+      console.log(this.users);
+    }, error => console.log(error));
+  }
+
+  hwaGetOrders() {
+    this.database.HwaOrders().subscribe(response => {
+      this.orders = response;
+      console.log(this.orders);
+    }, error => console.log(error));
+  }
+
+  hwaGetPlans() {
+    this.database.HwaPlans().subscribe(response => {
+      this.plans = response;
+      console.log(this.plans);
+    }, error => console.log(error));
+  }
+
+  hwaGetPromo() {
+    this.database.HwaPromo().subscribe(response => {
+      console.log(response);
+      this.promo = response;
+      this.promo.endDateString = this.datePipe.transform(this.promo.endDate, "MM/dd/yyyy");
+      console.log(this.promo);
+    }, error => console.log(error));
+  }
+
+  hwaGetSettings() {
+    this.database.HwaSettings().subscribe(response => {
+      this.settings = response;
+      console.log(this.settings);
+    }, error => console.log(error));
+  }
+
+  hwaGetSpecialRequests() {
+    this.database.HwaSpecialRequests().subscribe(response => {
+      this.specialRequests = response;
+      console.log(this.specialRequests);
+    }, error => console.log(error));
+  }
+
+  hwaGetOptionalCoverages() {
+    this.database.HwaOptionalCoverages().subscribe(response => {
+      this.optionalCoverages = response;
+      console.log(this.optionalCoverages);
+    }, error => console.log(error));
   }
 
   get getMultiCoverage1() {
@@ -267,6 +197,7 @@ export class GlobalService {
   setTestData() {
     console.log('setting test data...');
 
+    // need to update
     this.orders = [
       {
         id: 1,
@@ -455,9 +386,10 @@ export class GlobalService {
       code: "2ndFridge,WellPump"
     };
 
+    //need to update
     this.plans = {
       gold: {
-          header: "Gold",
+          name: "Gold",
           price: 450,
           townhomeDiscount: 20,
           options: [
@@ -505,42 +437,44 @@ export class GlobalService {
       }
     };
   
-    this.optionalCoverage = [
-      {option: "Pool/Spa Combo", price: "$190/yr."},
-      {option: "Additional Pool or Spa", price: "$190/yr."},
-      {option: "Salt Water Pool (must purchase with Pool/Spa Combo", price: "$345/yr."},
-      {option: "Well Pump", price: "$100/yr."},
-      {option: "Stand Alone Freezer", price: "$50/yr."},
-      {option: "Second Refrigerator", price: "$35/yr."},
-      {option: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75/yr."},
-      {option: "External Water Line Repair", price: "$90/yr."},
-      {option: "External Water Line + Sewer & Septic Line Repair", price: "$195/yr."},
-      {option: "Washer/Dryer Package", price: "$85/yr."},
-      {option: "Kitchen Refrigerator w/Ice Maker", price: "$50/yr."},
-      {option: "Green Plus", price: "$70/yr."},
-      {option: "Orange Plus", price: "$100/yr."}
+    this.optionalCoverages = [
+      {coverageOption: "Pool/Spa Combo", price: "$190/yr."},
+      {coverageOption: "Additional Pool or Spa", price: "$190/yr."},
+      {coverageOption: "Salt Water Pool (must purchase with Pool/Spa Combo", price: "$345/yr."},
+      {coverageOption: "Well Pump", price: "$100/yr."},
+      {coverageOption: "Stand Alone Freezer", price: "$50/yr."},
+      {coverageOption: "Second Refrigerator", price: "$35/yr."},
+      {coverageOption: "Septic System/Sewage Ejector Pump and Septic Tank Pumping", price: "$75/yr."},
+      {coverageOption: "External Water Line Repair", price: "$90/yr."},
+      {coverageOption: "External Water Line + Sewer & Septic Line Repair", price: "$195/yr."},
+      {coverageOption: "Washer/Dryer Package", price: "$85/yr."},
+      {coverageOption: "Kitchen Refrigerator w/Ice Maker", price: "$50/yr."},
+      {coverageOption: "Green Plus", price: "$70/yr."},
+      {coverageOption: "Orange Plus", price: "$100/yr."}
     ];
   
-    this.specialRequest = [
-      "Over 5000 Sq Ft",
-      "Multi Level Flat",
-      "New Construction"
-    ];
+    // need to update
+    // this.specialRequest = [
+    //   "Over 5000 Sq Ft",
+    //   "Multi Level Flat",
+    //   "New Construction"
+    // ];
   
-    this.generalSettings = {
-      phoneNumber: '703-123-1234',
-      email: 'anne.lang@homewarrantyamerica.com',
-      passwordResetEmail: 'anne@annelanghwa.com',
-      owner: 'Anne Lang',
-      webpageTitle: 'HWA Home Warranty',
-      webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',
-      webpageDescription: 'Welcome get started by viewing our plans, brochures or place an order below.',
-      orderDescription: 'Fill out the information below to place an order',
-      orderMessage: 'Thank you - order received! I will be in touch with you very soon',
-      defaultSortOrder: 'ASC',
-      defaultFilename: 'MyOrders',
-      sendEmail: false
-    };
+    // remove
+    // this.generalSettings = {
+    //   phoneNumber: '703-123-1234',
+    //   email: 'anne.lang@homewarrantyamerica.com',
+    //   passwordResetEmail: 'anne@annelanghwa.com',
+    //   owner: 'Anne Lang',
+    //   webpageTitle: 'HWA Home Warranty',
+    //   webpageSubTitle: 'Give your clients the best with the only 13 month home warranty',
+    //   webpageDescription: 'Welcome get started by viewing our plans, brochures or place an order below.',
+    //   orderDescription: 'Fill out the information below to place an order',
+    //   orderMessage: 'Thank you - order received! I will be in touch with you very soon',
+    //   defaultSortOrder: 'ASC',
+    //   defaultFilename: 'MyOrders',
+    //   sendEmail: false
+    // };
 
     this.users = [
       {id: 1, name: 'Anne Lang', username: 'Anne.Lang', password: 'VyFyZWwzc3M=', status: 'SUBSCRIBED', type: 'ADMIN', email: 'anne.lang@hwahomewarranty.com', alternateEmail: 'annelang12@gmail.com', phoneNumber: '(703) 220 5933'},

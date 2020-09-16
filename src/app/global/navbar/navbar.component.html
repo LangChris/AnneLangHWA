@@ -15,8 +15,8 @@
       <td></td>
       <td>
         <div class="navigation-container">
-          <div class="info tooltip"><a class="telephone" href="tel:{{global.getGeneralSettings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
-          <div class="info tooltip"><a class="email" href="mailTo:{{global.getGeneralSettings.email}}"></a><span class="tooltiptext">Email Me</span></div>
+          <div class="info tooltip"><a class="telephone" href="tel:{{global.settings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
+          <div class="info tooltip"><a class="email" href="mailTo:{{global.settings.email}}"></a><span class="tooltiptext">Email Me</span></div>
           <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info</span></div>
           <div class="info tooltip"><span class="login" (click)="navigateToLogin()"></span><span class="tooltiptext">User Portal</span></div>
         </div>
@@ -24,4 +24,4 @@
     </tr>
   </table>
 </div>
-<div *ngIf="login.currentUser != null" class="user-wrapper"><div class="user">Welcome, {{login.currentUser.name}}</div>
+<div *ngIf="global.currentUser != null" class="user-wrapper"><div class="user">Welcome, {{global.currentUser.name}}</div>

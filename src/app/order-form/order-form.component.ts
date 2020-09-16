@@ -4,7 +4,6 @@ import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
-import { LoginService } from '../services/login.service';
 import { RegisterService } from '../services/register.service';
 
 @Component({
@@ -69,11 +68,9 @@ export class OrderFormComponent implements OnInit {
     password: ""
   };
 
-  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private register: RegisterService) {}
 
   ngOnInit() {
-    this.global.setShowPortal(false);
-
     this.orderForm.controls.name.valueChanges.subscribe(value => {
       if(value) {
         var name = document.getElementById('name') as HTMLInputElement;
@@ -116,13 +113,13 @@ export class OrderFormComponent implements OnInit {
         var homeType = document.getElementById('home-type-sf') as HTMLInputElement;
         homeType.checked = true;
 
-        if(this.global.displayPromo()) {
+        if(this.global.promo != null) {
           var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
-          if(this.global.getPromo.type == 'Free Coverage Multi') {
-            let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
+          if(this.global.promo.type == 'Free Coverage Multi') {
+            let code1 = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
             promoInput.value = code1;
           } else {
-            promoInput.value = this.global.getPromo.code;
+            promoInput.value = this.global.promo.code;
           }
           this.updatePromoStatus(null);
         }
@@ -139,12 +136,12 @@ export class OrderFormComponent implements OnInit {
     
     var options = [];
 
-    for(var i = 0; i < this.global.getOptionalCoverage.length; i++) {
+    for(var i = 0; i < this.global.optionalCoverages.length; i++) {
       var option = document.createElement("option");
-      option.text = this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price;
-      option.value = this.global.getOptionalCoverage[i].option;
+      option.text = this.global.optionalCoverages[i].option + " - " + this.global.optionalCoverages[i].price;
+      option.value = this.global.optionalCoverages[i].option;
       optionalCoverageSelect.add(option);
-      options.push(this.global.getOptionalCoverage[i].option + " - " + this.global.getOptionalCoverage[i].price);
+      options.push(this.global.optionalCoverages[i].option + " - " + this.global.optionalCoverages[i].price);
     }
     
     this.optionalCoverageMultiSelect = new (MultiSelect as any)('.multi-select', {
@@ -164,21 +161,17 @@ export class OrderFormComponent implements OnInit {
 
   updatePromoStatus(event) {
     setTimeout(()=>{
-      if(!this.global.getPromo.active) {
+      if(this.global.promo == null) {
         this.validPromo = true;
       }
       var promoInput = document.getElementsByName('promo')[0] as HTMLInputElement;
       var promoInputValue = promoInput.value;
       var promoStatus = document.getElementById('promo-status');
       if(promoInputValue) {
-        console.log('promoInputValue: ' + promoInputValue);
-        console.log(this.global.getPromo);
-          if(this.global.displayPromo()) {
-              if(this.global.getPromo.type = 'Free Coverage Multi' ) {
-                let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
-                let code2 = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
-                console.log(code1);
-                console.log(code2);
+          if(this.global.promo != null) {
+              if(this.global.promo.type = 'Free Coverage Multi' ) {
+                let code1 = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
+                let code2 = this.global.promo.code.substring(this.global.promo.code.indexOf(',') + 1);
                 if(promoInputValue === code1 || promoInputValue === code2) {
                   promoInput.style.border = "1px solid green";
                   promoStatus.style.color = "green";
@@ -190,7 +183,7 @@ export class OrderFormComponent implements OnInit {
                   promoStatus.innerHTML = " Invalid";   
                   this.validPromo = false;
                 }
-              } else if(this.global.getPromo.code === promoInputValue) {
+              } else if(this.global.promo.code === promoInputValue) {
                 promoInput.style.border = "1px solid green";
                 promoStatus.style.color = "green";
                 promoStatus.innerHTML = " &#10004; Valid";
@@ -208,10 +201,10 @@ export class OrderFormComponent implements OnInit {
           this.validPromo = true;
       }
 
-      if(this.validPromo && this.global.getPromo.active && this.global.getPromo.type == 'Free Coverage') {
+      if(this.validPromo && this.global.promo.active && this.global.promo.type == 'Free Coverage') {
         for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
           let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
-          if(value.toString().includes(this.global.getPromo.coverage)) {
+          if(value.toString().includes(this.global.promo.coverage)) {
             this.optionalCoverageMultiSelect.options.items.get(i).selected = true;
             this.optionalCoverageChange(null);
 
@@ -229,11 +222,11 @@ export class OrderFormComponent implements OnInit {
             }
           }
         }
-      } else if(this.validPromo && this.global.getPromo.active && this.global.getPromo.type == 'Free Coverage Multi') {
+      } else if(this.validPromo && this.global.promo.active && this.global.promo.type == 'Free Coverage Multi') {
         for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
           let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
 
-          let coverage1 = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
+          let coverage1 = this.global.promo.coverage.substring(0, this.global.promo.coverage.indexOf(','));
 
           if(value.toString().includes(coverage1)) {
             this.optionalCoverageMultiSelect.options.items.get(i).selected = true;
@@ -272,10 +265,10 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.optionalCoverage.setValue(selectedOptions);
 
       let selectedSpecialRequests = [];
-      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+      for(let i = 0; i < this.global.specialRequests.length; i++) {
         var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
         if(specialRequest.checked) {
-          selectedSpecialRequests.push(this.global.getSpecialRequest[i]);
+          selectedSpecialRequests.push(this.global.specialRequests[i]);
         }
       }
       
@@ -292,16 +285,12 @@ export class OrderFormComponent implements OnInit {
 
       let today = new Date;
       this.orderForm.controls.createdDate.setValue(today);
-      this.orderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
-      this.orderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
-      this.orderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.orderForm.controls.sendEmail.setValue(this.global.settings.sendEmail);
+      this.orderForm.controls.adminName.setValue(this.global.settings.owner);
+      this.orderForm.controls.adminEmail.setValue(this.global.settings.email);
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
-      if(!this.global.testing && this.active == 'REGISTER') {
-          this.loginSuccessful(this.registerLogin.username, this.registerLogin.password);
-      }
-
-      this.orderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
+      this.orderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
 
       if(!this.global.testing) {
         return this.database.placeOrder(this.orderForm).subscribe(response => {
@@ -334,14 +323,14 @@ export class OrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
-    this.global.updateUsers();
+    this.global.hwaGetUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
 
           // if logged in -> proceed next
-          if(this.login.currentUser != null) {
+          if(this.global.currentUser != null) {
             this.toggleActive('LOGIN');
             this.progressStep++; 
             break;
@@ -352,11 +341,11 @@ export class OrderFormComponent implements OnInit {
             let username = document.getElementById('login-username') as HTMLInputElement;
             let password = document.getElementById('login-password') as HTMLInputElement;
 
-            if(this.loginSuccessful(username.value, password.value)) {
-              // update name and email with info
-              this.orderForm.controls.name.setValue(this.login.currentUser.name);
-              this.orderForm.controls.email.setValue(this.login.currentUser.email);
-            } 
+            this.global.hwaLogin(username.value, password.value);
+            if(this.global.currentUser != null && this.global.loginStatus == 'SUCCESS') {
+              this.orderForm.controls.name.setValue(this.global.currentUser.name);
+              this.orderForm.controls.email.setValue(this.global.currentUser.email);
+            }
           } else if(this.active == 'REGISTER') {
             let regName = document.getElementById('register-name') as HTMLInputElement;
             let regEmail = document.getElementById('register-email') as HTMLInputElement;
@@ -397,7 +386,7 @@ export class OrderFormComponent implements OnInit {
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         //login and status = successful
-        (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'LOGIN' && this.global.loginStatus == 'SUCCESS') ||
         (this.progressStep == 1 && this.active == 'REGISTER') ||
         this.orderForm.valid) {
           this.progressStep++; 
@@ -439,22 +428,22 @@ export class OrderFormComponent implements OnInit {
     this.orderForm.controls.promo.setValue(promoInput.value);
     
     switch(plan.value) {
-      case "Gold": {
+      case "GOLD": {
         this.total += (isTownhome) ? 
-        +(this.global.getPlans.gold.price - this.global.getPlans.gold.townhomeDiscount) :
-        +this.global.getPlans.gold.price; 
+        +(this.global.plans[0].plan.price - this.global.plans[0].plan.townhomeDiscount) :
+        +this.global.plans[0].plan.price; 
         break;
       }
-      case "Platinum": {
+      case "PLATINUM": {
         this.total += (isTownhome) ? 
-        +(this.global.getPlans.platinum.price - this.global.getPlans.platinum.townhomeDiscount) :
-        +this.global.getPlans.platinum.price; 
+        +(this.global.plans[1].plan.price - this.global.plans[1].plan.townhomeDiscount) :
+        +this.global.plans[1].plan.price; 
         break;
       }
-      case "Diamond": {
+      case "DIAMOND": {
         this.total += (isTownhome) ? 
-        +(this.global.getPlans.diamond.price - this.global.getPlans.diamond.townhomeDiscount) :
-        +this.global.getPlans.diamond.price; 
+        +(this.global.plans[2].plan.price - this.global.plans[2].plan.townhomeDiscount) :
+        +this.global.plans[2].plan.price; 
         break;
       }
     }
@@ -470,8 +459,8 @@ export class OrderFormComponent implements OnInit {
       this.total += +(discountYear * 2);
     }
 
-    if(this.global.getPromo.active && this.validPromo && this.orderForm.controls.promo.value != '' && this.global.getPromo.type == 'Money Off') {
-      this.total -= +this.global.getPromo.amount;
+    if(this.global.promo.active && this.validPromo && this.orderForm.controls.promo.value != '' && this.global.promo.type == 'Money Off') {
+      this.total -= +this.global.promo.amount;
     }
 
     var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
@@ -482,15 +471,15 @@ export class OrderFormComponent implements OnInit {
           if(!this.validPromo) {
             this.total += +price;
           } else {
-            if(this.global.getPromo.type == 'Free Coverage' && this.orderForm.controls.promo.value != '') {
-              if(!option.includes(this.global.getPromo.coverage)) {
+            if(this.global.promo.type == 'Free Coverage' && this.orderForm.controls.promo.value != '') {
+              if(!option.includes(this.global.promo.coverage)) {
                 this.total += +price;
               }
-            } else if(this.global.getPromo.type == 'Free Coverage Multi' && this.orderForm.controls.promo.value != '') {
-              let coverage1 = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
-              let coverage2 = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
-              let code1 = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
-              let code2 = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
+            } else if(this.global.promo.type == 'Free Coverage Multi' && this.orderForm.controls.promo.value != '') {
+              let coverage1 = this.global.promo.coverage.substring(0, this.global.promo.coverage.indexOf(','));
+              let coverage2 = this.global.promo.coverage.substring(this.global.promo.coverage.indexOf(',') + 1);
+              let code1 = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
+              let code2 = this.global.promo.code.substring(this.global.promo.code.indexOf(',') + 1);
 
               if( (!option.includes(coverage1) && !option.includes(coverage2))  ||
                   (option.includes(coverage1) && this.orderForm.controls.promo.value != code1) ||
@@ -551,7 +540,7 @@ export class OrderFormComponent implements OnInit {
 
   isLoginActive() {
     // if logged in -> proceed next
-    if(this.login.currentUser != null && this.progressStep == 1) {
+    if(this.global.currentUser != null && this.progressStep == 1) {
       this.toggleActive('LOGIN');
       this.makeProgressStep("NEXT");
     }
@@ -569,12 +558,4 @@ export class OrderFormComponent implements OnInit {
     return false;
   }
 
-  loginSuccessful(user: string, pass: string) {
-      this.login.loginWithoutRedirect(user, pass);
-      if(this.login.getStatus.successful) {
-        return true;
-      }
-    
-    return false;
-  }
 }

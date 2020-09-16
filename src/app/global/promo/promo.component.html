@@ -1,9 +1,9 @@
-<div class="promo" id="promo" *ngIf="global.displayPromo()">
-  <h1 *ngIf="displayPromoType('Money Off')" id="promo-title">${{global.getPromo.amount}} OFF</h1>
-  <h1 *ngIf="displayPromoType('Free Gift')" id="promo-title">Free Gift: {{global.getPromo.gift}}</h1>
-  <h1 *ngIf="displayPromoType('Free Coverage')" id="promo-title">Free Coverage: {{global.getPromo.coverage}}</h1>
+<div class="promo" id="promo" *ngIf="global.promo != null">
+  <h1 *ngIf="displayPromoType('Money Off')" id="promo-title">${{global.promo.amount}} OFF</h1>
+  <h1 *ngIf="displayPromoType('Free Gift')" id="promo-title">Free Gift: {{global.promo.gift}}</h1>
+  <h1 *ngIf="displayPromoType('Free Coverage')" id="promo-title">Free Coverage: {{global.promo.coverage}}</h1>
   <h1 *ngIf="displayPromoType('Free Coverage Multi')" id="promo-title">Free Coverage: {{global.getMultiCoverage1}} or {{global.getMultiCoverage2}}</h1>
-  <span>New Plan Purchases Through</span> <span id="promo-endDate">{{global.getPromo.endDateString}}</span>
-  <h4 *ngIf="!displayPromoType('Free Coverage Multi')" id="promo-code">Use Promo Code: {{global.getPromo.code}}</h4>
+  <span *ngIf="global.promo ! null">New Plan Purchases Through</span> <span id="promo-endDate" *ngIf="global.promo ! null">{{global.promo.endDateString}}</span>
+  <h4 *ngIf="!displayPromoType('Free Coverage Multi')" id="promo-code">Use Promo Code: {{global.promo.code}}</h4>
   <h4 *ngIf="displayPromoType('Free Coverage Multi')" id="promo-code">Use Promo Code: {{global.getMultiCode1}} or {{global.getMultiCode2}}</h4>
 </div>

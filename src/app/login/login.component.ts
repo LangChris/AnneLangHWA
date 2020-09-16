@@ -25,10 +25,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.passwordResetSent = false;
-
-    if(this.login.getStatus.successful) {
-      this.router.navigate(['dashboard']);
-    }
   }
 
   passwordReset() {
@@ -36,9 +32,9 @@ export class LoginComponent implements OnInit {
     let newPassword = btoa(randomString);
 
     this.resetPasswordForm.controls.password.setValue(newPassword);
-    this.resetPasswordForm.controls.email.setValue(this.global.getGeneralSettings.email);
-    this.resetPasswordForm.controls.fromEmail.setValue(this.global.getGeneralSettings.passwordResetEmail);
-    this.resetPasswordForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
+    this.resetPasswordForm.controls.email.setValue(this.global.settings.email);
+    this.resetPasswordForm.controls.fromEmail.setValue(this.global.settings.passwordResetEmail);
+    this.resetPasswordForm.controls.adminName.setValue(this.global.settings.owner);
     return this.database.resetPassword(this.resetPasswordForm).subscribe(
       response => {
         this.passwordResetSent = true;
@@ -56,7 +52,7 @@ export class LoginComponent implements OnInit {
   tryLogin() {
     let username = document.getElementById('username') as HTMLInputElement;
     let password = document.getElementById('password') as HTMLInputElement;
-    this.login.login(username.value, password.value);
+    this.global.hwaLogin(username.value, password.value);
   }
 
 }

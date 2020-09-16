@@ -3,7 +3,6 @@ import { DatabaseService } from '../services/database.service';
 import { GlobalService } from '../services/global.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
-import { LoginService } from '../services/login.service';
 import { RegisterService } from '../services/register.service';
 
 @Component({
@@ -61,11 +60,9 @@ export class SellerOrderFormComponent implements OnInit {
     password: ""
   };
 
-  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder, private login: LoginService, private register: RegisterService) {}
+  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder, private register: RegisterService) {}
 
   ngOnInit() {
-    this.global.setShowPortal(false);
-
     this.sellerOrderForm.controls.name.valueChanges.subscribe(value => {
       if(value) {
         var name = document.getElementById('name') as HTMLInputElement;
@@ -108,10 +105,10 @@ export class SellerOrderFormComponent implements OnInit {
     if(this.sellerOrderForm.valid) {
 
       let selectedSpecialRequests = [];
-      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+      for(let i = 0; i < this.global.specialRequests.length; i++) {
         var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
         if(specialRequest.checked) {
-          selectedSpecialRequests.push(this.global.getSpecialRequest[i]);
+          selectedSpecialRequests.push(this.global.specialRequests[i]);
         }
       }
       
@@ -129,16 +126,12 @@ export class SellerOrderFormComponent implements OnInit {
 
       let today = new Date;
       this.sellerOrderForm.controls.createdDate.setValue(today);
-      this.sellerOrderForm.controls.sendEmail.setValue(this.global.getGeneralSettings.sendEmail);
-      this.sellerOrderForm.controls.adminName.setValue(this.global.getGeneralSettings.owner);
-      this.sellerOrderForm.controls.adminEmail.setValue(this.global.getGeneralSettings.email);
+      this.sellerOrderForm.controls.sendEmail.setValue(this.global.settings.sendEmail);
+      this.sellerOrderForm.controls.adminName.setValue(this.global.settings.owner);
+      this.sellerOrderForm.controls.adminEmail.setValue(this.global.settings.email);
       this.sellerOrderForm.controls.orderTotal.setValue(this.total);
 
-      if(!this.global.testing && this.active == 'REGISTER') {
-        this.loginSuccessful(this.registerLogin.username, this.registerLogin.password);
-      }
-
-      this.sellerOrderForm.controls.userId.setValue(this.login.currentUser != null ? this.login.currentUser.id : null);
+      this.sellerOrderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
       
       if(!this.global.testing) {
         return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
@@ -171,14 +164,14 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
-    this.global.updateUsers();
+    this.global.hwaGetUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
 
           // if logged in -> proceed next
-          if(this.login.currentUser != null) {
+          if(this.global.currentUser != null) {
             this.toggleActive('LOGIN');
             this.progressStep++; 
             break;
@@ -189,11 +182,11 @@ export class SellerOrderFormComponent implements OnInit {
             let username = document.getElementById('login-username') as HTMLInputElement;
             let password = document.getElementById('login-password') as HTMLInputElement;
 
-            if(this.loginSuccessful(username.value, password.value)) {
-              // update name and email with info
-              this.sellerOrderForm.controls.name.setValue(this.login.currentUser.name);
-              this.sellerOrderForm.controls.email.setValue(this.login.currentUser.email);
-            } 
+            this.global.hwaLogin(username.value, password.value);
+            if(this.global.currentUser != null && this.global.loginStatus == 'SUCCESS') {
+              this.sellerOrderForm.controls.name.setValue(this.global.currentUser.name);
+              this.sellerOrderForm.controls.email.setValue(this.global.currentUser.email);
+            }
           } else if(this.active == 'REGISTER') {
             let regName = document.getElementById('register-name') as HTMLInputElement;
             let regEmail = document.getElementById('register-email') as HTMLInputElement;
@@ -234,7 +227,7 @@ export class SellerOrderFormComponent implements OnInit {
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
         //login and status = successful
-        (this.progressStep == 1 && this.active == 'LOGIN' && this.login.getStatus.successful) ||
+        (this.progressStep == 1 && this.active == 'LOGIN' && this.global.loginStatus == 'SUCCESS') ||
         (this.progressStep == 1 && this.active == 'REGISTER') ||
         this.sellerOrderForm.valid) {
           this.progressStep++; 
@@ -312,7 +305,7 @@ export class SellerOrderFormComponent implements OnInit {
 
   isLoginActive() {
     // if logged in -> proceed next
-    if(this.login.currentUser != null && this.progressStep == 1) {
+    if(this.global.currentUser != null && this.progressStep == 1) {
       this.toggleActive('LOGIN');
       this.makeProgressStep("NEXT");
     }
@@ -327,15 +320,6 @@ export class SellerOrderFormComponent implements OnInit {
     } 
 
     this.toggleActive('GUEST');
-    return false;
-  }
-
-  loginSuccessful(user: string, pass: string) {
-      this.login.loginWithoutRedirect(user, pass);
-      if(this.login.getStatus.successful) {
-        return true;
-      }
-    
     return false;
   }
 

@@ -15,7 +15,8 @@ export class ViewOrdersComponent implements OnInit {
   constructor(public global: GlobalService, public dashboard: DashboardComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = this.global.getGeneralSettings.defaultFilename;
+  filename: string = "Orders";
+  //filename: string = this.global.settings.defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 
@@ -74,8 +75,8 @@ export class ViewOrdersComponent implements OnInit {
   showOrderEntered(show: boolean, id: any) {
     let enterOrder = document.getElementById('order-entered-' + id);
     for(var i = 0; i < this.dashboard.orders.length; i++) {
-      if(this.dashboard.orders[i]['id'] == id) {
-        if(this.dashboard.orders[i]['entered'] == 1) {
+      if(this.dashboard.orders[i].orderId == id) {
+        if(this.dashboard.orders[i].entered = true) {
           return;
         }
       }
@@ -90,12 +91,12 @@ export class ViewOrdersComponent implements OnInit {
   orderEntered(id: any) {
     let index;
     for(var i = 0; i < this.dashboard.orders.length; i++) {
-      if(this.dashboard.orders[i]['id'] == id && this.dashboard.orders[i]['entered'] == 0) {
+      if(this.dashboard.orders[i].orderId == id && this.dashboard.orders[i].entered == false) {
         index = i;
         if(!this.global.testing) {
           this.database.enterOrder(id).subscribe(
             response => {
-              this.dashboard.orders[index]['entered'] = 1;
+              this.dashboard.orders[index].entered = true;
               let enterOrder = document.getElementById('order-entered-' + id);
               enterOrder.style.display = "block";
               this.enteredOrders.push(this.dashboard.orders[index]);
@@ -105,7 +106,7 @@ export class ViewOrdersComponent implements OnInit {
             }
           );
         } else {
-          this.dashboard.orders[index]['entered'] = 1;
+          this.dashboard.orders[index].entered = true;
           let enterOrder = document.getElementById('order-entered-' + id);
           enterOrder.style.display = "block";
           this.enteredOrders.push(this.dashboard.orders[index]);
@@ -115,11 +116,12 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   updateEnteredOrders() {
+    this.dashboard.getOrders();
     setTimeout(()=>{
       this.enteredOrders = [];
       for(var i = 0; i < this.dashboard.orders.length; i++) {
-        if(this.dashboard.orders[i]['entered'] == 1) {
-          let enterOrder = document.getElementById('order-entered-' + this.dashboard.orders[i]['id']);
+        if(this.dashboard.orders[i].entered == true) {
+          let enterOrder = document.getElementById('order-entered-' + this.dashboard.orders[i].orderId);
           enterOrder.style.display = "block";
           this.enteredOrders.push(this.dashboard.orders[i]);
         }

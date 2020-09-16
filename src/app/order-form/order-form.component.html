@@ -1,9 +1,9 @@
 <div class="centered-block">
-  <div class="header">{{global.getGeneralSettings.webpageTitle}}</div>
-  <div class="sub-header">{{global.getGeneralSettings.webpageSubTitle}}</div>
-  <p *ngIf="showForm">{{global.getGeneralSettings.orderDescription}}</p>
+  <div class="header">{{global.settings.webpageTitle}}</div>
+  <div class="sub-header">{{global.settings.webpageSubTitle}}</div>
+  <p *ngIf="showForm">{{global.settings.orderDescription}}</p>
   <app-promo *ngIf="showForm"></app-promo>
-  <div class="section" *ngIf="!showForm">{{global.getGeneralSettings.orderMessage}}</div>
+  <div class="section" *ngIf="!showForm">{{global.settings.orderMessage}}</div>
   <div class="section" *ngIf="showForm">
     <progress value={{progressStep}} max=4></progress>
     
@@ -26,14 +26,14 @@
                     <th class="required">Email/Username*</th>
                     <td>
                       <input type="text" class="large" id="login-username" (change)="isLoginActive()"/>
-                      <span *ngIf="login.getStatus.bad_user" class="required small-text" ><br /> Email or Username is Invalid!</span>
+                      <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
                     </td>
                   </tr>
                   <tr>
                     <th class="required">Password*</th>
                     <td>
                       <input type="password" class="large" id="login-password" (change)="isLoginActive()" />
-                      <span *ngIf="login.getStatus.bad_pass" class="required small-text" ><br /> Password is Invalid!</span>
+                      <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is Invalid!</span>
                     </td>
                   </tr>
                 </table>
@@ -98,8 +98,8 @@
               <tr>
                 <th>Home Type</th>
                 <td>
-                  <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType" checked/>Single Family<br />
-                  <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+                  <input type="radio" name="homeType" id="home-type-sf" value="SINGLE_FAMILY_HOME" formControlName="homeType" checked/>Single Family Home<br />
+                  <input type="radio" name="homeType" id="home-type-th" value="TOWNHOME_CONDO" formControlName="homeType" />Townhome/Condo</td>
               </tr>
               <tr>
                 <th>Address Line</th>   
@@ -116,8 +116,8 @@
               <tr>
                 <th class="group-header">Special Request(Quote Needed)</th>
               </tr>
-              <tr *ngFor="let request of global.getSpecialRequest; let i = index">
-                <th class="group-label">{{request}}</th>
+              <tr *ngFor="let request of global.specialRequests; let i = index">
+                <th class="group-label">{{request.request}}</th>
                 <td>
                   <div class="checkbox">
                     <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}" (change)="checkSpecialRequests()"/>
@@ -139,9 +139,9 @@
                 <td>
                     <select id="plan" name="plan" formControlName="plan">
                         <option selected>Select One</option>
-                        <option value="Gold">Gold</option>
-                        <option value="Platinum">Platinum</option>
-                        <option value="Diamond">Diamond</option>
+                        <option value="GOLD">Gold</option>
+                        <option value="PLATINUM">Platinum</option>
+                        <option value="DIAMOND">Diamond</option>
                     </select>  
                 </td>
               </tr>

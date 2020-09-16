@@ -1,14 +1,14 @@
 <!-- Show Login if not logged in  -->
-<app-login *ngIf="!login.getStatus.successful"></app-login>
+<app-login *ngIf="global.loginStatus != 'SUCCESS'"></app-login>
 
 <!-- Show Dashboard if logged in  -->
-<div *ngIf="login.getStatus.successful">
+<div *ngIf="global.loginStatus == 'SUCCESS'">
     <!-- Main Dashboard Page -->
     <dashboard-main class="centered-block" *ngIf="display == 'DASHBOARD'"></dashboard-main>
     <!-- View Orders Page -->
     <dashboard-view class="centered-block" *ngIf="display == 'VIEW'"></dashboard-view>
     <!-- Edit Orders Page -->
-    <dashboard-edit class="centered-block" *ngIf="login.currentUser.type == 'ADMIN' && display == 'EDIT'"></dashboard-edit>
+    <dashboard-edit class="centered-block" *ngIf="global.currentUser.type == 'ADMIN' && display == 'EDIT'"></dashboard-edit>
     <!-- Settings Page -->
     <dashboard-settings class="centered-block" *ngIf="display == 'SETTINGS'"></dashboard-settings>
 </div>

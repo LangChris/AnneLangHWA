@@ -2,7 +2,7 @@
     <div class="header">Settings &#9881;</div>
 
     <form id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
-    <table class="settings-table" *ngIf="login.currentUser.type == 'ADMIN'">
+    <table class="settings-table" *ngIf="global.currentUser.type == 'ADMIN'">
         <tr>
             <th>Title</th>
             <td><input type="text" id="title" class="large" name="title" formControlName="title" /></td>
@@ -133,7 +133,7 @@
             <td>
                 <select class="medium" name="promoCoverage" formControlName="promoCoverage" >
                     <option>Select One</option>
-                    <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
                 </select>
             </td>
         </tr>
@@ -142,7 +142,7 @@
             <td>
                 <select class="medium" id="promoCoverageMulti1" >
                     <option>Select One</option>
-                    <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
                 </select>
             </td>
         </tr>
@@ -151,7 +151,7 @@
             <td>
                 <select class="medium" id="promoCoverageMulti2" >
                     <option>Select One</option>
-                    <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
                 </select>
             </td>
         </tr>
@@ -176,9 +176,9 @@
            <div class="small-button add" (click)="newSpecialRequest()"></div>
         </tr>
         <tbody id="special-requests">
-            <tr *ngFor="let request of global.getSpecialRequest">
+            <tr *ngFor="let request of global.specialRequests">
                 <th class="group-label"></th>
-                <td><input type="text" class="medium specialRequests" value="{{request}}" /></td>
+                <td><input type="text" class="medium specialRequests" value="{{request.request}}" /></td>
             </tr>
         </tbody>
         <tr>
@@ -186,17 +186,30 @@
             <div class="small-button add" (click)="newOptionalCoverage()"></div>
          </tr>
          <tbody id="optional-coverages">
-         <tr *ngFor="let option of global.getOptionalCoverage">
+         <tr *ngFor="let option of global.optionalCoverages">
              <th class="group-label"></th>
              <td>
-                 <input type="text" class="extra-medium optionalCoverages" value="{{option.option}}" />&nbsp;
+                 <input type="text" class="extra-medium optionalCoverages" value="{{option.coverageOption}}" />&nbsp;
                  <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price.substring(option.price.indexOf('$') + 1, option.price.indexOf('/'))}}" />
             </td>
          </tr>
         </tbody>
+        <tr>
+            <th>Test HWA API</th>
+            <td class="test check" (click)="global.hwaFormatOrders()">Format Orders</td>
+            <td class="test check" (click)="global.hwaImportOrders()">Import Orders</td>
+            <td class="test check" (click)="global.hwaLogin('Anne.Lang', 'W!rel3ss')">Login as Anne.Lang</td>
+            <td class="test check" (click)="global.hwaGetUsers()">Get Users</td>
+            <td class="test check" (click)="global.hwaGetOrders()">Get Orders</td>
+            <td class="test check" (click)="global.hwaGetPlans()">Get Plans</td>
+            <td class="test check" (click)="global.hwaGetSettings()">Get Settings</td>
+            <td class="test check" (click)="global.hwaGetPromo()">Get Promo</td>
+            <td class="test check" (click)="global.hwaGetSpecialRequests()">Get Special Requests</td>
+            <td class="test check" (click)="global.hwaGetOptionalCoverages()">Get Optional Coverages</td>
+        </tr>
     </table>
         
-    <table class="settings-table" *ngIf="login.currentUser.type == 'USER'">
+    <table class="settings-table" *ngIf="global.currentUser.type == 'USER'">
         <tr>
             <th>Name</th>
             <td><input type="text" id="users-name" class="medium" name="usersName" formControlName="usersName" /></td>
