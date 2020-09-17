@@ -76,12 +76,12 @@ export class EditOrdersComponent implements OnInit {
     this.editForm.controls.city.setValue(order.address.city);
     this.editForm.controls.state.setValue(order.address.state);
     this.editForm.controls.zip.setValue(order.address.zip);
-    this.editForm.controls.buyerName.setValue(order.buyers[0].name);
-    this.editForm.controls.buyerEmail.setValue(order.buyers[0].email);
-    this.editForm.controls.buyerPhone.setValue(order.buyers[0].phone);
-    this.editForm.controls.sellerName.setValue(order.sellers[0].name);
-    this.editForm.controls.sellerEmail.setValue(order.sellers[0].email);
-    this.editForm.controls.sellerPhone.setValue(order.sellers[0].phone);
+    this.editForm.controls.buyerName.setValue(order.buyers != null ? order.buyers[0].name : '');
+    this.editForm.controls.buyerEmail.setValue(order.buyers != null ? order.buyers[0].email : '');
+    this.editForm.controls.buyerPhone.setValue(order.buyers != null ? order.buyers[0].phone : '');
+    this.editForm.controls.sellerName.setValue(order.sellers != null ? order.sellers[0].name : '');
+    this.editForm.controls.sellerEmail.setValue(order.sellers != null ? order.sellers[0].email : '');
+    this.editForm.controls.sellerPhone.setValue(order.sellers != null ? order.sellers[0].phone : '');
     this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(order.closeStartDate, 'yyyy-MM-dd'));
     let options = [];
     let selectedOptions = [];
@@ -160,11 +160,11 @@ export class EditOrdersComponent implements OnInit {
     }
 
     this.editForm.controls.hvacCoverage.setValue(order.hvacCoverage);
-    this.editForm.controls.realtorName.setValue(order.realtor.name);
-    this.editForm.controls.realtorEmail.setValue(order.realtor.email);
-    this.editForm.controls.realtorCompany.setValue(order.realtor.company);
-    this.editForm.controls.realtorZip.setValue(order.realtor.zip);
-    this.editForm.controls.titleAgentEmail.setValue(order.titleAgent.email);
+    this.editForm.controls.realtorName.setValue(order.realtor != null ? order.realtor.name : '');
+    this.editForm.controls.realtorEmail.setValue(order.realtor != null ? order.realtor.email : '');
+    this.editForm.controls.realtorCompany.setValue(order.realtor != null ? order.realtor.company : '');
+    this.editForm.controls.realtorZip.setValue(order.realtor != null ? order.realtor.zip : '');
+    this.editForm.controls.titleAgentEmail.setValue(order.titleAgent != null ? order.titleAgent.email : '');
     this.editForm.controls.promo.setValue(order.promo);
     this.editForm.controls.createdDate.setValue(this.datePipe.transform(order.createdDate, 'yyyy-MM-dd'));
   }

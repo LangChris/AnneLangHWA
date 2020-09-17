@@ -31,9 +31,7 @@ export class DashboardComponent implements OnInit {
   constructor(public login: LoginService, public global: GlobalService) { }
 
   ngOnInit(): void {
-    if(!this.global.testing) {
-      this.global.hwaGetOrders();
-    }
+    
   }
 
   getOrders() {
@@ -45,7 +43,7 @@ export class DashboardComponent implements OnInit {
         }
       }
 
-      if(!this.realtors.includes(this.global.orders[i].realtor.name)) {
+      if(this.global.orders[i].realtor != null && !this.realtors.includes(this.global.orders[i].realtor.name)) {
         this.realtors.push(this.global.orders[i].realtor.name);
       }
 
@@ -58,8 +56,8 @@ export class DashboardComponent implements OnInit {
 
   sortOrders() {
     switch(this.filter.sort) {
-      case "ASC": this.orders.sort((a,b) => a.id-b.id); break;
-      case "DESC": this.orders.sort((a,b) => b.id-a.id); break;
+      case "ASC": this.orders.sort((a,b) => a.orderId-b.iorderIdd); break;
+      case "DESC": this.orders.sort((a,b) => b.orderId-a.orderId); break;
     }
   }
 
@@ -158,7 +156,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].realtor.name == this.filter.realtor) {
+      if(this.orders[i].realtor != null && this.orders[i].realtor.name == this.filter.realtor) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -197,7 +195,7 @@ export class DashboardComponent implements OnInit {
       years: years,
       realtor: realtor
     };
-
+    console.log(this.filter);
     this.getFilteredOrders();
   }
 

@@ -14,7 +14,7 @@ export class SettingsComponent implements OnInit {
 
   generalSettingsForm = new FormGroup({
     title: new FormControl(this.global.settings.webpageTitle, [Validators.required]),
-    subtitle: new FormControl(this.global.settings.webpageSubTitle, [Validators.required]),
+    subtitle: new FormControl(this.global.settings.webpageSubtitle, [Validators.required]),
     description: new FormControl(this.global.settings.webpageDescription, [Validators.required]),
     orderDescription: new FormControl(this.global.settings.orderDescription, [Validators.required]),
     orderMessage: new FormControl(this.global.settings.orderMessage, [Validators.required]),
@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit {
     promoAmount: new FormControl(this.global.promo.amount),
     promoCoverage: new FormControl(this.global.promo.coverage),
     promoCode: new FormControl(this.global.promo.code, [Validators.required]),
-    promoEndDate: new FormControl(this.global.promo.endDate, [Validators.required]),
+    promoEndDate: new FormControl(new Date(this.global.promo.endDateString), [Validators.required]),
     specialRequest: new FormControl(),
     optionalCoverage: new FormControl(),
     id: new FormControl(this.global.currentUser.id, [Validators.required]),

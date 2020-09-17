@@ -14,7 +14,7 @@
     <tr>
       <td></td>
       <td>
-        <div class="navigation-container">
+        <div class="navigation-container" *ngIf="global.settings != null">
           <div class="info tooltip"><a class="telephone" href="tel:{{global.settings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
           <div class="info tooltip"><a class="email" href="mailTo:{{global.settings.email}}"></a><span class="tooltiptext">Email Me</span></div>
           <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info</span></div>

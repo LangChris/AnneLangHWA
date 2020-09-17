@@ -1,7 +1,7 @@
 <div class="centered-block">
-  <div class="header">{{global.settings.webpageTitle}}</div>
-  <div class="sub-header">{{global.settings.webpageSubTitle}}</div>
-  <p>{{global.settings.webpageDescription}}</p>
+  <div class="header" *ngIf="global.settings != null">{{global.settings.webpageTitle}}</div>
+  <div class="sub-header" *ngIf="global.settings != null">{{global.settings.webpageSubTitle}}</div>
+  <p *ngIf="global.settings != null">{{global.settings.webpageDescription}}</p>
   <div class="double-section">
       <button (click)="navigateToBrochure('english')">ENGLISH BROCHURE</button>
       <button (click)="navigateToBrochure('spanish')">SPANISH BROCHURE</button>

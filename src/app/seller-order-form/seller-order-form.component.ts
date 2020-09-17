@@ -164,7 +164,6 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
-    this.global.hwaGetUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 

@@ -8,7 +8,7 @@
     <!-- View Orders Page -->
     <dashboard-view class="centered-block" *ngIf="display == 'VIEW'"></dashboard-view>
     <!-- Edit Orders Page -->
-    <dashboard-edit class="centered-block" *ngIf="global.currentUser.type == 'ADMIN' && display == 'EDIT'"></dashboard-edit>
+    <dashboard-edit class="centered-block" *ngIf="global.currentUser != null && global.currentUser.type == 'ADMIN' && display == 'EDIT'"></dashboard-edit>
     <!-- Settings Page -->
     <dashboard-settings class="centered-block" *ngIf="display == 'SETTINGS'"></dashboard-settings>
 </div>

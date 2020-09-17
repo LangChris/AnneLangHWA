@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardComponent } from '../dashboard.component';
-import { LoginService } from '../../services/login.service';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'dashboard-main',
@@ -9,9 +9,10 @@ import { LoginService } from '../../services/login.service';
 })
 export class MainComponent implements OnInit {
 
-  constructor(public dashboard: DashboardComponent, public login: LoginService) { }
+  constructor(public dashboard: DashboardComponent, public global: GlobalService) { }
 
   ngOnInit(): void {
+    this.global.hwaGetOrders();
   }
 
 }

@@ -67,8 +67,8 @@
               <td>
                 <select id="home-type" (change)="filter()">
                   <option value="all">All Homes</option>
-                  <option value="Single Family Home">Single Family Home</option>
-                  <option value="Townhome/Condo">Townhome/Condo</option>
+                  <option value="SINGLE_FAMILY_HOME">Single Family Home</option>
+                  <option value="TOWNHOME_CONDO">Townhome/Condo</option>
                 </select>
               </td>
             </tr>
@@ -137,17 +137,28 @@
           <td data-th="Close/Start Date">{{formatOrder(order.closeStartDate)}}</td>
           <td data-th="Home Type">{{formatOrder(order.homeType)}}</td>
           <td data-th="Address">{{formatOrder(order.address.addressLine)}}<br />&nbsp;{{formatOrder(order.address.city)}},{{formatOrder(order.address.state)}} {{formatOrder(order.address.zip)}}</td>
-          <td data-th="Buyer Name">{{formatOrder(order.buyers[0].name)}}</td>
-          <td data-th="Buyer Email">{{formatOrder(order.buyers[0].email)}}</td>
-          <td data-th="Buyer Phone">{{formatOrder(order.buyers[0].phone)}}</td>
-          <td data-th="Seller Name">{{formatOrder(order.sellers[0].name)}}</td>
-          <td data-th="Seller Email">{{formatOrder(order.ellers[0].email)}}</td>
-          <td data-th="Seller Phone">{{formatOrder(order.ellers[0].phone)}}</td>
-          <td data-th="Realtor Name">{{formatOrder(order.realtor.name)}}</td>
-          <td data-th="Realtor Email">{{formatOrder(order.realtor.email)}}</td>
-          <td data-th="Realtor Company">{{formatOrder(order.realtor.company)}}</td>
-          <td data-th="Realtor Zip">{{formatOrder(order.realtor_zip)}}</td>
-          <td data-th="Title Agent Email">{{formatOrder(order.titleAgent.email)}}</td>
+          <td data-th="Buyer Name" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].name)}}</td>
+          <td data-th="Buyer Name" *ngIf="order.buyers == null">--</td>
+          <td data-th="Buyer Email" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].email)}}</td>
+          <td data-th="Buyer Email" *ngIf="order.buyers == null">--</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].phone)}}</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyers == null">--</td>
+          <td data-th="Seller Name" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].name)}}</td>
+          <td data-th="Seller Name" *ngIf="order.sellers == null">--</td>
+          <td data-th="Seller Email" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].email)}}</td>
+          <td data-th="Seller Email" *ngIf="order.sellers == null">--</td>
+          <td data-th="Seller Phone" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].phone)}}</td>
+          <td data-th="Seller Phone" *ngIf="order.sellers == null">--</td>
+          <td data-th="Realtor Name" *ngIf="order.realtor != null">{{formatOrder(order.realtor.name)}}</td>
+          <td data-th="Realtor Name" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Email" *ngIf="order.realtor != null">{{formatOrder(order.realtor.email)}}</td>
+          <td data-th="Realtor Email" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Company" *ngIf="order.realtor != null">{{formatOrder(order.realtor.company)}}</td>
+          <td data-th="Realtor Company" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Zip" *ngIf="order.realtor != null">{{formatOrder(order.realtor_zip)}}</td>
+          <td data-th="Realtor Zip" *ngIf="order.realtor == null">--</td>
+          <td data-th="Title Agent Email" *ngIf="order.titleAgent != null">{{formatOrder(order.titleAgent.email)}}</td>
+          <td data-th="Title Agent Email" *ngIf="order.titleAgent == null">--</td>
           <td data-th="Promo">{{formatOrder(order.promo)}}</td>
           <td data-th="Special Request">{{formatOrder(order.specialRequest)}}</td>
         </tr>  

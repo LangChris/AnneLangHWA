@@ -104,7 +104,7 @@ export class OrderFormComponent implements OnInit {
         let selectedPlan = this.route.snapshot.paramMap.get('plan');
         var plan = document.getElementById('plan') as HTMLSelectElement;
         if(selectedPlan) {
-          plan.value = selectedPlan;
+          plan.value = selectedPlan.toUpperCase();
         } else {
           plan.selectedIndex = 0;
         }
@@ -138,10 +138,10 @@ export class OrderFormComponent implements OnInit {
 
     for(var i = 0; i < this.global.optionalCoverages.length; i++) {
       var option = document.createElement("option");
-      option.text = this.global.optionalCoverages[i].option + " - " + this.global.optionalCoverages[i].price;
-      option.value = this.global.optionalCoverages[i].option;
+      option.text = this.global.optionalCoverages[i].coverageOption + " - " + this.global.optionalCoverages[i].price;
+      option.value = this.global.optionalCoverages[i].coverageOption;
       optionalCoverageSelect.add(option);
-      options.push(this.global.optionalCoverages[i].option + " - " + this.global.optionalCoverages[i].price);
+      options.push(option.text);
     }
     
     this.optionalCoverageMultiSelect = new (MultiSelect as any)('.multi-select', {
@@ -323,7 +323,6 @@ export class OrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
-    this.global.hwaGetUsers();
     switch(direction) {
       case "PREV": this.progressStep--; break;
       case "NEXT": { 

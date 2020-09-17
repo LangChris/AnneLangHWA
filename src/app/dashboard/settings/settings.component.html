@@ -61,7 +61,7 @@
         </tr>
         <tr>
             <th class="group-label">Password</th>
-            <td><input type="password" class="medium" name="loginPassword" formControlName="loginPassword" /></td>
+            <td><input type="password" class="medium" id="login-password" name="loginPassword" formControlName="loginPassword" /></td>
         </tr>
         <tr>
             <th class="group-label">Show Pass</th>
@@ -190,23 +190,10 @@
              <th class="group-label"></th>
              <td>
                  <input type="text" class="extra-medium optionalCoverages" value="{{option.coverageOption}}" />&nbsp;
-                 <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price.substring(option.price.indexOf('$') + 1, option.price.indexOf('/'))}}" />
+                 <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price}}" />
             </td>
          </tr>
         </tbody>
-        <tr>
-            <th>Test HWA API</th>
-            <td class="test check" (click)="global.hwaFormatOrders()">Format Orders</td>
-            <td class="test check" (click)="global.hwaImportOrders()">Import Orders</td>
-            <td class="test check" (click)="global.hwaLogin('Anne.Lang', 'W!rel3ss')">Login as Anne.Lang</td>
-            <td class="test check" (click)="global.hwaGetUsers()">Get Users</td>
-            <td class="test check" (click)="global.hwaGetOrders()">Get Orders</td>
-            <td class="test check" (click)="global.hwaGetPlans()">Get Plans</td>
-            <td class="test check" (click)="global.hwaGetSettings()">Get Settings</td>
-            <td class="test check" (click)="global.hwaGetPromo()">Get Promo</td>
-            <td class="test check" (click)="global.hwaGetSpecialRequests()">Get Special Requests</td>
-            <td class="test check" (click)="global.hwaGetOptionalCoverages()">Get Optional Coverages</td>
-        </tr>
     </table>
         
     <table class="settings-table" *ngIf="global.currentUser.type == 'USER'">
