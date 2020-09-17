@@ -20,6 +20,7 @@ export class GlobalService {
   optionalCoverages: any;
   specialRequests: any;
   loginStatus = "";
+  registerStatus = "";
   testing = false;
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
@@ -37,7 +38,7 @@ export class GlobalService {
     this.database.HwaLogin(login).subscribe(response => {
       this.currentUser = response;
       this.loginStatus = "SUCCESS";
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
     }, error => {
       console.log(error);
 
@@ -50,6 +51,34 @@ export class GlobalService {
       }
 
     });
+  }
+
+  hwaRegisterUser(user: any) {
+    if(user.password == null || user.password == '') {
+      this.registerStatus = "BAD_PASS";
+    } else {
+      this.database.HwaRegisterUser(user).subscribe(response => {
+        this.currentUser = response;
+        this.loginStatus = "SUCCESS";
+        this.registerStatus = "SUCCESS";
+        //console.log(this.currentUser);
+      }, error => {
+        console.log(error);
+  
+        if(error.error.message.includes('Email already exists')) {
+          this.registerStatus = "BAD_EMAIL";
+        }
+  
+        if(error.error.message.includes('Username already exists')) {
+          this.registerStatus = "BAD_USER";
+        }
+
+        if(error.error.status.includes('INTERNAL_SERVER_ERROR')) {
+          this.registerStatus = "SERVER_ERROR";
+        }
+  
+      });
+    }
   }
 
   hwaFormatOrders() {

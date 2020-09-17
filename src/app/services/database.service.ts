@@ -32,6 +32,7 @@ const hwa = {
     updateOrder: "/order",
     placeOrder: "/order",
     getUsers: "/users",
+    registerUser: "/user",
     getPlans: "/plans",
     getPromo: "/promo",
     getSettings: "/settings",
@@ -134,6 +135,12 @@ export class DatabaseService {
   HwaLogin(login: any) {  
     return this.http.post(hwa.url + hwa.endpoints.login, login);
   }
+
+  // HWA Register User
+  HwaRegisterUser(user: any) {  
+    return this.http.post(hwa.url + hwa.endpoints.registerUser, user);
+  }
+  
 
   // HWA Import Orders
   HwaImportOrders(orders: any) {
