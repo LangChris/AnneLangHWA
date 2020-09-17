@@ -340,6 +340,11 @@ export class OrderFormComponent implements OnInit {
             break;
           }
 
+          this.validateName = true;
+          this.validateEmail = true;
+
+          // -- REMOVE BELOW --
+
           // validate login
           if(this.active == 'LOGIN') {
             let username = document.getElementById('login-username') as HTMLInputElement;
@@ -378,18 +383,21 @@ export class OrderFormComponent implements OnInit {
             this.validateName = true;
             this.validateEmail = true;
           }
+
+           // -- REMOVE ABOVE --
+
         } else if(this.progressStep == 3) {
           this.validateDate = true;
         }
 
-        console.log(this.orderForm);
+        //console.log(this.orderForm);
         
         if( (this.progressStep != 1 && this.progressStep != 3) || 
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         //login and status = successful
         (this.progressStep == 1 && this.active == 'LOGIN' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
-        (this.progressStep == 1 && this.active == 'REGISTER') ||
+        (this.progressStep == 1 && this.active == 'REGISTER' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         this.orderForm.valid) {
           this.progressStep++; 
         } else {
@@ -422,6 +430,22 @@ export class OrderFormComponent implements OnInit {
     let password = document.getElementById('login-password') as HTMLInputElement;
 
     this.global.hwaLogin(username.value, password.value);
+  }
+
+  registerUser() {
+    let name = document.getElementById('register-name') as HTMLInputElement;
+    let email = document.getElementById('register-email') as HTMLInputElement;
+    let username = document.getElementById('register-username') as HTMLInputElement;
+    let password = document.getElementById('register-password') as HTMLInputElement;
+
+    let user = {
+      name: name.value,
+      email: email.value,
+      username: username.value,
+      password: password.value
+    };
+
+    this.global.hwaRegisterUser(user);
   }
 
   toggleHelpClicked() {

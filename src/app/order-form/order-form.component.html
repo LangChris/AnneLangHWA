@@ -55,18 +55,29 @@
                     <th class="required">Email*</th>
                     <td>
                       <input type="email" class="large" id="register-email" />
+                      <span *ngIf="global.registerStatus == 'BAD_EMAIL'" class="required small-text" ><br /> Email is already registered!</span>
                     </td>
                   </tr>
                   <tr>
                     <th>Username</th>
                     <td>
                       <input type="text" class="large" id="register-username" />
+                      <span *ngIf="global.registerStatus == 'BAD_USER'" class="required small-text" ><br /> Username is already registered!</span>
                     </td>
                   </tr>
                   <tr>
                     <th class="required">Password*</th>
                     <td>
                       <input type="password" class="large" id="register-password" />
+                      <span *ngIf="global.registerStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is required!</span>
+                      <span *ngIf="global.registerStatus == 'SUCCESS'" class="success small-text" ><br /> Successful registration, proceed Next</span>
+                      <span *ngIf="global.registerStatus == 'SERVER_ERROR'" class="required small-text" ><br /> Server Error, Please try again</span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="global.registerStatus != 'SUCCESS'">
+                    <th></th>
+                    <td>
+                      <span class="button" (click)="registerUser()">Register</span>
                     </td>
                   </tr>
                 </table>
@@ -235,7 +246,8 @@
             <td class="left"><span [hidden]="progressStep == 1 || progressStep == 2" class="button extra-pad top-margin back" (click)="makeProgressStep('PREV')"> Back</span></td>
             <td class="right"><span [hidden]="progressStep == 4 || 
               (active == 'GUEST' && (!orderForm.controls.name.valid || !orderForm.controls.email.valid)) || 
-              (active == 'LOGIN' && global.loginStatus != 'SUCCESS')" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
+              (active == 'LOGIN' && global.loginStatus != 'SUCCESS') || 
+              (active == 'REGISTER' && global.registerStatus != 'SUCCESS')" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
           </tr>
         </table>
       

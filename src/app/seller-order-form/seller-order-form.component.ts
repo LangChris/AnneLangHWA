@@ -181,6 +181,11 @@ export class SellerOrderFormComponent implements OnInit {
             break;
           }
 
+          this.validateName = true;
+          this.validateEmail = true;
+
+          // -- REMOVE BELOW --
+
           // validate login
           if(this.active == 'LOGIN') {
             let username = document.getElementById('login-username') as HTMLInputElement;
@@ -218,17 +223,20 @@ export class SellerOrderFormComponent implements OnInit {
             this.validateName = true;
             this.validateEmail = true;
           }
+
+          // -- REMOVE ABOVE --
+
         } else if(this.progressStep == 3) {
           this.validateDate = true;
         }
 
-        console.log(this.sellerOrderForm);
+        //console.log(this.sellerOrderForm);
         if( (this.progressStep != 1 && this.progressStep != 3) || 
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
         //login and status = successful
         (this.progressStep == 1 && this.active == 'LOGIN' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
-        (this.progressStep == 1 && this.active == 'REGISTER') ||
+        (this.progressStep == 1 && this.active == 'REGISTER' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
         this.sellerOrderForm.valid) {
           this.progressStep++; 
         } else {
@@ -308,6 +316,22 @@ export class SellerOrderFormComponent implements OnInit {
     let password = document.getElementById('login-password') as HTMLInputElement;
 
     this.global.hwaLogin(username.value, password.value);
+  }
+
+  registerUser() {
+    let name = document.getElementById('register-name') as HTMLInputElement;
+    let email = document.getElementById('register-email') as HTMLInputElement;
+    let username = document.getElementById('register-username') as HTMLInputElement;
+    let password = document.getElementById('register-password') as HTMLInputElement;
+
+    let user = {
+      name: name.value,
+      email: email.value,
+      username: username.value,
+      password: password.value
+    };
+
+    this.global.hwaRegisterUser(user);
   }
 
   isLoginActive() {
