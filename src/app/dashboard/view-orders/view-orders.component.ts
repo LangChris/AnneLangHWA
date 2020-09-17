@@ -68,7 +68,8 @@ export class ViewOrdersComponent implements OnInit {
         value = value.toString().substring(0, value.length - 2);
       }
       if(value.toString() == value.toString().toUpperCase()) {
-        value = value.toString().replaceAll('_', ' ');
+        let regex = /\_/gi;
+        value = value.toString().replace(regex, " ");
         value = value.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
       }
       return value;
