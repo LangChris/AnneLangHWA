@@ -34,6 +34,13 @@
                     <td>
                       <input type="password" class="large" id="login-password" (change)="isLoginActive()" />
                       <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is Invalid!</span>
+                      <span *ngIf="global.loginStatus == 'SUCCESS'" class="success small-text" ><br /> Successful login, proceed Next</span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="global.loginStatus != 'SUCCESS'">
+                    <th></th>
+                    <td>
+                      <span class="button" (click)="login()">Login</span>
                     </td>
                   </tr>
                 </table>
@@ -120,7 +127,7 @@
                 <th class="group-label">{{request.request}}</th>
                 <td>
                   <div class="checkbox">
-                    <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}" (change)="checkSpecialRequests()"/>
+                    <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}"/>
                     <label for="special-request-{{i}}"></label>
                   </div>
                 </td>
@@ -226,7 +233,9 @@
         <table class="navigation">
           <tr>
             <td class="left"><span [hidden]="progressStep == 1 || progressStep == 2" class="button extra-pad top-margin back" (click)="makeProgressStep('PREV')"> Back</span></td>
-            <td class="right"><span [hidden]="progressStep == 4" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
+            <td class="right"><span [hidden]="progressStep == 4 || 
+              (active == 'GUEST' && (!orderForm.controls.name.valid || !orderForm.controls.email.valid)) || 
+              (active == 'LOGIN' && global.loginStatus != 'SUCCESS')" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
           </tr>
         </table>
       

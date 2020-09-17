@@ -76,17 +76,17 @@ export class EditOrdersComponent implements OnInit {
     this.editForm.controls.city.setValue(order.address.city);
     this.editForm.controls.state.setValue(order.address.state);
     this.editForm.controls.zip.setValue(order.address.zip);
-    this.editForm.controls.buyerName.setValue(order.buyers != null ? order.buyers[0].name : '');
-    this.editForm.controls.buyerEmail.setValue(order.buyers != null ? order.buyers[0].email : '');
-    this.editForm.controls.buyerPhone.setValue(order.buyers != null ? order.buyers[0].phone : '');
-    this.editForm.controls.sellerName.setValue(order.sellers != null ? order.sellers[0].name : '');
-    this.editForm.controls.sellerEmail.setValue(order.sellers != null ? order.sellers[0].email : '');
-    this.editForm.controls.sellerPhone.setValue(order.sellers != null ? order.sellers[0].phone : '');
+    this.editForm.controls.buyerName.setValue(order.buyer != null ? order.buyer.name : '');
+    this.editForm.controls.buyerEmail.setValue(order.buyer != null ? order.buyer.email : '');
+    this.editForm.controls.buyerPhone.setValue(order.buyer != null ? order.buyer.phone : '');
+    this.editForm.controls.sellerName.setValue(order.seller != null ? order.seller.name : '');
+    this.editForm.controls.sellerEmail.setValue(order.seller != null ? order.seller.email : '');
+    this.editForm.controls.sellerPhone.setValue(order.seller != null ? order.seller.phone : '');
     this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(order.closeStartDate, 'yyyy-MM-dd'));
     let options = [];
     let selectedOptions = [];
     for(var option = 0; option < this.global.optionalCoverages.length; option++) {
-      options.push(this.global.optionalCoverages[option].option);
+      options.push(this.global.optionalCoverages[option].coverageOption);
     }
 
     if(order.optionalCoverage != null) {
@@ -223,6 +223,7 @@ export class EditOrdersComponent implements OnInit {
         this.dashboard.showSuccess = true;
       },
       error => {
+        console.log(error);
         this.resetForm();
         this.dashboard.showError = true;
       }

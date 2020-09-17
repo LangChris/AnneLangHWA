@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 
 const endpoints = {
@@ -30,6 +30,7 @@ const hwa = {
     getOrders: "/orders",
     deleteOrder: "/order",
     updateOrder: "/order",
+    placeOrder: "/order",
     getUsers: "/users",
     getPlans: "/plans",
     getPromo: "/promo",
@@ -176,12 +177,17 @@ export class DatabaseService {
 
   // HWA Delete Order
   HwaDeleteOrder(id: any) {
-    return this.http.delete(hwa.url + hwa.endpoints.deleteOrder, id);
+    return this.http.delete(hwa.url + hwa.endpoints.deleteOrder + "/" + id);
   }
 
   // HWA Update Order
   HwaUpdateOrder(order: any) {
     return this.http.put(hwa.url + hwa.endpoints.updateOrder, order);
+  }
+
+  // HWA Place Order
+  HwaPlaceOrder(order: any) {
+    return this.http.post(hwa.url + hwa.endpoints.placeOrder, order);
   }
 
 }

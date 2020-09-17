@@ -194,6 +194,17 @@
             </td>
          </tr>
         </tbody>
+        <tr>
+            <th class="group-header">HWA API</th>
+        </tr>
+        <tr>
+            <th class="group-label">Format Orders</th>
+            <td><span class="button check" (click)="global.hwaFormatOrders()"> Test Format </span></td>
+        </tr>
+        <tr>
+            <th class="group-label">Import Orders</th>
+            <td><span class="button check" (click)="global.hwaImportOrders()"> Test Import </span></td>
+        </tr>
     </table>
         
     <table class="settings-table" *ngIf="global.currentUser.type == 'USER'">

@@ -67,6 +67,10 @@ export class ViewOrdersComponent implements OnInit {
       if(value.toString().substring(value.length - 2) == ", ") {
         value = value.toString().substring(0, value.length - 2);
       }
+      if(value.toString() == value.toString().toUpperCase()) {
+        value = value.toString().replaceAll('_', ' ');
+        value = value.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+      }
       return value;
     }
     return "--";

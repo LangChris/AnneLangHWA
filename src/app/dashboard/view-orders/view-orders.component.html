@@ -137,25 +137,25 @@
           <td data-th="Close/Start Date">{{formatOrder(order.closeStartDate)}}</td>
           <td data-th="Home Type">{{formatOrder(order.homeType)}}</td>
           <td data-th="Address">{{formatOrder(order.address.addressLine)}}<br />&nbsp;{{formatOrder(order.address.city)}},{{formatOrder(order.address.state)}} {{formatOrder(order.address.zip)}}</td>
-          <td data-th="Buyer Name" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].name)}}</td>
-          <td data-th="Buyer Name" *ngIf="order.buyers == null">--</td>
-          <td data-th="Buyer Email" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].email)}}</td>
-          <td data-th="Buyer Email" *ngIf="order.buyers == null">--</td>
-          <td data-th="Buyer Phone" *ngIf="order.buyers != null">{{formatOrder(order.buyers[0].phone)}}</td>
-          <td data-th="Buyer Phone" *ngIf="order.buyers == null">--</td>
-          <td data-th="Seller Name" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].name)}}</td>
-          <td data-th="Seller Name" *ngIf="order.sellers == null">--</td>
-          <td data-th="Seller Email" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].email)}}</td>
-          <td data-th="Seller Email" *ngIf="order.sellers == null">--</td>
-          <td data-th="Seller Phone" *ngIf="order.sellers != null">{{formatOrder(order.sellers[0].phone)}}</td>
-          <td data-th="Seller Phone" *ngIf="order.sellers == null">--</td>
+          <td data-th="Buyer Name" *ngIf="order.buyer != null">{{formatOrder(order.buyer.name)}}</td>
+          <td data-th="Buyer Name" *ngIf="order.buyer == null">--</td>
+          <td data-th="Buyer Email" *ngIf="order.buyer != null">{{formatOrder(order.buyer.email)}}</td>
+          <td data-th="Buyer Email" *ngIf="order.buyer == null">--</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyer != null">{{formatOrder(order.buyer.phone)}}</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyer == null">--</td>
+          <td data-th="Seller Name" *ngIf="order.seller != null">{{formatOrder(order.seller.name)}}</td>
+          <td data-th="Seller Name" *ngIf="order.seller == null">--</td>
+          <td data-th="Seller Email" *ngIf="order.seller != null">{{formatOrder(order.seller.email)}}</td>
+          <td data-th="Seller Email" *ngIf="order.seller == null">--</td>
+          <td data-th="Seller Phone" *ngIf="order.seller != null">{{formatOrder(order.seller.phone)}}</td>
+          <td data-th="Seller Phone" *ngIf="order.seller == null">--</td>
           <td data-th="Realtor Name" *ngIf="order.realtor != null">{{formatOrder(order.realtor.name)}}</td>
           <td data-th="Realtor Name" *ngIf="order.realtor == null">--</td>
           <td data-th="Realtor Email" *ngIf="order.realtor != null">{{formatOrder(order.realtor.email)}}</td>
           <td data-th="Realtor Email" *ngIf="order.realtor == null">--</td>
           <td data-th="Realtor Company" *ngIf="order.realtor != null">{{formatOrder(order.realtor.company)}}</td>
           <td data-th="Realtor Company" *ngIf="order.realtor == null">--</td>
-          <td data-th="Realtor Zip" *ngIf="order.realtor != null">{{formatOrder(order.realtor_zip)}}</td>
+          <td data-th="Realtor Zip" *ngIf="order.realtor != null">{{formatOrder(order.realtor.zip)}}</td>
           <td data-th="Realtor Zip" *ngIf="order.realtor == null">--</td>
           <td data-th="Title Agent Email" *ngIf="order.titleAgent != null">{{formatOrder(order.titleAgent.email)}}</td>
           <td data-th="Title Agent Email" *ngIf="order.titleAgent == null">--</td>

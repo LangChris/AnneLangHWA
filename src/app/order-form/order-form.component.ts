@@ -262,7 +262,7 @@ export class OrderFormComponent implements OnInit {
           selectedOptions.push(optionalCoverageSelect.options[i].value);
         }
       }
-      this.orderForm.controls.optionalCoverage.setValue(selectedOptions);
+      this.orderForm.controls.optionalCoverage.setValue(selectedOptions.toString());
 
       let selectedSpecialRequests = [];
       for(let i = 0; i < this.global.specialRequests.length; i++) {
@@ -272,7 +272,7 @@ export class OrderFormComponent implements OnInit {
         }
       }
       
-      this.orderForm.controls.specialRequest.setValue(selectedSpecialRequests);
+      this.orderForm.controls.specialRequest.setValue(selectedSpecialRequests.toString());
       var plan = document.getElementById('plan') as HTMLSelectElement;
       this.orderForm.controls.plan.setValue(plan.value);
 
@@ -293,6 +293,8 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
 
       if(!this.global.testing) {
+        this.global.hwaPlaceOrder(this.orderForm, "BUYER");
+
         return this.database.placeOrder(this.orderForm).subscribe(response => {
           this.showForm = false;
         });
@@ -331,6 +333,9 @@ export class OrderFormComponent implements OnInit {
           // if logged in -> proceed next
           if(this.global.currentUser != null) {
             this.toggleActive('LOGIN');
+            this.orderForm.controls.name.setValue(this.global.currentUser.name);
+            this.orderForm.controls.email.setValue(this.global.currentUser.email);
+            this.orderForm.controls.userId.setValue(this.global.currentUser.userId);
             this.progressStep++; 
             break;
           }
@@ -341,10 +346,7 @@ export class OrderFormComponent implements OnInit {
             let password = document.getElementById('login-password') as HTMLInputElement;
 
             this.global.hwaLogin(username.value, password.value);
-            if(this.global.currentUser != null && this.global.loginStatus == 'SUCCESS') {
-              this.orderForm.controls.name.setValue(this.global.currentUser.name);
-              this.orderForm.controls.email.setValue(this.global.currentUser.email);
-            }
+            
           } else if(this.active == 'REGISTER') {
             let regName = document.getElementById('register-name') as HTMLInputElement;
             let regEmail = document.getElementById('register-email') as HTMLInputElement;
@@ -381,11 +383,12 @@ export class OrderFormComponent implements OnInit {
         }
 
         console.log(this.orderForm);
+        
         if( (this.progressStep != 1 && this.progressStep != 3) || 
         //guest checkout and email/name valid
         (this.progressStep == 1 && this.active == 'GUEST' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         //login and status = successful
-        (this.progressStep == 1 && this.active == 'LOGIN' && this.global.loginStatus == 'SUCCESS') ||
+        (this.progressStep == 1 && this.active == 'LOGIN' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         (this.progressStep == 1 && this.active == 'REGISTER') ||
         this.orderForm.valid) {
           this.progressStep++; 
@@ -412,6 +415,13 @@ export class OrderFormComponent implements OnInit {
         }
       } break;
     }
+  }
+
+  login() {
+    let username = document.getElementById('login-username') as HTMLInputElement;
+    let password = document.getElementById('login-password') as HTMLInputElement;
+
+    this.global.hwaLogin(username.value, password.value);
   }
 
   toggleHelpClicked() {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from  '../services/database.service';
 import { DatePipe } from '@angular/common';
+import { FormGroup } from '@angular/forms'; 
 
 const brochures = {
   english: "/assets/brochures/NA15%202018%20BRO%20v1.pdf",
@@ -40,11 +41,11 @@ export class GlobalService {
     }, error => {
       console.log(error);
 
-      if(error.message.includes('Email/Username not found')) {
+      if(error.error.message.includes('Email/Username not found')) {
         this.loginStatus = "BAD_USER";
       }
 
-      if(error.message.includes('Invalid password')) {
+      if(error.error.message.includes('Invalid password')) {
         this.loginStatus = "BAD_PASS";
       }
 
@@ -59,10 +60,50 @@ export class GlobalService {
         this.orders = data;
         for(var i = 0; i < this.orders.length; i++) {
 
-          let hasBuyers = (this.orders[i].buyer_name == null || this.orders[i].buyer_email == null ? false : true);
-          let hasSellers = (this.orders[i].seller_name == null || this.orders[i].seller_email == null ? false : true);
-          let hasRealtor = (this.orders[i].realtor_name == null || this.orders[i].realtor_email == null ? false : true);
-          let hasTitleAgent = (this.orders[i].title_agent_email == null ? false : true);
+          let buyer: any = null;
+          let seller: any = null;
+
+        if(this.orders[i].plan != 'Free Sellers Coverage') {
+          let buyerName = this.orders[i].buyer_name;
+          let buyerEmail = this.orders[i].buyer_email;
+          let buyerPhone = this.orders[i].buyer_phone;
+          if(buyerName != null || buyerEmail != null || buyerPhone != null) {
+            buyer = {
+              name: buyerName,
+              email: buyerEmail,
+              phone: buyerPhone
+            };
+          }
+        }
+
+        if(this.orders[i].plan == 'Free Sellers Coverage') {
+          let sellerName = this.orders[i].seller_name;
+          let sellerEmail = this.orders[i].seller_email;
+          let sellerPhone = this.orders[i].seller_phone;
+          if(sellerName != null || sellerEmail != null || sellerPhone != null) {
+            seller = {
+              name: sellerName,
+              email: sellerEmail,
+              phone: sellerPhone
+            };
+          }
+        }
+
+    let realtorName = this.orders[i].realtor_name;
+    let realtorEmail = this.orders[i].realtor_email;
+    let realtorCompany = this.orders[i].realtor_company;
+    let realtorZip = this.orders[i].realtor_zip;
+    let realtor = {
+      name: realtorName,
+      email: realtorEmail,
+      company: realtorCompany,
+      zip: realtorZip
+    };
+
+    let titleAgentEmail = this.orders[i].title_agent_email
+    let titleAgent = {
+      email: titleAgentEmail
+    };
 
           // TODO: format the object here
           let order = {
@@ -73,20 +114,8 @@ export class GlobalService {
               state: this.orders[i].state,
               zip: this.orders[i].zip
             },
-            buyers: (!hasBuyers ? null : [
-              {
-                name: this.orders[i].buyer_name,
-                email: this.orders[i].buyer_email,
-                phoneNumber: this.orders[i].buyer_phone
-              }
-            ]),
-            sellers: (!hasSellers ? null : [
-              {
-                name: this.orders[i].seller_name,
-                email: this.orders[i].seller_email,
-                phoneNumber: this.orders[i].seller_phone
-              }
-            ]),
+            buyer: buyer,
+            seller: seller,
             closeStartDate: this.orders[i].close_start_date,
             createdDate: this.orders[i].created_date,
             email: this.orders[i].email,
@@ -94,21 +123,12 @@ export class GlobalService {
             homeType: this.orders[i].home_type.toUpperCase().replaceAll(" ", "_").replaceAll("/", "_"),
             hvacCoverage: this.orders[i].hvac_coverage,
             name: this.orders[i].name,
-            optionalCoverage: this.orders[i].optionalCoverage,
+            optionalCoverage: this.orders[i].optional_coverage,
+            specialRequest: this.orders[i].special_request,
             plan: this.orders[i].plan.toUpperCase().replaceAll(" ", "_"),
             promo: this.orders[i].promo,
-            realtor: (!hasRealtor ? null : {
-              company: this.orders[i].realtor_company,
-              officeZip: this.orders[i].realtor_zip,
-              name: this.orders[i].realtor_name,
-              email: this.orders[i].realtor_email,
-              phoneNumber: null
-            }),
-            titleAgent: (!hasTitleAgent ? null : {
-              name: null,
-              email: this.orders[i].title_agent_email,
-              phoneNumber: null
-            }),
+            realtor: realtor,
+            titleAgent: titleAgent,
             userId: (this.orders[i].user_id == null ? 0 : this.orders[i].user_id),
             years: this.orders[i].years
           };
@@ -123,28 +143,28 @@ export class GlobalService {
   hwaImportOrders() {
     console.log(this.orders);
     this.database.HwaImportOrders(this.orders).subscribe(response => {
-      console.log(response);
+      //console.log(response);
     }, error => console.log(error));
   }
 
   hwaGetUsers() {
     this.database.HwaUsers().subscribe(response => {
       this.users = response;
-      console.log(this.users);
+      //console.log(this.users);
     }, error => console.log(error));
   }
 
   hwaGetOrders() {
     this.database.HwaOrders().subscribe(response => {
       this.orders = response;
-      console.log(this.orders);
+      //console.log(this.orders);
     }, error => console.log(error));
   }
 
   hwaGetPlans() {
     this.database.HwaPlans().subscribe(response => {
       this.plans = response;
-      console.log(this.plans);
+      //console.log(this.plans);
     }, error => console.log(error));
   }
 
@@ -153,28 +173,105 @@ export class GlobalService {
       console.log(response);
       this.promo = response;
       this.promo.endDateString = this.datePipe.transform(this.promo.endDate, "MM/dd/yyyy");
-      console.log(this.promo);
+      //console.log(this.promo);
     }, error => console.log(error));
   }
 
   hwaGetSettings() {
     this.database.HwaSettings().subscribe(response => {
       this.settings = response;
-      console.log(this.settings);
+      //console.log(this.settings);
     }, error => console.log(error));
   }
 
   hwaGetSpecialRequests() {
     this.database.HwaSpecialRequests().subscribe(response => {
       this.specialRequests = response;
-      console.log(this.specialRequests);
+      //console.log(this.specialRequests);
     }, error => console.log(error));
   }
 
   hwaGetOptionalCoverages() {
     this.database.HwaOptionalCoverages().subscribe(response => {
       this.optionalCoverages = response;
-      console.log(this.optionalCoverages);
+      //console.log(this.optionalCoverages);
+    }, error => console.log(error));
+  }
+
+  hwaPlaceOrder(orderForm: FormGroup, type: string) {
+    // TODO: build order object from orderForm
+    let buyer: any = null;
+    let seller: any = null;
+    let titleAgent: any = null;
+
+    if(type == 'BUYER') {
+      let buyerName = orderForm.controls.buyerName.value;
+      let buyerEmail = orderForm.controls.buyerEmail.value;
+      let buyerPhone = orderForm.controls.buyerPhone.value;
+      if(buyerName != null || buyerEmail != null || buyerPhone != null) {
+        buyer = {
+          name: buyerName,
+          email: buyerEmail,
+          phone: buyerPhone
+        };
+      }
+      let titleAgentEmail = orderForm.controls.titleAgentEmail.value;
+      titleAgent = {
+        email: titleAgentEmail
+      };
+    }
+
+    if(type == 'SELLER') {
+      let sellerName = orderForm.controls.sellerName.value;
+      let sellerEmail = orderForm.controls.sellerEmail.value;
+      let sellerPhone = orderForm.controls.sellerPhone.value;
+      if(sellerName != null || sellerEmail != null || sellerPhone != null) {
+        seller = {
+          name: sellerName,
+          email: sellerEmail,
+          phone: sellerPhone
+        };
+      }
+    }
+
+    let realtorName = orderForm.controls.realtorName.value;
+    let realtorEmail = orderForm.controls.realtorEmail.value;
+    let realtorCompany = orderForm.controls.realtorCompany.value;
+    let realtorZip = orderForm.controls.realtorZip.value;
+    let realtor = {
+      name: realtorName,
+      email: realtorEmail,
+      company: realtorCompany,
+      zip: realtorZip
+    };
+    
+    let order = {
+      name: orderForm.controls.name.value,
+      email: orderForm.controls.email.value,
+      plan: orderForm.controls.plan.value,
+      years: orderForm.controls.years.value,
+      homeType: orderForm.controls.homeType.value,
+      address: {
+        addressLine: orderForm.controls.addressLine.value,
+        city: orderForm.controls.city.value,
+        state: orderForm.controls.state.value,
+        zip: orderForm.controls.zip.value
+      },
+      buyer: buyer,
+      seller: seller,
+      realtor: realtor,
+      titleAgent: titleAgent,
+      closeStartDate: (type == 'BUYER' ? orderForm.controls.closeStartDate.value : orderForm.controls.startDate.value),
+      optionalCoverage: (type == 'BUYER' ? orderForm.controls.optionalCoverage.value : null),
+      specialRequest: orderForm.controls.specialRequest.value,
+      promo: (type == 'BUYER' ? orderForm.controls.promo.value : null),
+      orderTotal: orderForm.controls.orderTotal.value,
+      userId: orderForm.controls.userId.value
+    };
+    console.log(order);
+
+    this.database.HwaPlaceOrder(order).subscribe(response => {
+      console.log(response);
     }, error => console.log(error));
   }
 
