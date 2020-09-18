@@ -30,6 +30,7 @@ const hwa = {
     getOrders: "/orders",
     deleteOrder: "/order",
     updateOrder: "/order",
+    enterOrder: "/order/enter",
     placeOrder: "/order",
     getUsers: "/users",
     registerUser: "/user",
@@ -190,6 +191,11 @@ export class DatabaseService {
   // HWA Update Order
   HwaUpdateOrder(order: any) {
     return this.http.put(hwa.url + hwa.endpoints.updateOrder, order);
+  }
+
+  // HWA Enter Order
+  HwaEnterOrder(order: any) {
+    return this.http.put(hwa.url + hwa.endpoints.enterOrder, order);
   }
 
   // HWA Place Order

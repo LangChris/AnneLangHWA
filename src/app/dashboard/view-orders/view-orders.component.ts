@@ -93,30 +93,20 @@ export class ViewOrdersComponent implements OnInit {
     }
   }
 
-  orderEntered(id: any) {
-    let index;
-    for(var i = 0; i < this.dashboard.orders.length; i++) {
-      if(this.dashboard.orders[i].orderId == id && this.dashboard.orders[i].entered == false) {
-        index = i;
-        if(!this.global.testing) {
-          this.database.enterOrder(id).subscribe(
-            response => {
-              this.dashboard.orders[index].entered = true;
-              let enterOrder = document.getElementById('order-entered-' + id);
-              enterOrder.style.display = "block";
-              this.enteredOrders.push(this.dashboard.orders[index]);
-            },
-            error => {
-              console.log(error);
-            }
-          );
-        } else {
-          this.dashboard.orders[index].entered = true;
-          let enterOrder = document.getElementById('order-entered-' + id);
+  enterOrder(order: any) {
+    if(!order.entered && !this.global.testing) {
+      this.database.HwaEnterOrder(order).subscribe(
+        response => {
+          order = response;
+          let enterOrder = document.getElementById('order-entered-' + order.orderId);
           enterOrder.style.display = "block";
-          this.enteredOrders.push(this.dashboard.orders[index]);
+          this.enteredOrders.push(order);
+          this.database.getOrders();
+        },
+        error => {
+          console.log(error);
         }
-      }
+      );
     }
   }
 

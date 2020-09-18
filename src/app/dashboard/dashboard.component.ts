@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
 
   sortOrders() {
     switch(this.filter.sort) {
-      case "ASC": this.orders.sort((a,b) => a.orderId-b.iorderIdd); break;
+      case "ASC": this.orders.sort((a,b) => a.orderId-b.orderId); break;
       case "DESC": this.orders.sort((a,b) => b.orderId-a.orderId); break;
     }
   }
@@ -72,10 +72,14 @@ export class DashboardComponent implements OnInit {
     var dateOffset = (24*60*60*1000) * days; 
     var endDate = new Date();
     var startDate = new Date();
+    console.log(days);
+    console.log(dateOffset);
+    console.log(endDate);
     startDate.setTime(startDate.getTime() - dateOffset);
+    console.log(startDate);
 
     for(var i = 0; i < this.orders.length; i++) {
-      var createdDate = new Date(this.orders[i].createdDate);
+      var createdDate = this.orders[i].createdDate;
       if(createdDate.getTime() >= startDate.getTime() && createdDate.getTime() <= endDate.getTime()) {
         filteredOrders.push(this.orders[i]);
       }
@@ -92,7 +96,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].plan == this.filter.plan) {
+      if(this.orders[i].plan.toString().equalsIgnoreCase(this.filter.plan)) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -108,7 +112,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].homeType == this.filter.homeType) {
+      if(this.orders[i].homeType.toString().equalsIgnoreCase(this.filter.homeType)) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -140,7 +144,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].years == this.filter.years) {
+      if(this.orders[i].years.toString().equalsIgnoreCase(this.filter.years)) {
         filteredOrders.push(this.orders[i]);
       }
     }
@@ -156,7 +160,7 @@ export class DashboardComponent implements OnInit {
     let filteredOrders = [];
 
     for(var i = 0; i < this.orders.length; i++) {
-      if(this.orders[i].realtor != null && this.orders[i].realtor.name == this.filter.realtor) {
+      if(this.orders[i].realtor != null && this.orders[i].realtor.name.toString().equalsIgnoreCase(this.filter.realtor)) {
         filteredOrders.push(this.orders[i]);
       }
     }

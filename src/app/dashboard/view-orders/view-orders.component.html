@@ -126,7 +126,7 @@
       <tbody>  
         <tr *ngFor="let order of dashboard.orders" id="{{order.orderId}}" (mouseenter)="showOrderEntered(true, order.orderId)" (mouseleave)="showOrderEntered(false, order.orderId)" >  
           <td data-th="Name">
-            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.orderId}}" class="check order-entered" (click)="orderEntered(order.orderId)" ></span></div>
+            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.orderId}}" class="check order-entered" (click)="enterOrder(order)" ></span></div>
             <div class="bottom-wrapper">{{order.name}}</div>
           </td>  
           <td data-th="Email">{{order.email}}</td>
