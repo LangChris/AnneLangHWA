@@ -15,8 +15,7 @@ export class ViewOrdersComponent implements OnInit {
   constructor(public global: GlobalService, public dashboard: DashboardComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = "Orders";
-  //filename: string = this.global.settings.defaultFilename;
+  filename: string = this.global.currentUser.defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 

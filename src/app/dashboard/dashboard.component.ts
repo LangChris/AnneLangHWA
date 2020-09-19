@@ -24,8 +24,7 @@ export class DashboardComponent implements OnInit {
     entered: 'all',
     years: 'all',
     realtor: 'all',
-    sort: 'DESC'
-    //sort: this.global.settings.defaultSortOrder
+    sort: this.global.currentUser.defaultSort
   };
 
   constructor(public login: LoginService, public global: GlobalService) { }
