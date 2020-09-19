@@ -199,8 +199,8 @@ export class GlobalService {
 
   hwaGetPromo() {
     this.database.HwaPromo().subscribe(response => {
-      console.log(response);
       this.promo = response;
+      this.promo.endDate = new Date(this.promo.endDate);
       this.promo.endDateString = this.datePipe.transform(this.promo.endDate, "MM/dd/yyyy");
       //console.log(this.promo);
     }, error => console.log(error));

@@ -21,6 +21,8 @@ export class ViewOrdersComponent implements OnInit {
   enteredOrders = [];
 
   ngOnInit() {
+    let sort = document.getElementById('sort') as HTMLSelectElement;
+    this.dashboard.filterOrders(sort.value, "all", "all", "all", "all", "all", "all");
     this.updateEnteredOrders();
   }
 
@@ -111,7 +113,7 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   updateEnteredOrders() {
-    this.dashboard.getOrders();
+    this.dashboard.getFilteredOrders();
     setTimeout(()=>{
       this.enteredOrders = [];
       for(var i = 0; i < this.dashboard.orders.length; i++) {
