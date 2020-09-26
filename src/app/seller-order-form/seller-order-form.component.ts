@@ -166,8 +166,9 @@ export class SellerOrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
+    var progress = document.getElementById("progress") as HTMLProgressElement;
     switch(direction) {
-      case "PREV": this.progressStep--; break;
+      case "PREV": this.progressStep--; progress.style.color = "lightblue"; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
 
@@ -239,6 +240,9 @@ export class SellerOrderFormComponent implements OnInit {
         (this.progressStep == 1 && this.active == 'REGISTER' && this.sellerOrderForm.controls.email.valid && this.sellerOrderForm.controls.name.valid) ||
         this.sellerOrderForm.valid) {
           this.progressStep++; 
+          if(progress.value == progress.max) {
+            progress.style.color = "green";
+          }
         } else {
           if(!this.sellerOrderForm.controls.email.valid) {
             var email = document.getElementById('email') as HTMLInputElement;

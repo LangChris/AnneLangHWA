@@ -6,7 +6,7 @@
   <div class="section" *ngIf="showForm">
       <h2>Free Sellers Coverage</h2>
       <p class="small-text" >Good for 6 months and up to $1,500 in paid claims.</p>
-      <progress value={{progressStep}} max=4></progress>
+      <progress id="progress" value={{progressStep}} max=4></progress>
       <form id="sellerOrderForm" [formGroup]="sellerOrderForm" novalidate (ngSubmit)="submitOrder()">
         
         <div class="popout" [hidden]="progressStep != 1">

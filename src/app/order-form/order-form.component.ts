@@ -130,15 +130,6 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
-  progressStyle() {
-    var progress = document.getElementById("progress") as HTMLProgressElement;
-    if(progress.value == progress.max) {
-      progress.style.color = "green";
-    } else {
-      progress.style.color = "lightblue";
-    }
-  }
-
   updateOptionalCoverageSelect() {
     var optionalCoverageSelect = document.getElementById("optional-coverage") as HTMLSelectElement;
     optionalCoverageSelect.options.length = 0;
@@ -334,8 +325,9 @@ export class OrderFormComponent implements OnInit {
   }
 
   makeProgressStep(direction) {
+    var progress = document.getElementById("progress") as HTMLProgressElement;
     switch(direction) {
-      case "PREV": this.progressStep--; break;
+      case "PREV": this.progressStep--; progress.style.color = "lightblue"; break;
       case "NEXT": { 
         if(this.progressStep == 1) {
 
@@ -409,6 +401,9 @@ export class OrderFormComponent implements OnInit {
         (this.progressStep == 1 && this.active == 'REGISTER' && this.orderForm.controls.email.valid && this.orderForm.controls.name.valid) ||
         this.orderForm.valid) {
           this.progressStep++; 
+          if(progress.value == progress.max) {
+            progress.style.color = "green";
+          }
         } else {
           if(!this.orderForm.controls.email.valid) {
             var email = document.getElementById('email') as HTMLInputElement;
