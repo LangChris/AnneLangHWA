@@ -20,8 +20,7 @@ export class ViewOrdersComponent implements OnInit {
   enteredOrders = [];
 
   ngOnInit() {
-    let sort = document.getElementById('sort') as HTMLSelectElement;
-    this.dashboard.filterOrders(sort.value, "all", "all", "all", "all", "all", "all");
+    this.dashboard.filterOrders(this.global.currentUser.defaultSort, "all", "all", "all", "all", "all", "all");
     this.updateEnteredOrders();
   }
 
@@ -82,7 +81,7 @@ export class ViewOrdersComponent implements OnInit {
     let enterOrder = document.getElementById('order-entered-' + id);
     for(var i = 0; i < this.dashboard.orders.length; i++) {
       if(this.dashboard.orders[i].orderId == id) {
-        if(this.dashboard.orders[i].entered = true) {
+        if(this.dashboard.orders[i].entered == true) {
           return;
         }
       }

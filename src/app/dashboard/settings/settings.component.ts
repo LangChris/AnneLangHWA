@@ -22,8 +22,6 @@ export class SettingsComponent implements OnInit {
     passwordResetEmail: new FormControl(this.global.settings.alternateEmail, [Validators.required]),
     phone: new FormControl(this.global.settings.phoneNumber, [Validators.required]),
     owner: new FormControl(this.global.settings.owner, [Validators.required]),
-    defaultSort: new FormControl('DESC', [Validators.required]),
-    defaultFilename: new FormControl('Orders', [Validators.required]),
     sendEmail: new FormControl(this.global.settings.sendEmail, [Validators.required]),
     planOne: new FormControl(this.global.plans[0].plan.name, [Validators.required]),
     planTwo: new FormControl(this.global.plans[1].plan.name, [Validators.required]),
@@ -46,6 +44,8 @@ export class SettingsComponent implements OnInit {
     emailAddress: new FormControl(this.global.currentUser.email, [Validators.required]),
     alternateEmail: new FormControl(this.global.currentUser.alternate_email),
     phoneNumber: new FormControl(this.global.currentUser.phone_number),
+    defaultSort: new FormControl(this.global.currentUser.defaultSort, [Validators.required]),
+    defaultFilename: new FormControl(this.global.currentUser.defaultFilename, [Validators.required]),
     loginUsername: new FormControl(this.global.currentUser.username),
     loginPassword: new FormControl(atob(this.global.currentUser.password), [Validators.required])
   });
@@ -58,6 +58,8 @@ export class SettingsComponent implements OnInit {
     emailAddress: new FormControl(this.global.currentUser.email, [Validators.required]),
     alternateEmail: new FormControl(this.global.currentUser.alternateEmail),
     phoneNumber: new FormControl(this.global.currentUser.phoneNumber),
+    defaultSort: new FormControl(this.global.currentUser.defaultSort, [Validators.required]),
+    defaultFilename: new FormControl(this.global.currentUser.defaultFilename, [Validators.required]),
     loginUsername: new FormControl(this.global.currentUser.username),
     loginPassword: new FormControl(atob(this.global.currentUser.password), [Validators.required])
   });
@@ -209,6 +211,8 @@ export class SettingsComponent implements OnInit {
       this.userSettingsForm.controls.emailAddress.setValue(this.generalSettingsForm.controls.emailAddress.value);
       this.userSettingsForm.controls.alternateEmail.setValue(this.generalSettingsForm.controls.alternateEmail.value);
       this.userSettingsForm.controls.phoneNumber.setValue(this.generalSettingsForm.controls.phoneNumber.value);
+      this.userSettingsForm.controls.defaultSort.setValue(this.generalSettingsForm.controls.defaultSort.value);
+      this.userSettingsForm.controls.defaultFilename.setValue(this.generalSettingsForm.controls.defaultFilename.value);
       this.userSettingsForm.controls.loginUsername.setValue(this.generalSettingsForm.controls.loginUsername.value);
       this.userSettingsForm.controls.loginPassword.setValue(this.generalSettingsForm.controls.loginPassword.value);
 

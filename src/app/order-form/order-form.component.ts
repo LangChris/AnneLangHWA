@@ -130,6 +130,15 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
+  progressStyle() {
+    var progress = document.getElementById("progress") as HTMLProgressElement;
+    if(progress.value == progress.max) {
+      progress.style.color = "green";
+    } else {
+      progress.style.color = "lightblue";
+    }
+  }
+
   updateOptionalCoverageSelect() {
     var optionalCoverageSelect = document.getElementById("optional-coverage") as HTMLSelectElement;
     optionalCoverageSelect.options.length = 0;

@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     entered: 'all',
     years: 'all',
     realtor: 'all',
-    sort: this.global.currentUser.defaultSort
+    sort: this.global.currentUser != null ? this.global.currentUser.defaultSort : "DESC"
   };
 
   constructor(public login: LoginService, public global: GlobalService) { }
@@ -34,25 +34,16 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrders() {
-    let myOrders: any = [];
     for(var i = 0; i < this.global.orders.length; i++) {
-      if(this.global.currentUser.type == 'USER') {
-        if((this.global.orders[i].userId == null) || (this.global.currentUser.userId != this.global.orders[i].userId)) {
-          continue;
-        }
-      }
-
       if(this.global.orders[i].realtor != null && !this.realtors.includes(this.global.orders[i].realtor.name)) {
         this.realtors.push(this.global.orders[i].realtor.name);
       }
 
       this.global.orders[i].createdDate = new Date(this.global.orders[i].createdDate);
       this.global.orders[i].closeStartDate = new Date(this.global.orders[i].closeStartDate);
-
-      myOrders.push(this.global.orders[i]);
     }
 
-    this.orders = myOrders;
+    this.orders = this.global.orders;
     this.sortOrders();
   }
 

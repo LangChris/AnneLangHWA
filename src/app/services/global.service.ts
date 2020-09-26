@@ -184,7 +184,7 @@ export class GlobalService {
   }
 
   hwaGetOrders() {
-    this.database.HwaOrders().subscribe(response => {
+    this.database.HwaOrders(this.currentUser.token).subscribe(response => {
       this.orders = response;
       //console.log(this.orders);
     }, error => console.log(error));

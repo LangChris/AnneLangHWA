@@ -149,8 +149,12 @@ export class DatabaseService {
   }
 
   // HWA Orders
-  HwaOrders() {
-    return this.http.get(hwa.url + hwa.endpoints.getOrders);
+  HwaOrders(token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+  };
+
+    return this.http.get(hwa.url + hwa.endpoints.getOrders, httpOptions);
   }
 
   // HWA Users
