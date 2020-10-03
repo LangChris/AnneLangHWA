@@ -102,6 +102,7 @@ export class ViewOrdersComponent implements OnInit {
           enterOrder.style.display = "block";
           this.enteredOrders.push(order);
           this.database.getOrders();
+          this.updateEnteredOrders();
         },
         error => {
           console.log(error);

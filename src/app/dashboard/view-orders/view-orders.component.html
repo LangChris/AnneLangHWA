@@ -94,8 +94,8 @@
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block top-margin">
     <p>No orders placed yet.</p>
   </div>
+  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} ({{enteredOrders.length}} entered)</p>
   <div *ngIf="dashboard.orders && dashboard.orders.length > 0" style="overflow-x:auto"> 
-    <p class="top-margin">Results: {{dashboard.orders.length}} ({{enteredOrders.length}} entered)</p>
     <table class="table" #TABLE>  
       <thead>  
         <tr>  

@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit {
         this.realtors.push(this.global.orders[i].realtor.name);
       }
 
-      this.global.orders[i].createdDate = new Date(this.global.orders[i].createdDate);
-      this.global.orders[i].closeStartDate = new Date(this.global.orders[i].closeStartDate);
+      //this.global.orders[i].createdDate = new Date(this.global.orders[i].createdDate);
+      //this.global.orders[i].closeStartDate = new Date(this.global.orders[i].closeStartDate);
     }
 
     this.orders = this.global.orders;
