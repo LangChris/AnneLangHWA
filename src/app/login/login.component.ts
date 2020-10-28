@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../services/login.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl } from '@angular/forms'; 
 import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,25 +20,36 @@ export class LoginComponent implements OnInit {
 
   passwordResetSent: boolean;
 
-  constructor(public login: LoginService, public global: GlobalService, private database: DatabaseService, public router: Router) { }
+  passwordResetStatus = {
+    sent: false,
+    error: false
+  };
+
+  constructor(public global: GlobalService, private database: DatabaseService, public router: Router) { }
 
   ngOnInit() {
-    this.passwordResetSent = false;
+    this.passwordResetStatus = {
+      sent: false,
+      error: false
+    };
   }
 
-  passwordReset() {
-    let randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    let newPassword = btoa(randomString);
+  resetPassword() {
+    let username = document.getElementById('username') as HTMLInputElement;
 
-    this.resetPasswordForm.controls.password.setValue(newPassword);
-    this.resetPasswordForm.controls.email.setValue(this.global.settings.email);
-    this.resetPasswordForm.controls.fromEmail.setValue(this.global.settings.passwordResetEmail);
-    this.resetPasswordForm.controls.adminName.setValue(this.global.settings.owner);
-    return this.database.resetPassword(this.resetPasswordForm).subscribe(
-      response => {
-        this.passwordResetSent = true;
-      },
-      error => console.log(error)
+    return this.database.HwaPasswordReset(username.value).subscribe(response => {
+      this.passwordResetStatus = {
+        sent: true,
+        error: false
+      };
+    },
+      error => {
+        console.log(error);
+        this.passwordResetStatus = {
+          sent: false,
+          error: true
+        };
+      }
     );
   }
 

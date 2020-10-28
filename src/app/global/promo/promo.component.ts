@@ -11,9 +11,7 @@ export class PromoComponent implements OnInit {
   constructor(public global: GlobalService) { }
 
   ngOnInit() {
-    if(!this.global.testing) {
-      this.global.hwaGetPromo();
-    }
+    this.global.hwaGetPromo();
   }
 
   displayPromoType(type: string) {

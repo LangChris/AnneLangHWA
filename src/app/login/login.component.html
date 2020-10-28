@@ -17,7 +17,8 @@
             </tr>
         </tbody>
     </table>
-    <p *ngIf="passwordResetSent" class="centered-block small-text success">Password Successfully Reset - Check Email</p>
+    <p *ngIf="passwordResetStatus.sent" class="centered-block small-text success">Password Successfully Reset - Check Email</p>
+    <p *ngIf="passwordResetStatus.error" class="centered-block small-text required">Email/Username not found - Try again</p>
     <div class="centered-block top-padding"><button class="button" (click)="tryLogin()">SUBMIT</button></div>
-    <div class="centered-block top-padding"><span class="password-reset" (click)="passwordReset()">Forgot Password?</span></div>
+    <div class="centered-block top-padding"><span class="password-reset" (click)="resetPassword()">Forgot Password?</span></div>
 </div>

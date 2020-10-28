@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../services/login.service';
 import { GlobalService } from '../services/global.service';
 
 @Component({
@@ -27,24 +26,23 @@ export class DashboardComponent implements OnInit {
     sort: this.global.currentUser != null ? this.global.currentUser.defaultSort : "DESC"
   };
 
-  constructor(public login: LoginService, public global: GlobalService) { }
+  constructor(public global: GlobalService) { }
 
   ngOnInit(): void {
     
   }
 
   getOrders() {
-    for(var i = 0; i < this.global.orders.length; i++) {
-      if(this.global.orders[i].realtor != null && !this.realtors.includes(this.global.orders[i].realtor.name)) {
-        this.realtors.push(this.global.orders[i].realtor.name);
+    if(this.global.orders != null) {
+      for(var i = 0; i < this.global.orders.length; i++) {
+        if(this.global.orders[i].realtor != null && !this.realtors.includes(this.global.orders[i].realtor.name)) {
+          this.realtors.push(this.global.orders[i].realtor.name);
+        }
       }
 
-      //this.global.orders[i].createdDate = new Date(this.global.orders[i].createdDate);
-      //this.global.orders[i].closeStartDate = new Date(this.global.orders[i].closeStartDate);
+      this.orders = this.global.orders;
+      this.sortOrders();
     }
-
-    this.orders = this.global.orders;
-    this.sortOrders();
   }
 
   sortOrders() {
@@ -161,7 +159,7 @@ export class DashboardComponent implements OnInit {
     this.showSuccess = false;
 
     this.display = display;
-    if(display == 'DASHBOARD' && !this.global.testing) {
+    if(display == 'DASHBOARD') {
       this.global.hwaGetOrders();
     }
   }

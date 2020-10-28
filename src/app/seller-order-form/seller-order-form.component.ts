@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../services/database.service';
 import { GlobalService } from '../services/global.service';
-import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
-import { RegisterService } from '../services/register.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 
 @Component({
   selector: 'app-seller-order-form',
@@ -33,7 +31,6 @@ export class SellerOrderFormComponent implements OnInit {
     realtorCompany: new FormControl(),
     realtorZip: new FormControl(),
     createdDate: new FormControl(),
-    sendEmail: new FormControl(),
     adminName: new FormControl(),
     adminEmail: new FormControl(),
     orderTotal: new FormControl(),
@@ -55,12 +52,7 @@ export class SellerOrderFormComponent implements OnInit {
 
   active = "LOGIN";
 
-  registerLogin = {
-    username: "",
-    password: ""
-  };
-
-  constructor(private database: DatabaseService, public global: GlobalService, private route: ActivatedRoute, private formBuilder: FormBuilder, private register: RegisterService) {}
+  constructor(private database: DatabaseService, public global: GlobalService) {}
 
   ngOnInit() {
     this.sellerOrderForm.controls.name.valueChanges.subscribe(value => {
@@ -133,15 +125,11 @@ export class SellerOrderFormComponent implements OnInit {
 
       this.sellerOrderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
       
-      if(!this.global.testing) {
-        this.global.hwaPlaceOrder(this.sellerOrderForm, "SELLER");
+      this.global.hwaPlaceOrder(this.sellerOrderForm, "SELLER");
 
-        return this.database.placeSellerOrder(this.sellerOrderForm).subscribe(response => {
-          this.showForm = false;
-        });
-      } else {
+      return this.database.sendSellerEmail(this.sellerOrderForm).subscribe(response => {
         this.showForm = false;
-      }
+      });
     } else {
       if(!this.sellerOrderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
@@ -189,14 +177,10 @@ export class SellerOrderFormComponent implements OnInit {
 
           // validate login
           if(this.active == 'LOGIN') {
-            let username = document.getElementById('login-username') as HTMLInputElement;
-            let password = document.getElementById('login-password') as HTMLInputElement;
-
-            this.global.hwaLogin(username.value, password.value);
+            this.login();
           } else if(this.active == 'REGISTER') {
             let regName = document.getElementById('register-name') as HTMLInputElement;
             let regEmail = document.getElementById('register-email') as HTMLInputElement;
-            let regUsername = document.getElementById('register-username') as HTMLInputElement;
             let regPassword = document.getElementById('register-password') as HTMLInputElement;
 
             // register 
@@ -204,16 +188,15 @@ export class SellerOrderFormComponent implements OnInit {
                 (regEmail.value != null && regEmail.value != '') &&
                 (regPassword.value != null && regPassword.value != '')) {
 
-                this.registerLogin = {
-                  username: regEmail.value,
-                  password: regPassword.value
-                };
-
                 // register
-                this.register.registerUser(regName.value, regEmail.value, regUsername.value, regPassword.value);
+                this.registerUser();
 
-                this.sellerOrderForm.controls.name.setValue(regName.value);
-                this.sellerOrderForm.controls.email.setValue(regEmail.value);
+                if(this.global.registerStatus = "SUCCESS") {
+                  this.sellerOrderForm.controls.name.setValue(regName.value);
+                  this.sellerOrderForm.controls.email.setValue(regEmail.value);
+                } else {
+                  console.log('registration unsuccessfull. Status: ' + this.global.registerStatus);
+                }
 
             } else {
               // let user know they are missing info for register

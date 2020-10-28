@@ -20,7 +20,6 @@ import { EditOrdersComponent } from './dashboard/edit-orders/edit-orders.compone
 import { ViewOrdersComponent } from './dashboard/view-orders/view-orders.component';
 import { GlobalService } from './services/global.service';
 import { DatabaseService } from './services/database.service';
-import { LoginService } from './services/login.service';
 
 import { DatePipe } from '@angular/common';
 
@@ -78,7 +77,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [GlobalService, DatabaseService, LoginService, DatePipe],
+  providers: [GlobalService, DatabaseService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,15 +13,10 @@ export class HomeComponent implements OnInit {
   constructor(public global: GlobalService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
-    if(!this.global.testing) {
-      //HWA API
-      this.global.hwaGetPlans();
-      this.global.hwaGetSettings();
-      this.global.hwaGetOptionalCoverages();
-      this.global.hwaGetSpecialRequests();
-    } else {
-      this.global.setTestData();
-    }
+    this.global.hwaGetPlans();
+    this.global.hwaGetSettings();
+    this.global.hwaGetOptionalCoverages();
+    this.global.hwaGetSpecialRequests();
     setTimeout(()=>{
       this.titleService.setTitle(this.global.settings.webpageTitle);
     },200);

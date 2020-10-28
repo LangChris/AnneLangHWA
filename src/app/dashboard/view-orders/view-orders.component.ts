@@ -22,6 +22,7 @@ export class ViewOrdersComponent implements OnInit {
   ngOnInit() {
     this.dashboard.filterOrders(this.global.currentUser.defaultSort, "all", "all", "all", "all", "all", "all");
     this.updateEnteredOrders();
+    console.log(this.dashboard.orders);
   }
 
   updateFilename(event) {
@@ -78,6 +79,9 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   showOrderEntered(show: boolean, id: any) {
+    if(this.global.currentUser.type == 'USER') {
+      return;
+    }
     let enterOrder = document.getElementById('order-entered-' + id);
     for(var i = 0; i < this.dashboard.orders.length; i++) {
       if(this.dashboard.orders[i].orderId == id) {
@@ -94,14 +98,17 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   enterOrder(order: any) {
-    if(!order.entered && !this.global.testing) {
+    if(this.global.currentUser.type == 'USER') {
+      return;
+    }
+    if(!order.entered) {
       this.database.HwaEnterOrder(order).subscribe(
         response => {
           order = response;
           let enterOrder = document.getElementById('order-entered-' + order.orderId);
           enterOrder.style.display = "block";
           this.enteredOrders.push(order);
-          this.database.getOrders();
+          this.database.HwaOrders(this.global.currentUser.token);
           this.updateEnteredOrders();
         },
         error => {

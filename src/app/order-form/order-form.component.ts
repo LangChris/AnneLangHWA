@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { DatabaseService } from '../services/database.service';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import * as MultiSelect from '../../assets/multi-select-umd';
-import { RegisterService } from '../services/register.service';
 
 @Component({
   selector: 'app-order-form',
@@ -36,7 +35,6 @@ export class OrderFormComponent implements OnInit {
     promo: new FormControl(),
     specialRequest: new FormControl(),
     createdDate: new FormControl(),
-    sendEmail: new FormControl(),
     adminName: new FormControl(),
     adminEmail: new FormControl(),
     orderTotal: new FormControl(),
@@ -48,7 +46,6 @@ export class OrderFormComponent implements OnInit {
 
   validateName = false;
   validateEmail = false;
-
   validateDate = false;
 
   total: number = 0;
@@ -63,12 +60,7 @@ export class OrderFormComponent implements OnInit {
 
   active = "LOGIN";
 
-  registerLogin = {
-    username: "",
-    password: ""
-  };
-
-  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService, private formBuilder: FormBuilder, private register: RegisterService) {}
+  constructor(public global: GlobalService, private route: ActivatedRoute, private database: DatabaseService) {}
 
   ngOnInit() {
     this.orderForm.controls.name.valueChanges.subscribe(value => {
@@ -285,22 +277,18 @@ export class OrderFormComponent implements OnInit {
 
       let today = new Date;
       this.orderForm.controls.createdDate.setValue(today);
-      this.orderForm.controls.sendEmail.setValue(this.global.settings.sendEmail);
       this.orderForm.controls.adminName.setValue(this.global.settings.owner);
       this.orderForm.controls.adminEmail.setValue(this.global.settings.email);
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
       this.orderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
 
-      if(!this.global.testing) {
-        this.global.hwaPlaceOrder(this.orderForm, "BUYER");
+      this.global.hwaPlaceOrder(this.orderForm, "BUYER");
 
-        return this.database.placeOrder(this.orderForm).subscribe(response => {
-          this.showForm = false;
-        });
-      } else {
+      return this.database.sendBuyerEmail(this.orderForm).subscribe(response => {
         this.showForm = false;
-      }
+      });
+      
     } else {
       if(!this.orderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;
@@ -348,15 +336,11 @@ export class OrderFormComponent implements OnInit {
 
           // validate login
           if(this.active == 'LOGIN') {
-            let username = document.getElementById('login-username') as HTMLInputElement;
-            let password = document.getElementById('login-password') as HTMLInputElement;
-
-            this.global.hwaLogin(username.value, password.value);
+            this.login();
             
           } else if(this.active == 'REGISTER') {
             let regName = document.getElementById('register-name') as HTMLInputElement;
             let regEmail = document.getElementById('register-email') as HTMLInputElement;
-            let regUsername = document.getElementById('register-username') as HTMLInputElement;
             let regPassword = document.getElementById('register-password') as HTMLInputElement;
 
             // register 
@@ -364,16 +348,14 @@ export class OrderFormComponent implements OnInit {
                 (regEmail.value != null && regEmail.value != '') &&
                 (regPassword.value != null && regPassword.value != '')) {
 
-                this.registerLogin = {
-                  username: regEmail.value,
-                  password: regPassword.value
-                };
+                this.registerUser();
 
-                // register
-                this.register.registerUser(regName.value, regEmail.value, regUsername.value, regPassword.value);
-
-                this.orderForm.controls.name.setValue(regName.value);
-                this.orderForm.controls.email.setValue(regEmail.value);
+                if(this.global.registerStatus = "SUCCESS") {
+                  this.orderForm.controls.name.setValue(regName.value);
+                  this.orderForm.controls.email.setValue(regEmail.value);
+                } else {
+                  console.log('registration unsuccessfull. Status: ' + this.global.registerStatus);
+                }
 
             } else {
               // let user know they are missing info for register

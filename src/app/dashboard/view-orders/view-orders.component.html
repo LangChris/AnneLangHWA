@@ -94,7 +94,7 @@
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block top-margin">
     <p>No orders placed yet.</p>
   </div>
-  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} ({{enteredOrders.length}} entered)</p>
+  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} <span *ngIf="global.currentUser.type == 'ADMIN'">({{enteredOrders.length}} entered)</span></p>
   <div *ngIf="dashboard.orders && dashboard.orders.length > 0" style="overflow-x:auto"> 
     <table class="table" #TABLE>  
       <thead>  
@@ -134,7 +134,7 @@
           <td data-th="Years">{{formatOrder(order.years)}}</td>
           <td data-th="Optional Coverage">{{formatOrder(order.optionalCoverage)}}</td>
           <td data-th="Hvac Coverage">{{formatOrder(order.hvacCoverage)}}</td>
-          <td data-th="Close/Start Date">{{formatOrder(order.closeStartDate)}}</td>
+          <td data-th="Close/Start Date">{{formatOrder(order.closeStartDateString)}}</td>
           <td data-th="Home Type">{{formatOrder(order.homeType)}}</td>
           <td data-th="Address">{{formatOrder(order.address.addressLine)}}<br />&nbsp;{{formatOrder(order.address.city)}},{{formatOrder(order.address.state)}} {{formatOrder(order.address.zip)}}</td>
           <td data-th="Buyer Name" *ngIf="order.buyer != null">{{formatOrder(order.buyer.name)}}</td>
