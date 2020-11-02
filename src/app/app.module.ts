@@ -20,8 +20,8 @@ import { EditOrdersComponent } from './dashboard/edit-orders/edit-orders.compone
 import { ViewOrdersComponent } from './dashboard/view-orders/view-orders.component';
 import { GlobalService } from './services/global.service';
 import { DatabaseService } from './services/database.service';
-
 import { DatePipe } from '@angular/common';
+import { AccordionComponent } from './global/accordion/accordion.component';
 
 const routes: Routes = [
   {
@@ -69,7 +69,8 @@ const routes: Routes = [
     DashboardComponent,
     SettingsComponent,
     ClaimsComponent,
-    MainComponent
+    MainComponent,
+    AccordionComponent
   ],
   imports: [
     ReactiveFormsModule,

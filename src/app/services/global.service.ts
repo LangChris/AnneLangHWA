@@ -13,6 +13,7 @@ export class GlobalService {
 
   plans: any;
   promo: any;
+  activePromos: any;
   settings: any;
   users: any;
   currentUser: any;
@@ -53,35 +54,30 @@ export class GlobalService {
   }
 
   hwaRegisterUser(user: any) {
-    if(user.password == null || user.password == '') {
-      this.registerStatus = "BAD_PASS";
-    } else {
-      this.database.HwaRegisterUser(user).subscribe(response => {
-        this.currentUser = response;
-        this.loginStatus = "SUCCESS";
-        this.registerStatus = "SUCCESS";
-        //console.log(this.currentUser);
-      }, error => {
-        console.log(error);
-  
-        if(error.error.message.includes('Email already exists')) {
-          this.registerStatus = "BAD_EMAIL";
-        }
-  
-        if(error.error.message.includes('Username already exists')) {
-          this.registerStatus = "BAD_USER";
-        }
+    this.database.HwaRegisterUser(user).subscribe(response => {
+      this.currentUser = response;
+      this.loginStatus = "SUCCESS";
+      this.registerStatus = "SUCCESS";
+    }, error => {
+      console.log(error);
 
-        if(error.error.status.includes('INTERNAL_SERVER_ERROR')) {
-          this.registerStatus = "SERVER_ERROR";
-        }
-  
-      });
-    }
+      if(error.error.message.includes('Email already exists')) {
+        this.registerStatus = "EMAIL_EXISTS";
+      }
+
+      if(error.error.message.includes('Username already exists')) {
+        this.registerStatus = "USER_EXISTS";
+      }
+
+      if(error.error.status.includes('INTERNAL_SERVER_ERROR')) {
+        this.registerStatus = "SERVER_ERROR";
+      }
+
+    });
   }
 
   hwaGetUsers() {
-    this.database.HwaUsers().subscribe(response => {
+    this.database.HwaUsers(this.currentUser.token).subscribe(response => {
       this.users = response;
       //console.log(this.users);
     }, error => console.log(error));
@@ -114,6 +110,19 @@ export class GlobalService {
       if(this.promo != null) {
         this.promo.endDate = this.datePipe.transform(this.promo.endDate, "yyyy-MM-dd");
         this.promo.endDateString = this.datePipe.transform(this.promo.endDate, "MM/dd/yyyy");
+        if(this.promo.type == 'Free Coverage Multi') {
+          let coverages = this.promo.coverage.split(',');
+          let codes = this.promo.code.split(',');
+          this.promo.coverages = [];
+          for(let i  = 0; i < coverages.length; i++) {
+            this.promo.coverages.push(
+              {
+                coverage: coverages[i],
+                code: codes[i]
+              }
+            );
+          }
+        }
       }
       //console.log(this.promo);
     }, error => console.log(error));
@@ -215,22 +224,6 @@ export class GlobalService {
     this.database.HwaPlaceOrder(order).subscribe(response => {
       console.log(response);
     }, error => console.log(error));
-  }
-
-  get getMultiCoverage1() {
-    return this.promo.coverage.substring(0, this.promo.coverage.indexOf(','));
-  }
-
-  get getMultiCoverage2() {
-    return this.promo.coverage.substring(this.promo.coverage.indexOf(',') + 1);
-  }
-
-  get getMultiCode1() {
-    return this.promo.code.substring(0, this.promo.code.indexOf(','));
-  }
-
-  get getMultiCode2() {
-    return this.promo.code.substring(this.promo.code.indexOf(',') + 1);
   }
 
 }

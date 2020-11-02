@@ -100,7 +100,7 @@ export class SellerOrderFormComponent implements OnInit {
       for(let i = 0; i < this.global.specialRequests.length; i++) {
         var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
         if(specialRequest.checked) {
-          selectedSpecialRequests.push(this.global.specialRequests[i]);
+          selectedSpecialRequests.push(this.global.specialRequests[i].request);
         }
       }
       
@@ -126,10 +126,12 @@ export class SellerOrderFormComponent implements OnInit {
       this.sellerOrderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
       
       this.global.hwaPlaceOrder(this.sellerOrderForm, "SELLER");
+      this.showForm = false;
 
-      return this.database.sendSellerEmail(this.sellerOrderForm).subscribe(response => {
-        this.showForm = false;
-      });
+      // return this.database.sendSellerEmail(this.sellerOrderForm).subscribe(response => {
+      //   this.showForm = false;
+      // });
+      
     } else {
       if(!this.sellerOrderForm.controls.email.valid) {
         var email = document.getElementById('email') as HTMLInputElement;

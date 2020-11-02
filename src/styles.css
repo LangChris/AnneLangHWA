@@ -71,6 +71,7 @@ p {
 
 .small-text {
     font-size: 12px;
+    display: block;
 }
 
 .large {
@@ -347,6 +348,59 @@ button:hover {
     cursor: pointer;
 }
 
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: max-content;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card.flip .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background-color: transparent;
+}
+
+.card-back {
+    background-color: transparent;
+    transform: rotateY(180deg);
+}
+
+.open::after {
+    font-size: 15px;
+    content: "\25BC";
+}
+
+.closed::after {
+    font-size: 15px;
+    content: "\25B6";
+}
+
+accordion {
+    display: block;
+    width: 700px;
+    margin: 0 auto;
+}
+
 @media screen and (max-width: 1150px) {
     
     .large {
@@ -359,5 +413,12 @@ button:hover {
 
     .small {
         width: 20px;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 95%;
+        max-width: 600px;
+        margin: 0 auto;
     }
 }

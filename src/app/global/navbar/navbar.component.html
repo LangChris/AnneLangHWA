@@ -18,7 +18,7 @@
           <div class="info tooltip"><a class="telephone" href="tel:{{global.settings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
           <div class="info tooltip"><a class="email" href="mailTo:{{global.settings.email}}"></a><span class="tooltiptext">Email Me</span></div>
           <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info</span></div>
-          <div class="info tooltip"><span class="login" (click)="navigateToLogin()"></span><span class="tooltiptext">User Portal</span></div>
+          <div class="info tooltip"><span class="login" (click)="navigateToLogin()"></span><span *ngIf="global.currentUser == null" class="tooltiptext">Login/Register</span><span *ngIf="global.currentUser != null" class="tooltiptext">Logout</span></div>
         </div>
       </td>
     </tr>

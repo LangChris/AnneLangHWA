@@ -1,9 +1,30 @@
 <div class="promo" id="promo" *ngIf="global.promo != null">
-  <h1 *ngIf="displayPromoType('Money Off')" id="promo-title">${{global.promo.amount}} OFF</h1>
-  <h1 *ngIf="displayPromoType('Free Gift')" id="promo-title">Free Gift: {{global.promo.gift}}</h1>
-  <h1 *ngIf="displayPromoType('Free Coverage')" id="promo-title">Free Coverage: {{global.promo.coverage}}</h1>
-  <h1 *ngIf="displayPromoType('Free Coverage Multi')" id="promo-title">Free Coverage: {{global.getMultiCoverage1}} or {{global.getMultiCoverage2}}</h1>
-  <span *ngIf="global.promo ! null">New Plan Purchases Through</span> <span id="promo-endDate" *ngIf="global.promo ! null">{{global.promo.endDateString}}</span>
-  <h4 *ngIf="!displayPromoType('Free Coverage Multi')" id="promo-code">Use Promo Code: {{global.promo.code}}</h4>
-  <h4 *ngIf="displayPromoType('Free Coverage Multi')" id="promo-code">Use Promo Code: {{global.getMultiCode1}} or {{global.getMultiCode2}}</h4>
+  <h1>Promo</h1>
+  <hr width="100px" color="#000" />
+  <span>New Plan Purchases Through <span class="bold" id="promo-endDate">{{global.promo.endDateString}}</span></span>
+  <div class="card">
+    <h2 *ngIf="displayPromoType('Money Off')" id="promo-title">${{global.promo.amount}} OFF</h2>
+    <h2 *ngIf="displayPromoType('Free Gift')" id="promo-title">Free Gift:</h2>
+    <h2 *ngIf="displayPromoType('Free Coverage')" id="promo-title">Free Coverage:</h2>
+    <h2 *ngIf="displayPromoType('Free Coverage Multi')" id="promo-title">Free Coverage(s):</h2>
+    <table>
+      <thead *ngIf="displayPromoType('Free Gift')">
+        <tr>
+          <td>{{global.promo.gift}}</td>
+        </tr>
+      </thead>
+      <thead *ngIf="displayPromoType('Free Coverage')">
+        <tr>
+          <th> {{global.promo.coverage}}</th>
+          <td>{{global.promo.code}}</td>
+        </tr>
+      </thead>
+      <thead *ngIf="displayPromoType('Free Coverage Multi')">
+        <tr *ngFor="let promo of global.promo.coverages">
+          <th> {{promo.coverage}}</th>
+          <td>{{promo.code}}</td>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { DatabaseService } from '../../services/database.service';
 import { DashboardComponent } from '../dashboard.component';
+import * as MultiSelect from '../../../assets/multi-select-umd';
 
 @Component({
   selector: 'dashboard-settings',
@@ -59,6 +60,12 @@ export class SettingsComponent implements OnInit {
     endDate: new FormControl(this.global.promo == null ? null : this.global.promo.endDate, [Validators.required])
   });
 
+  multiSelect: any;
+
+  generalSettingsIsOpen = this.global.currentUser.type == 'ADMIN' ? true : false;
+  userSettingsIsOpen = this.global.currentUser.type == 'ADMIN' ? false : true;
+  userManagementIsOpen = false;
+
   constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent) { }
 
   ngOnInit(): void {
@@ -71,55 +78,15 @@ export class SettingsComponent implements OnInit {
       this.dashboard.showSuccess = false;
       this.dashboard.showError = false;
     });
+  }
 
-    this.initializeUserSettings();
-
+  ngAfterContentInit() {
     if(this.global.currentUser.type == 'ADMIN') {
       setTimeout(() => {
         this.initializePromoSettings();
         this.initializePlanSettings();
       }, 500);
     }
-  }
-
-  initializeUserSettings() {
-    let name = document.getElementById('users-name') as HTMLInputElement;
-    let email = document.getElementById('email-address') as HTMLInputElement;
-    let alternateEmail = document.getElementById('alternate-email') as HTMLInputElement;
-    let phoneNumber = document.getElementById('phone-number') as HTMLInputElement;
-    let defaultSort = document.getElementById('default-sort') as HTMLSelectElement;
-    let defaultFilename = document.getElementById('default-filename') as HTMLInputElement;
-    let username = document.getElementById('username') as HTMLInputElement;
-    let password = document.getElementById('password') as HTMLInputElement;
-
-    name.value = this.userSettingsForm.controls.name.value;
-    email.value = this.userSettingsForm.controls.email.value;
-    alternateEmail.value = this.userSettingsForm.controls.alternateEmail.value;
-    phoneNumber.value = this.userSettingsForm.controls.phoneNumber.value;
-    defaultSort.value = this.userSettingsForm.controls.defaultSort.value;
-    defaultFilename.value = this.userSettingsForm.controls.defaultFilename.value;
-    username.value = this.userSettingsForm.controls.username.value;
-    password.value = this.userSettingsForm.controls.password.value;
-  }
-
-  updateUserSettingsForm() {
-    let name = document.getElementById('users-name') as HTMLInputElement;
-    let email = document.getElementById('email-address') as HTMLInputElement;
-    let alternateEmail = document.getElementById('alternate-email') as HTMLInputElement;
-    let phoneNumber = document.getElementById('phone-number') as HTMLInputElement;
-    let defaultSort = document.getElementById('default-sort') as HTMLInputElement;
-    let defaultFilename = document.getElementById('default-filename') as HTMLInputElement;
-    let username = document.getElementById('username') as HTMLInputElement;
-    let password = document.getElementById('password') as HTMLInputElement;
-
-    this.userSettingsForm.controls.name.setValue(name.value);
-    this.userSettingsForm.controls.email.setValue(email.value);
-    this.userSettingsForm.controls.alternateEmail.setValue(alternateEmail.value);
-    this.userSettingsForm.controls.phoneNumber.setValue(phoneNumber.value);
-    this.userSettingsForm.controls.defaultSort.setValue(defaultSort.value);
-    this.userSettingsForm.controls.defaultFilename.setValue(defaultFilename.value);
-    this.userSettingsForm.controls.username.setValue(username.value);
-    this.userSettingsForm.controls.password.setValue(password.value);
   }
 
   initializePromoSettings() {
@@ -129,6 +96,7 @@ export class SettingsComponent implements OnInit {
     let amount = document.getElementById('promo-amount') as HTMLInputElement;
     let coverage = document.getElementById('promo-coverage') as HTMLSelectElement;
     let code = document.getElementById('promo-code') as HTMLInputElement;
+    let codes = document.getElementById('promo-codes') as HTMLInputElement;
     let endDate = document.getElementById('promo-endDate') as HTMLInputElement;
 
     active.checked = this.promoForm.controls.active.value;
@@ -137,19 +105,43 @@ export class SettingsComponent implements OnInit {
     amount.value = this.promoForm.controls.amount.value;
     coverage.value = this.promoForm.controls.coverage.value;
     code.value = this.promoForm.controls.code.value;
+    codes.value = this.promoForm.controls.code.value;
     endDate.value = this.promoForm.controls.endDate.value;
 
     if(this.promoForm.controls.type.value == 'Free Coverage Multi') {
-      let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
-      let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
-      let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
-      let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
+      var optionalCoverageSelect = document.getElementById("promo-coverages") as HTMLSelectElement;
+      optionalCoverageSelect.options.length = 0;
+      
+      var options = [];
+      let selectedOptions = [];
+      for(var i = 0; i < this.global.optionalCoverages.length; i++) {
+        var option = document.createElement("option");
+        option.text = this.global.optionalCoverages[i].coverageOption;
+        option.value = this.global.optionalCoverages[i].coverageOption;
+        optionalCoverageSelect.add(option);
+        options.push(option.text);
+      }
+      
+      if(this.promoForm.controls.coverage.value != null) {
+        selectedOptions = this.promoForm.controls.coverage.value.split(",");            
+      }
 
-      coverage1.value = this.promoForm.controls.coverage.value.substring(0, this.promoForm.controls.coverage.value.indexOf(','));
-      coverage2.value = this.promoForm.controls.coverage.value.substring(this.promoForm.controls.coverage.value.indexOf(',') + 1);
+      this.multiSelect = new (MultiSelect as any)('.multi-select', {
+      items: options,
+      current: selectedOptions,
+      });
+      this.multiSelect.on('change', this.optionalCoverageChange.bind(this));
 
-      code1.value = code.value.substring(0, code.value.indexOf(','));
-      code2.value = code.value.substring(code.value.indexOf(',') + 1);
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+      }
+    }
+  }
+
+  optionalCoverageChange(e) {
+    var optionalCoverageSelect = document.getElementById('promo-coverages') as HTMLSelectElement;
+    for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
     }
   }
 
@@ -160,10 +152,8 @@ export class SettingsComponent implements OnInit {
     let amount = document.getElementById('promo-amount') as HTMLInputElement;
     let coverage = document.getElementById('promo-coverage') as HTMLSelectElement;
     let code = document.getElementById('promo-code') as HTMLInputElement;
+    let codes = document.getElementById('promo-codes') as HTMLInputElement;
     let endDate = document.getElementById('promo-endDate') as HTMLInputElement;
-
-    let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
-    let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
 
     this.promoForm.controls.active.setValue(active.checked);
     this.promoForm.controls.type.setValue(type.value);
@@ -185,9 +175,17 @@ export class SettingsComponent implements OnInit {
       this.promoForm.controls.amount.setValue(0);
       this.promoForm.controls.gift.setValue(null);
     } else if(this.promoForm.controls.type.value == "Free Coverage Multi") {
-      this.promoForm.controls.coverage.setValue(coverage1.value + "," + coverage2.value);
+      var optionalCoverageSelect = document.getElementById('promo-coverages') as HTMLSelectElement;
+      var selectedOptions = [];
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        if(optionalCoverageSelect.options[i].selected) {
+          selectedOptions.push(optionalCoverageSelect.options[i].value);
+        }
+      }
+      this.promoForm.controls.coverage.setValue(selectedOptions.toString());
       this.promoForm.controls.amount.setValue(0);
       this.promoForm.controls.gift.setValue(null);
+      this.promoForm.controls.code.setValue(codes.value);
     }
   }
 
@@ -226,6 +224,7 @@ export class SettingsComponent implements OnInit {
   showPromoType(type: string) {
     let promoType = document.getElementById('promo-type') as HTMLSelectElement;
     return promoType.value == type ? true : false;
+    return false;
   }
 
   newSpecialRequest() {
@@ -260,9 +259,9 @@ export class SettingsComponent implements OnInit {
     if(this.global.currentUser.type == 'ADMIN') {
       this.updateGeneralSettings();
       this.updatePromoSettings();
-      //this.updatePlanSettings();
-      //this.updateOptionalCoverageSettings();
-      //this.updateSpecialRequestSettings();
+      this.updatePlanSettings();
+      this.updateOptionalCoverageSettings();
+      this.updateSpecialRequestSettings();
     } 
     
     this.updateUserSettings();
@@ -271,7 +270,7 @@ export class SettingsComponent implements OnInit {
   updateGeneralSettings() {
     if(this.generalSettingsForm.valid) {
 
-      return this.database.HwaUpdateSettings(this.generalSettingsForm).subscribe(
+      return this.database.HwaUpdateSettings(this.generalSettingsForm, this.global.currentUser.token).subscribe(
         response => {
         },
         error => {
@@ -289,7 +288,7 @@ export class SettingsComponent implements OnInit {
     this.updatePromoForm();
 
     if(this.promoForm.valid) {
-      return this.database.HwaUpdatePromo(this.promoForm).subscribe(
+      return this.database.HwaUpdatePromo(this.promoForm, this.global.currentUser.token).subscribe(
         response => {
         },
         error => {
@@ -308,7 +307,35 @@ export class SettingsComponent implements OnInit {
     this.updatePlanForm();
 
     if(this.planForm.valid) {
-      //Update Plans
+      let plans = [];
+      for(let i = 0; i < this.global.plans.length; i++) {
+        let name = "";
+        let price = 0;
+        if(i == 0) {
+          name = this.planForm.controls.planOne.value;
+          price = this.planForm.controls.planOnePrice.value;
+        } else if(i == 1) {
+          name = this.planForm.controls.planTwo.value;
+          price = this.planForm.controls.planTwoPrice.value;
+        } else {
+          name = this.planForm.controls.planThree.value;
+          price = this.planForm.controls.planThreePrice.value;
+        }
+        
+        let plan = {
+          name: name,
+          price: +price,
+          townhomeDiscount: this.global.plans[i].plan.townhomeDiscount
+        };
+        plans.push(plan);
+      }
+      return this.database.HwaUpdatePlans(plans, this.global.currentUser.token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
     } else {
       console.log(this.planForm);
       this.dashboard.showError = true;
@@ -323,13 +350,20 @@ export class SettingsComponent implements OnInit {
         let coverage = coverages[i] as HTMLInputElement;
         let price = prices[i] as HTMLInputElement;
         let option = {
-          option: coverage.value, 
+          coverageOption: coverage.value, 
           price: price.value
         };
-        if(option.option != "" && option.price != "") {
+        if(option.coverageOption != "" && option.price != "") {
           optionalCoverages.push(option);
         }
       }
+      return this.database.HwaUpdateOptionalCoverages(optionalCoverages, this.global.currentUser.token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
   }
 
   updateSpecialRequestSettings() {
@@ -338,14 +372,23 @@ export class SettingsComponent implements OnInit {
       for(var i = 0; i < requests.length; i++) {
         let request = requests[i] as HTMLInputElement;
         if(request.value != "") {
-          specialRequests.push(request.value);
+          specialRequests.push(
+            {
+              request: request.value
+            }
+          );
         }
       }
+      return this.database.HwaUpdateSpecialRequests(specialRequests, this.global.currentUser.token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
   }
 
   updateUserSettings() {
-      this.updateUserSettingsForm();
-
       if(this.userSettingsForm.valid) {
         this.userSettingsForm.controls.password.setValue(btoa(this.userSettingsForm.controls.password.value));
         

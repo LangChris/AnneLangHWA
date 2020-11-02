@@ -55,6 +55,7 @@ export class OrderFormComponent implements OnInit {
   progressStep = 1;
 
   helpClicked = false;
+  hasLoaded = false;
 
   panel = "LOGIN";
 
@@ -162,9 +163,8 @@ export class OrderFormComponent implements OnInit {
       if(promoInputValue) {
           if(this.global.promo != null) {
               if(this.global.promo.type = 'Free Coverage Multi' ) {
-                let code1 = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
-                let code2 = this.global.promo.code.substring(this.global.promo.code.indexOf(',') + 1);
-                if(promoInputValue === code1 || promoInputValue === code2) {
+                let codes = this.global.promo.code.split(',');
+                if(codes.includes(promoInputValue)) {
                   promoInput.style.border = "1px solid green";
                   promoStatus.style.color = "green";
                   promoStatus.innerHTML = " &#10004; Valid";
@@ -214,7 +214,7 @@ export class OrderFormComponent implements OnInit {
             }
           }
         }
-      } else if(this.validPromo && this.global.promo.active && this.global.promo.type == 'Free Coverage Multi') {
+      } else if(!this.hasLoaded && this.validPromo && this.global.promo.active && this.global.promo.type == 'Free Coverage Multi') {
         for(var i = 0; i < this.optionalCoverageMultiSelect.options.items.size; i++) {
           let value = this.optionalCoverageMultiSelect.options.items.get(i).value;
 
@@ -238,6 +238,9 @@ export class OrderFormComponent implements OnInit {
             }
           }
         }
+        if(!this.hasLoaded) {
+          this.hasLoaded = true;
+        }
       }
 
       this.updateOrderTotal();
@@ -260,7 +263,7 @@ export class OrderFormComponent implements OnInit {
       for(let i = 0; i < this.global.specialRequests.length; i++) {
         var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
         if(specialRequest.checked) {
-          selectedSpecialRequests.push(this.global.specialRequests[i]);
+          selectedSpecialRequests.push(this.global.specialRequests[i].request);
         }
       }
       
@@ -284,10 +287,11 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
 
       this.global.hwaPlaceOrder(this.orderForm, "BUYER");
-
-      return this.database.sendBuyerEmail(this.orderForm).subscribe(response => {
-        this.showForm = false;
-      });
+      this.showForm = false;
+      
+      // return this.database.sendBuyerEmail(this.orderForm).subscribe(response => {
+      //   this.showForm = false;
+      // });
       
     } else {
       if(!this.orderForm.controls.email.valid) {
@@ -485,32 +489,45 @@ export class OrderFormComponent implements OnInit {
     var optionalCoverageSelect = document.getElementById('optional-coverage') as HTMLSelectElement;
       for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
         if(optionalCoverageSelect.options[i].selected) {
-          let option = optionalCoverageSelect.options[i].text;
-          let price = option.substring(option.indexOf("$") + 1, option.lastIndexOf("/"));
+          let option = optionalCoverageSelect.options[i].text.substring(0, optionalCoverageSelect.options[i].text.lastIndexOf("-") - 1);
+          let price = optionalCoverageSelect.options[i].text.substring(optionalCoverageSelect.options[i].text.lastIndexOf("-") + 2);
+          console.log(option);
+          console.log(price);
           if(!this.validPromo) {
             this.total += +price;
           } else {
-            if(this.global.promo.type == 'Free Coverage' && this.orderForm.controls.promo.value != '') {
-              if(!option.includes(this.global.promo.coverage)) {
+            if((this.global.promo.type == 'Free Coverage' || this.global.promo.type == 'Free Coverage Multi') && this.orderForm.controls.promo.value != '') {
+              if(!this.selectedOptionIsFreeCoverage(option)) {
                 this.total += +price;
               }
-            } else if(this.global.promo.type == 'Free Coverage Multi' && this.orderForm.controls.promo.value != '') {
-              let coverage1 = this.global.promo.coverage.substring(0, this.global.promo.coverage.indexOf(','));
-              let coverage2 = this.global.promo.coverage.substring(this.global.promo.coverage.indexOf(',') + 1);
-              let code1 = this.global.promo.code.substring(0, this.global.promo.code.indexOf(','));
-              let code2 = this.global.promo.code.substring(this.global.promo.code.indexOf(',') + 1);
-
-              if( (!option.includes(coverage1) && !option.includes(coverage2))  ||
-                  (option.includes(coverage1) && this.orderForm.controls.promo.value != code1) ||
-                  (option.includes(coverage2) && this.orderForm.controls.promo.value != code2)) {
-                this.total += +price;
-              } 
             } else {
               this.total += +price;
             }
           }
         }
       }
+  }
+
+  selectedOptionIsFreeCoverage(option) {
+    if(this.global.promo.type == 'Free Coverage') {
+      let coverage = this.global.promo.coverage;
+      let code = this.global.promo.code;
+
+      if(option == coverage && this.orderForm.controls.promo.value == code) {
+        return true;
+      }
+    } else if(this.global.promo.type == 'Free Coverage Multi') {
+      let coverages = this.global.promo.coverage.split(',');
+      let codes = this.global.promo.code.split(',');
+
+      for(let i  = 0; i < coverages.length; i++) {
+        if(coverages[i] == option && this.orderForm.controls.promo.value == codes[i]) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   togglePanel(panel) {

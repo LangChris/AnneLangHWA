@@ -1,230 +1,225 @@
-<div class="settings-box">
+<div>
     <div class="header">Settings &#9881;</div>
 
-    <form id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
-    <table class="settings-table">
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-header">General Settings</th>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Title</th>
-            <td><input type="text" id="title" class="large" name="webpageTitle" formControlName="webpageTitle" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Sub Title</th>
-            <td><input type="text" id="sub-title" class="large" name="webpageSubtitle" formControlName="webpageSubtitle" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Description</th>
-            <td><textarea id="description" rows=10 cols=30 class="large" name="webpageDescription" formControlName="webpageDescription" ></textarea></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Order Form Description</th>
-            <td><input type="text" id="order-description" class="large" name="orderDescription" formControlName="orderDescription" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Order Form Message</th>
-            <td><input type="text" id="order-message" class="large" name="orderMessage" formControlName="orderMessage" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Owner</th>
-            <td><input type="text" id="owner" class="medium" name="owner" formControlName="owner" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Phone Number</th>
-            <td><input type="tel" id="phone" class="medium" name="phoneNumber" formControlName="phoneNumber" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Email</th>
-            <td><input type="email" id="email" class="medium" name="email" formControlName="email" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Alternate Email</th>
-            <td><input type="email" id="alternateEmail" class="medium" name="alternateEmail" formControlName="alternateEmail" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th>Receive Emails</th>
-            <td>
-                <div class="on-off-switch">  
-                    <input type="checkbox" value="None" id="send-email" name="sendEmail" formControlName="sendEmail" />
-                    <label for="send-email"></label>
-                </div>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-header">Plans</th>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-label"></th>
-            <td>
-                <input type="text" class="extra-medium" id="planOne" />&nbsp;
-                <input type="text" class="extra-small" id="planOnePrice" />
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-label"></th>
-            <td>
-                <input type="text" class="extra-medium" id="planTwo" />&nbsp;
-                <input type="text" class="extra-small" id="planTwoPrice" />
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-label"></th>
-            <td>
-                <input type="text" class="extra-medium" id="planThree" />&nbsp;
-                <input type="text" class="extra-small" id="planThreePrice" />
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-header">Promo</th>
-            <td>
-                <div class="on-off-switch">  
-                    <input type="checkbox" value="None" id="promo-active"/>
-                    <label for="promo-active"></label>
-                </div>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-label">Type</th>
-            <td>
-                <select class="medium" id="promo-type" >
-                    <option value="Money Off">Money Off</option>
-                    <option value="Free Coverage">Free Coverage</option>
-                    <option value="Free Coverage Multi">Free Coverage Multi</option>
-                    <option value="Free Gift">Free Gift</option>
-                </select>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Gift')">
-            <th class="group-label">Gift</th>
-            <td><input type="text" id="promo-gift" class="medium" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Money Off')">
-            <th class="group-label">Amount</th>
-            <td><input type="text" id="promo-amount" class="medium" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage')">
-            <th class="group-label">Coverage</th>
-            <td>
-                <select class="medium" id="promo-coverage" >
-                    <option>Select One</option>
-                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
-                </select>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage Multi')">
-            <th class="group-label">Coverage 1</th>
-            <td>
-                <select class="medium" id="promoCoverageMulti1" >
-                    <option>Select One</option>
-                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
-                </select>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage Multi')">
-            <th class="group-label">Coverage 2</th>
-            <td>
-                <select class="medium" id="promoCoverageMulti2" >
-                    <option>Select One</option>
-                    <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
-                </select>
-            </td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage')">
-            <th class="group-label">Code</th>
-            <td><input type="text" id="promo-code" class="medium" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage Multi')">
-            <th class="group-label">Code 1</th>
-            <td><input type="text" class="medium" id="promoCodeMulti1" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'" [hidden]="!showPromoType('Free Coverage Multi')">
-            <th class="group-label">Code 2</th>
-            <td><input type="text" class="medium" id="promoCodeMulti2" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-label">End Date</th>
-            <td><input type="date" id="promo-endDate" class="medium" /></td>
-        </tr>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-           <th class="group-header">Special Requests</th> 
-           <div class="small-button add" (click)="newSpecialRequest()"></div>
-        </tr>
-        <tbody id="special-requests" *ngIf="global.currentUser.type == 'ADMIN'">
-            <tr *ngFor="let request of global.specialRequests">
-                <th class="group-label"></th>
-                <td><input type="text" class="medium specialRequests" value="{{request.request}}" /></td>
-            </tr>
-        </tbody>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-header">Optional Coverage</th> 
-            <div class="small-button add" (click)="newOptionalCoverage()"></div>
-         </tr>
-         <tbody id="optional-coverages" *ngIf="global.currentUser.type == 'ADMIN'">
-         <tr *ngFor="let option of global.optionalCoverages">
-             <th class="group-label"></th>
-             <td>
-                 <input type="text" class="extra-medium optionalCoverages" value="{{option.coverageOption}}" />&nbsp;
-                 <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price}}" />
-            </td>
-         </tr>
-        </tbody>
-        <tr *ngIf="global.currentUser.type == 'ADMIN'">
-            <th class="group-header">User Info</th>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td><input type="text" id="users-name" class="medium" /></td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td><input type="email" id="email-address" class="medium" /></td>
-        </tr>
-        <tr>
-            <th>Alternate Email</th>
-            <td><input type="email" id="alternate-email" class="medium" /></td>
-        </tr>
-        <tr>
-            <th>Phone Number</th>
-            <td><input type="tel" id="phone-number" class="medium" /></td>
-        </tr>
-        <tr>
-            <th>Default Sort</th>
-            <td>
-                <select id="default-sort" class="medium">
-                    <option value="ASC">Oldest to Newest</option>
-                    <option value="DESC">Newest to Oldest</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th>Default Filename</th>
-            <td><input type="text" id="default-filename" class="medium" /></td>
-        </tr>
-        <tr>
-            <th class="group-header">Login</th>
-        </tr>
-        <tr>
-            <th class="group-label">Username</th>
-            <td><input type="text" id="username" class="medium" /></td>
-        </tr>
-        <tr>
-            <th class="group-label">Password</th>
-            <td>
-                <input type="password" id="password" class="medium" />
-            </td>
-        </tr>
-        <tr>
-            <th class="group-label">Show Pass</th>
-            <td><input type="checkbox" id="password-toggle" (click)="togglePassword()"></td>
-        </tr>
-    </table>
+    <accordion id="general-settings-accordion" header="General Settings" [is_open]="generalSettingsIsOpen" *ngIf="global.currentUser.type == 'ADMIN'">
+        <form [hidden]='!generalSettingsIsOpen' id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
+            <table class="settings-table card">
+                <tr>
+                    <th>Title</th>
+                    <td><input type="text" id="title" class="large" name="webpageTitle" formControlName="webpageTitle" /></td>
+                </tr>
+                <tr>
+                    <th>Sub Title</th>
+                    <td><input type="text" id="sub-title" class="large" name="webpageSubtitle" formControlName="webpageSubtitle" /></td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td><textarea id="description" rows=10 cols=30 class="large" name="webpageDescription" formControlName="webpageDescription" ></textarea></td>
+                </tr>
+                <tr>
+                    <th>Order Form Description</th>
+                    <td><input type="text" id="order-description" class="large" name="orderDescription" formControlName="orderDescription" /></td>
+                </tr>
+                <tr>
+                    <th>Order Form Message</th>
+                    <td><input type="text" id="order-message" class="large" name="orderMessage" formControlName="orderMessage" /></td>
+                </tr>
+                <tr>
+                    <th>Owner</th>
+                    <td><input type="text" id="owner" class="medium" name="owner" formControlName="owner" /></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td><input type="tel" id="phone" class="medium" name="phoneNumber" formControlName="phoneNumber" /></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" id="email" class="medium" name="email" formControlName="email" /></td>
+                </tr>
+                <tr>
+                    <th>Alternate Email</th>
+                    <td><input type="email" id="alternateEmail" class="medium" name="alternateEmail" formControlName="alternateEmail" /></td>
+                </tr>
+                <tr>
+                    <th>Receive Emails</th>
+                    <td>
+                        <div class="on-off-switch">  
+                            <input type="checkbox" value="None" id="send-email" name="sendEmail" formControlName="sendEmail" />
+                            <label for="send-email"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-header">Plans</th>
+                </tr>
+                <tr>
+                    <th class="group-label"></th>
+                    <td>
+                        <input type="text" class="extra-medium" id="planOne" />&nbsp;
+                        <input type="text" class="extra-small" id="planOnePrice" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-label"></th>
+                    <td>
+                        <input type="text" class="extra-medium" id="planTwo" />&nbsp;
+                        <input type="text" class="extra-small" id="planTwoPrice" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-label"></th>
+                    <td>
+                        <input type="text" class="extra-medium" id="planThree" />&nbsp;
+                        <input type="text" class="extra-small" id="planThreePrice" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-header">Promo</th>
+                    <td>
+                        <div class="on-off-switch">  
+                            <input type="checkbox" value="None" id="promo-active"/>
+                            <label for="promo-active"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-label">Type</th>
+                    <td>
+                        <select class="medium" id="promo-type" >
+                            <option value="Money Off">Money Off</option>
+                            <option value="Free Coverage">Free Coverage</option>
+                            <option value="Free Coverage Multi">Free Coverage Multi</option>
+                            <option value="Free Gift">Free Gift</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr [hidden]="!showPromoType('Free Gift')">
+                    <th class="group-label">Gift</th>
+                    <td><input type="text" id="promo-gift" class="medium" /></td>
+                </tr>
+                <tr [hidden]="!showPromoType('Money Off')">
+                    <th class="group-label">Amount</th>
+                    <td><input type="text" id="promo-amount" class="medium" /></td>
+                </tr>
+                <tr [hidden]="!showPromoType('Free Coverage')">
+                    <th class="group-label">Coverage</th>
+                    <td>
+                        <select class="medium" id="promo-coverage" >
+                            <option>Select One</option>
+                            <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr [hidden]="!showPromoType('Free Coverage')">
+                    <th class="group-label">Code</th>
+                    <td><input type="text" id="promo-code" class="medium" /></td>
+                </tr>
+                <tr [hidden]="!showPromoType('Free Coverage Multi')">
+                    <th class="group-label">Coverage(s)</th>
+                    <td>
+                        <div class="multi-select medium" id="multi-select"></div>
+                        <select id="promo-coverages" class="medium" multiple hidden>
+                          <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
+                        </select>  
+                    </td>
+                </tr>
+                <tr [hidden]="!showPromoType('Free Coverage Multi')">
+                    <th class="group-label">Code(s)</th>
+                    <td><input type="text" class="medium" id="promo-codes" /></td>
+                </tr>
+                <tr>
+                    <th class="group-label">End Date</th>
+                    <td><input type="date" id="promo-endDate" class="medium" /></td>
+                </tr>
+                <tr>
+                   <th class="group-header">Special Requests</th> 
+                   <div class="small-button add" (click)="newSpecialRequest()"></div>
+                </tr>
+                <tbody id="special-requests">
+                    <tr *ngFor="let request of global.specialRequests">
+                        <th class="group-label"></th>
+                        <td><input type="text" class="medium specialRequests" value="{{request.request}}" /></td>
+                    </tr>
+                </tbody>
+                <tr>
+                    <th class="group-header">Optional Coverage</th> 
+                    <div class="small-button add" (click)="newOptionalCoverage()"></div>
+                 </tr>
+                 <tbody id="optional-coverages">
+                 <tr *ngFor="let option of global.optionalCoverages">
+                     <th class="group-label"></th>
+                     <td>
+                         <input type="text" class="extra-medium optionalCoverages" value="{{option.coverageOption}}" />&nbsp;
+                         <input type="text" class="extra-small optionalCoveragePrices" value="{{option.price}}" />
+                    </td>
+                 </tr>
+                </tbody>
+            </table>
+        </form>
+    </accordion>
 
-        <div *ngIf="dashboard.showError" class="error">Error Making Changes</div>
-        <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
-    </form>
-</div>
-<div class="centered-block top-padding">
-    <button class="top-margin check" type="submit" form="generalSettingsForm"></button>
-    <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
+    <accordion id="user-settings-accordion" header="User Settings" [is_open]="userSettingsIsOpen">
+        <form [hidden]='!userSettingsIsOpen' id="userSettingsForm" [formGroup]="userSettingsForm" novalidate (ngSubmit)="updateSettings()" >
+            <table class="settings-table card">
+                <tr>
+                    <th>Name</th>
+                    <td><input type="text" id="users-name" name="name" formControlName="name" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" id="email-address" name="email" formControlName="email" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th>Alternate Email</th>
+                    <td><input type="email" id="alternate-email" name="alternateEmail" formControlName="alternateEmail" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td><input type="tel" id="phone-number" name="phoneNumber" formControlName="phoneNumber" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th>Default Sort</th>
+                    <td>
+                        <select id="default-sort" name="defaultSort" formControlName="defaultSort" class="medium">
+                            <option value="ASC">Oldest to Newest</option>
+                            <option value="DESC">Newest to Oldest</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Default Filename</th>
+                    <td><input type="text" id="default-filename" name="defaultFilename" formControlName="defaultFilename" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th class="group-header">Login</th>
+                </tr>
+                <tr>
+                    <th class="group-label">Username</th>
+                    <td><input type="text" id="username" name="username" formControlName="username" class="medium" /></td>
+                </tr>
+                <tr>
+                    <th class="group-label">Password</th>
+                    <td>
+                        <input type="password" id="password" name="password" formControlName="password" class="medium" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="group-label">Show Pass</th>
+                    <td><input type="checkbox" id="password-toggle" (click)="togglePassword()"></td>
+                </tr>
+            </table>
+        </form>
+    </accordion>
+
+    <accordion id="user-management-accordion" header="User Management" [is_open]="userManagementIsOpen">
+
+    </accordion>
+
+    <div *ngIf="dashboard.showError" class="error">Error Making Changes</div>
+    <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
+
+    <div class="centered-block top-padding">
+        <button class="top-margin check" type="submit" form="generalSettingsForm"></button>
+        <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
+    </div>
 </div>

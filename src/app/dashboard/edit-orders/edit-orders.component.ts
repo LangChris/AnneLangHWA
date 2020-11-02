@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardComponent } from '../dashboard.component'; 
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { DatePipe } from '@angular/common';
 import { GlobalService } from '../../services/global.service';
 import { DatabaseService } from '../../services/database.service';
@@ -205,7 +205,7 @@ export class EditOrdersComponent implements OnInit {
     // convert editForm to Order Object
     let order = {};
 
-    return this.database.HwaUpdateOrder(order).subscribe(
+    return this.database.HwaUpdateOrder(order, this.global.currentUser.token).subscribe(
       response => {
         this.dashboard.showSuccess = true;
         this.global.hwaGetOrders();
@@ -217,7 +217,7 @@ export class EditOrdersComponent implements OnInit {
   }
 
   deleteOrder(id) {
-    return this.database.HwaDeleteOrder(id).subscribe(
+    return this.database.HwaDeleteOrder(id, this.global.currentUser.token).subscribe(
       response => {
         this.resetForm();
         this.dashboard.showSuccess = true;

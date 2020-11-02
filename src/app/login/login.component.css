@@ -32,3 +32,32 @@ div {
 .success {
     color: green;
 }
+
+h2 {
+    color: #eb5e17;
+    text-align: center;
+
+}
+
+small {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+small:hover {
+    color: #ccc;
+}
+
+.card {
+    width: auto;
+    max-width: 500px;
+    height: 250px;
+    margin-bottom: 20px;
+    padding: 0px;
+}
+
+@media screen and (max-width: 1150px) {
+    .card {
+        width: 95%;
+    }
+}

@@ -9,15 +9,15 @@
       <progress id="progress" value={{progressStep}} max=4></progress>
       <form id="sellerOrderForm" [formGroup]="sellerOrderForm" novalidate (ngSubmit)="submitOrder()">
         
-        <div class="popout" [hidden]="progressStep != 1">
+        <div class="popout card" [hidden]="progressStep != 1">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Let's start with you...</p>
           <p *ngIf="helpClicked" class="popout-subheader">Enter Login Credentials or select Guest Checkout to continue.</p>
           <p *ngIf="helpClicked" class="popout-subheader">We need to know who is filling out the form in order to get back in contact.</p>
           <table class="double-section">
             <tr>
-              <td class="section-box" id="login-register-box" (click)="toggleActive('LOGIN')">
-                <p class="popout-header-double top-margin"><span id="login-text" (click)="togglePanel('LOGIN')">Login</span> / <span id="register-text" (click)="togglePanel('REGISTER')">Register</span></p>
+              <td class="section-box card" id="login-register-box" (click)="toggleActive('LOGIN')">
+                <p class="popout-header-double top-margin"><span id="login-text">Login</span></p>
                 <p *ngIf="helpClicked && panel == 'REGISTER'" class="popout-subheader">For faster checkout create an account</p>
                 <p *ngIf="helpClicked && panel == 'LOGIN'" class="popout-subheader">Login to keep track of your orders</p>
                 <hr width="50%" color="#ddd" />
@@ -44,45 +44,8 @@
                     </td>
                   </tr>
                 </table>
-                <table class="order-form" *ngIf="panel == 'REGISTER'">
-                  <tr>
-                    <th class="required">Name*</th>
-                    <td>
-                      <input type="text" class="large" id="register-name"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="required">Email*</th>
-                    <td>
-                      <input type="email" class="large" id="register-email" />
-                      <span *ngIf="global.registerStatus == 'BAD_EMAIL'" class="required small-text" ><br /> Email is already registered!</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Username</th>
-                    <td>
-                      <input type="text" class="large" id="register-username" />
-                      <span *ngIf="global.registerStatus == 'BAD_USER'" class="required small-text" ><br /> Username is already registered!</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="required">Password*</th>
-                    <td>
-                      <input type="password" class="large" id="register-password" />
-                      <span *ngIf="global.registerStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is required!</span>
-                      <span *ngIf="global.registerStatus == 'SUCCESS'" class="success small-text" ><br /> Successful registration, proceed Next</span>
-                      <span *ngIf="global.registerStatus == 'SERVER_ERROR'" class="required small-text" ><br /> Server Error, Please try again</span>
-                    </td>
-                  </tr>
-                  <tr *ngIf="global.registerStatus != 'SUCCESS'">
-                    <th></th>
-                    <td>
-                      <span class="button" (click)="registerUser()">Register</span>
-                    </td>
-                  </tr>
-                </table>
               </td>
-              <td class="section-box" id="guest-checkout-box" (click)="toggleActive('GUEST')">
+              <td class="section-box card" id="guest-checkout-box" (click)="toggleActive('GUEST')">
                 <p class="popout-header-double top-margin">Guest Checkout</p>
                 <p *ngIf="helpClicked" class="popout-subheader">Checkout as a guest</p>
                 <hr width="50%" color="#ddd" />
@@ -107,7 +70,7 @@
           </table>  
         </div>
 
-        <div class="popout" [hidden]="progressStep != 2">
+        <div class="popout card" [hidden]="progressStep != 2">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">What property do you need coverage for?</p>
           <p *ngIf="helpClicked" class="popout-subheader">We need to know the type of home, and the street address of the property you need coverage for as pricing varies.</p>
@@ -146,7 +109,7 @@
             </table>
         </div>
 
-        <div class="popout" [hidden]="progressStep != 3">
+        <div class="popout card" [hidden]="progressStep != 3">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Select your coverage options:</p>
           <p *ngIf="helpClicked" class="popout-subheader">Select an available plan and plan length, any additional coverages you need, and closing date or start date of coverage.</p>
@@ -179,7 +142,7 @@
             </table>
         </div>
 
-        <div class="popout" [hidden]="progressStep != 4">
+        <div class="popout card" [hidden]="progressStep != 4">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Seller/Realtor info</p>
           <p *ngIf="helpClicked" class="popout-subheader">If you have any seller or realtor info please enter it below.</p>

@@ -1,24 +1,68 @@
 <div>
-    <table>
-        <tbody>
-            <tr>
-            <td>Email/Username:</td>
-            <td>
-                <input type="text" class="large" id="username" (keydown)="checkKey($event)" />
-                <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
-            </td>
-            </tr>
-            <tr>
-            <td>Password:</td>
-            <td>
-                <input type="password" class="large" id="password" (keydown)="checkKey($event)" />
-                <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Invalid Password!</span>
-            </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card" id="flip-card">
+        <div class="card-inner">
+            <div class="card-front">
+                <h2>Login/<small (click)="flip()">Register</small></h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Email/Username:</td>
+                            <td>
+                                <input type="text" class="large" id="username" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.loginStatus == 'USER_REQUIRED'" class="required small-text" ><br /> Email/Username is required!</span>
+                                <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td>
+                                <input type="password" class="large" id="password" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Invalid Password!</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="centered-block top-padding"><span class="password-reset" (click)="resetPassword()">Forgot Password?</span></div>
+            </div>
+            <div class="card-back">
+                <h2>Register/<small (click)="flip()">Login</small></h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="required">Name:</td>
+                            <td>
+                                <input type="text" class="large" id="reg-name" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.registerStatus == 'NAME_REQUIRED'" class="required small-text" > Name is required!</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="required">Email:</td>
+                            <td>
+                                <input type="text" class="large" id="reg-email" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.registerStatus == 'EMAIL_REQUIRED'" class="required small-text" > Email is required!</span>
+                                <span *ngIf="global.registerStatus == 'EMAIL_EXISTS'" class="required small-text" > Email already exists!</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Username:</td>
+                            <td>
+                                <input type="text" class="large" id="reg-username" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.registerStatus == 'USER_EXISTS'" class="required small-text" > Username already exists!</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="required">Password:</td>
+                            <td>
+                                <input type="password" class="large" id="reg-password" (keydown)="checkKey($event)" />
+                                <span *ngIf="global.registerStatus == 'PASS_REQUIRED'" class="required small-text" > Password is required!</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <p *ngIf="passwordResetStatus.sent" class="centered-block small-text success">Password Successfully Reset - Check Email</p>
     <p *ngIf="passwordResetStatus.error" class="centered-block small-text required">Email/Username not found - Try again</p>
-    <div class="centered-block top-padding"><button class="button" (click)="tryLogin()">SUBMIT</button></div>
-    <div class="centered-block top-padding"><span class="password-reset" (click)="resetPassword()">Forgot Password?</span></div>
+    <div class="centered-block top-padding"><button class="button" (click)="tryLoginRegister()">SUBMIT</button></div>
 </div>

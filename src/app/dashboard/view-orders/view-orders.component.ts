@@ -102,13 +102,13 @@ export class ViewOrdersComponent implements OnInit {
       return;
     }
     if(!order.entered) {
-      this.database.HwaEnterOrder(order).subscribe(
+      this.database.HwaEnterOrder(order, this.global.currentUser.token).subscribe(
         response => {
           order = response;
           let enterOrder = document.getElementById('order-entered-' + order.orderId);
           enterOrder.style.display = "block";
           this.enteredOrders.push(order);
-          this.database.HwaOrders(this.global.currentUser.token);
+          this.global.hwaGetOrders();
           this.updateEnteredOrders();
         },
         error => {
