@@ -66,6 +66,8 @@ export class SettingsComponent implements OnInit {
   userSettingsIsOpen = this.global.currentUser.type == 'ADMIN' ? false : true;
   userManagementIsOpen = false;
 
+  userIndex = 0;
+
   constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent) { }
 
   ngOnInit(): void {
@@ -78,6 +80,7 @@ export class SettingsComponent implements OnInit {
       this.dashboard.showSuccess = false;
       this.dashboard.showError = false;
     });
+
   }
 
   ngAfterContentInit() {
@@ -87,6 +90,33 @@ export class SettingsComponent implements OnInit {
         this.initializePlanSettings();
       }, 500);
     }
+  }
+
+  showUser(index) {
+    if(index != this.userIndex) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  changeUser(index) {
+    this.userIndex += index;
+    if(this.userIndex < 0) {
+      this.userIndex = 0;
+    } else if(this.userIndex > this.global.users.length - 1) {
+      this.userIndex = this.global.users.length - 1;
+    }
+  }
+
+  getUserOrders(id) {
+    let orders = 0;
+    for(let i = 0; i < this.global.orders.length; i++) {
+      if(this.global.orders[i].userId == id) {
+        orders++;
+      }
+    }
+    return orders;
   }
 
   initializePromoSettings() {

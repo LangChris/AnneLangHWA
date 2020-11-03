@@ -74,6 +74,40 @@ button {
     width: 15px;
 }
 
+.user {
+    width: 250px;
+    height: 230px;
+}
+
+.button-container {
+    margin: 0 auto;
+    width: 200px;
+    padding: 5px;
+}
+
+.back {
+    float: left;
+    cursor: pointer;
+}
+
+.next {
+    float: right;
+    cursor: pointer;
+}
+
+h3 {
+    padding-top: 40px;
+}
+
+.card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-back h5 {
+    text-align: left;
+}
+
+
 @media screen and (max-width: 800px) {
     
     .large {

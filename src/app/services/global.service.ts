@@ -79,6 +79,13 @@ export class GlobalService {
   hwaGetUsers() {
     this.database.HwaUsers(this.currentUser.token).subscribe(response => {
       this.users = response;
+      for(let i = 0; i < this.users.length; i++) {
+        try {
+        this.users[i].dateAddedString = this.datePipe.transform(this.users[i].dateAdded, "MM/dd/yyyy");
+        } catch(e) {
+          this.users[i].dateAddedString = null;
+        }
+      }
       //console.log(this.users);
     }, error => console.log(error));
   }

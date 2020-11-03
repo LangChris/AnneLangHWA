@@ -211,15 +211,36 @@
         </form>
     </accordion>
 
-    <accordion id="user-management-accordion" header="User Management" [is_open]="userManagementIsOpen">
-
+    <accordion id="user-management-accordion" header="User Management" [is_open]="userManagementIsOpen" *ngIf="global.currentUser.type == 'ADMIN'">
+        <div [hidden]='!userManagementIsOpen'>
+            <div class="card user" *ngFor="let user of global.users;let userIndex=index;" [hidden]="!showUser(userIndex)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>{{user.name}}</h3>
+                        <h4>{{getUserOrders(user.userId)}} Order(s)</h4>
+                        <h4 [ngClass]="{'success' : user.status == 'SUBSCRIBED', 'error' : user.status != 'SUBSCRIBED'}">{{user.status}}</h4>
+                    </div>
+                    <div class="card-back">
+                        <h5><span class="sub-header">Email: </span>{{user.email}}</h5>
+                        <h5 *ngIf="user.phoneNumber != null && user.phoneNumber != ''"><span class="sub-header">Phone: </span>{{user.phoneNumber}}</h5>
+                        <h5 *ngIf="user.alternateEmail != null && user.alternateEmail != ''"><span class="sub-header">Email2: </span>{{user.alternateEmail}}</h5>
+                        <h5><span class="sub-header">Date Added: </span>{{user.dateAddedString}}</h5>
+                        <span class="button">Remove</span>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <span class="button" class="back" (click)="changeUser(-1)"></span>
+                <span class="button" class="next" (click)="changeUser(1)"></span>
+            </div>
+        </div>
     </accordion>
 
     <div *ngIf="dashboard.showError" class="error">Error Making Changes</div>
     <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
 
     <div class="centered-block top-padding">
-        <button class="top-margin check" type="submit" form="generalSettingsForm"></button>
+        <button class="top-margin check" type="submit" form="userSettingsForm"></button>
         <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
     </div>
 </div>

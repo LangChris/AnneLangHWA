@@ -421,4 +421,10 @@ accordion {
         max-width: 600px;
         margin: 0 auto;
     }
+
+    accordion {
+        display: block;
+        width: 95%;
+        margin: 0 auto;
+    }
 }
