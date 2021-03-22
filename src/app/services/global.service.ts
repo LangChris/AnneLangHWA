@@ -4,9 +4,8 @@ import { DatePipe } from '@angular/common';
 import { FormGroup } from '@angular/forms'; 
 
 const brochures = {
-  //english: "/assets/brochures/NA15%202018%20BRO%20v1.pdf",
   english: "/assets/brochures/NA16%202021%20BRO%20V1.6%20-%20New%20Brochure%202021.pdf",
-  spanish: "/assets/brochures/NA15%202018%20BRO%20V1%20SP.PDF"
+  spanish: "/assets/brochures/NA16%202021%20BRO%20V1.6%20SP.PDF"
 };
 
 @Injectable()
