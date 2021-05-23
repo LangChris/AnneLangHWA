@@ -29,6 +29,12 @@
     padding: 25px;
 }
 
+.un-healthy {
+    font-size: 15px; 
+    font-weight: bold;
+    color: #ddd;
+}
+
 .plan-table {
     list-style: none;
     text-align: left;

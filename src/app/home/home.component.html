@@ -1,12 +1,17 @@
 <div class="centered-block">
-  <div class="header" *ngIf="global.settings != null">{{global.settings.webpageTitle}}</div>
-  <div class="sub-header" *ngIf="global.settings != null">{{global.settings.webpageSubtitle}}</div>
-  <p *ngIf="global.settings != null">{{global.settings.webpageDescription}}</p>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'">
+        <div class="header" *ngIf="global.settings != null">{{global.settings.webpageTitle}}</div>
+        <div class="sub-header" *ngIf="global.settings != null">{{global.settings.webpageSubtitle}}</div>
+        <p *ngIf="global.settings != null">{{global.settings.webpageDescription}}</p>
+  </div>
+  
   <div class="double-section">
       <button (click)="navigateToBrochure('english')">ENGLISH BROCHURE</button>
       <button (click)="navigateToBrochure('spanish')">SPANISH BROCHURE</button>
   </div>
-  <app-promo></app-promo>
+  
+  <app-promo *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'"></app-promo>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'">
   <table class="plans" *ngIf="global.plans != null">
       <tr>
         <td id="gold" *ngIf="global.plans[0].plan != null">
@@ -89,5 +94,9 @@
   <div class="sellers-coverage-block">
     <div class="header">FREE Sellers Coverage</div> 
     <button (click)="navigateToOrderForm('seller')">ORDER NOW</button>
+  </div>
+  </div>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus != 'Healthy'" class="sellers-coverage-block">
+    <div class="un-healthy">{{global.applicationStatus}}</div>
   </div>
 </div>

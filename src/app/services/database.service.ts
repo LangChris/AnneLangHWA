@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 const hwa = {
   url: "https://hwa-api.servehttp.com:8443/v1/api",
   endpoints: {
+    health: "/health",
     login: "/login",
     importOrders: "/import/orders",
     getOrders: "/orders",
@@ -33,6 +34,11 @@ const hwa = {
 export class DatabaseService {
 
   constructor(private http: HttpClient) { }
+
+  // HWA API Health Check
+  HwaApiHealthCheck() {
+    return this.http.get(hwa.url + hwa.endpoints.health);
+  }
 
   // HWA Login
   HwaLogin(login: any) {  

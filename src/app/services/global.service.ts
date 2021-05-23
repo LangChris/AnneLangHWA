@@ -22,11 +22,20 @@ export class GlobalService {
   specialRequests: any;
   loginStatus = "";
   registerStatus = "";
+  applicationStatus = "";
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
     return brochures;
+  }
+
+  hwaApiHealth() {
+    this.database.HwaApiHealthCheck().subscribe(response => {
+      this.applicationStatus = response['status'];
+    }, error => {
+      this.applicationStatus = 'Temporarily Unavailable - Please try again later';
+    });
   }
 
   hwaLogin(username: string, password: string) {
