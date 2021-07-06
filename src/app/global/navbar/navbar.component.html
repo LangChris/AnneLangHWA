@@ -10,22 +10,7 @@
       </td>
     </tr>
   </table>
-  <!-- <table class="nav-table">
-    <tr>
-      <td></td>
-      <td>
-        <div class="navigation-container" *ngIf="global.settings != null">
-          <div class="info tooltip"><a class="telephone" href="tel:{{global.settings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
-          <div class="info tooltip"><a class="email" href="mailTo:{{global.settings.email}}"></a><span class="tooltiptext">Email Me</span></div>
-          <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info</span></div>
-          <div class="info tooltip"><span class="login" (click)="navigateToLogin()"></span>
-            <span *ngIf="global.GetSession() == null" class="tooltiptext">Login/Register</span>
-            <span *ngIf="global.GetSession() != null" class="tooltiptext">Logout</span>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table> -->
+  
   <table class="nav-table" *ngIf="global.settings != null">
     <tr>
       <td></td>
@@ -42,7 +27,6 @@
           <li class="option dropdown">Help <i class="fa fa-angle-down"></i>
             <div class="dropdown-content">
               <ul>
-                <!-- <li>Claim Info <span class="claims" (click)="navigateToClaims()"></span></li> -->
                 <li><a (click)="navigateToClaims()">Claim Info <i class="fa fa-book"></i></a></li>
               </ul>
             </div>
@@ -51,12 +35,12 @@
           <li class="option dropdown" *ngIf="global.GetSession() != null">{{global.GetSession().name}} <i class="fa fa-angle-down"></i>
             <div class="dropdown-content">
               <ul>
+                <li (click)="navigateToHome()">Home <i class="fa fa-home"></i></li>
                 <li (click)="navigateToDashboard()">Dashboard <i class="fa fa-user"></i></li>
-                <li (click)="global.ClearSession()">Logout <i class="fa fa-lock"></i></li>
+                <li (click)="doLogout()">Logout <i class="fa fa-lock"></i></li>
               </ul>
             </div>
           </li>
-          <!-- <li class="option" *ngIf="global.GetSession() != null" (click)="global.ClearSession()">Logout <i class="fa fa-angle-down"></i></li> -->
         </ul>
       </td>
     </tr>

@@ -38,4 +38,9 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  doLogout() {
+    this.global.ClearSession();
+    this.router.navigate(['']);
+  }
+
 }

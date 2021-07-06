@@ -67,6 +67,7 @@
     z-index: 1;
     margin: 10px 0 0 -10px;
     width: inherit;
+    min-width: 90px;
   }
 
 .dropdown-content a {
