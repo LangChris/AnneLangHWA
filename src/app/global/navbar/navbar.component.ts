@@ -20,14 +20,18 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToLogin() {
-    if(this.global.currentUser == null) {
+    if(this.global.GetSession() == null) {
       this.router.navigate(['dashboard']);
     } else {
-      this.global.currentUser = null;
       this.global.loginStatus = ""
       this.global.registerStatus = "";
+      this.global.ClearSession();
       this.navigateToHome();
     }
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['dashboard']);
   }
 
   navigateToHome() {

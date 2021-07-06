@@ -23,13 +23,12 @@ export class DashboardComponent implements OnInit {
     entered: 'all',
     years: 'all',
     realtor: 'all',
-    sort: this.global.currentUser != null ? this.global.currentUser.defaultSort : "DESC"
+    sort: this.global.GetSession() != null ? this.global.GetSession().defaultSort : "DESC"
   };
 
   constructor(public global: GlobalService) { }
 
   ngOnInit(): void {
-    
   }
 
   getOrders() {

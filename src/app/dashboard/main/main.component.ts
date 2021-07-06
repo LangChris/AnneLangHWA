@@ -14,7 +14,7 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
     this.global.hwaGetOrders();
     
-    if(this.global.currentUser.type == 'ADMIN') {
+    if(this.global.GetSession().type == 'ADMIN') {
       this.global.hwaGetUsers();
     }
   }

@@ -15,12 +15,12 @@ export class ViewOrdersComponent implements OnInit {
   constructor(public global: GlobalService, public dashboard: DashboardComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = this.global.currentUser.defaultFilename;
+  filename: string = this.global.GetSession().defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 
   ngOnInit() {
-    this.dashboard.filterOrders(this.global.currentUser.defaultSort, "all", "all", "all", "all", "all", "all");
+    this.dashboard.filterOrders(this.global.GetSession().defaultSort, "all", "all", "all", "all", "all", "all");
     this.updateEnteredOrders();
     console.log(this.dashboard.orders);
   }
@@ -79,7 +79,7 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   showOrderEntered(show: boolean, id: any) {
-    if(this.global.currentUser.type == 'USER') {
+    if(this.global.GetSession().type == 'USER') {
       return;
     }
     let enterOrder = document.getElementById('order-entered-' + id);
@@ -98,11 +98,11 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   enterOrder(order: any) {
-    if(this.global.currentUser.type == 'USER') {
+    if(this.global.GetSession().type == 'USER') {
       return;
     }
     if(!order.entered) {
-      this.database.HwaEnterOrder(order, this.global.currentUser.token).subscribe(
+      this.database.HwaEnterOrder(order, this.global.GetSession().token).subscribe(
         response => {
           order = response;
           let enterOrder = document.getElementById('order-entered-' + order.orderId);

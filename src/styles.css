@@ -163,16 +163,21 @@ button:hover {
 .email:before {
     content: "\2709";
     font-size: 30px;
+    color: #eb5e17;
+    text-decoration: none;
+    line-height: 1em;
 }
 
 .telephone:before {
     content: "\2706";
     font-size: 30px;
+    color: #eb5e17;
+    text-decoration: none;
 }
 
 .claims:before {
     content: "\01F4DD";
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .list:before {

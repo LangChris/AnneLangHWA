@@ -284,7 +284,7 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.controls.adminEmail.setValue(this.global.settings.email);
       this.orderForm.controls.orderTotal.setValue("$" + this.total);
 
-      this.orderForm.controls.userId.setValue(this.global.currentUser != null ? this.global.currentUser.userId : null);
+      this.orderForm.controls.userId.setValue(this.global.GetSession() != null ? this.global.GetSession().userId : null);
 
       this.global.hwaPlaceOrder(this.orderForm, "BUYER");
       this.showForm = false;
@@ -324,11 +324,11 @@ export class OrderFormComponent implements OnInit {
         if(this.progressStep == 1) {
 
           // if logged in -> proceed next
-          if(this.global.currentUser != null) {
+          if(this.global.GetSession() != null) {
             this.toggleActive('LOGIN');
-            this.orderForm.controls.name.setValue(this.global.currentUser.name);
-            this.orderForm.controls.email.setValue(this.global.currentUser.email);
-            this.orderForm.controls.userId.setValue(this.global.currentUser.userId);
+            this.orderForm.controls.name.setValue(this.global.GetSession().name);
+            this.orderForm.controls.email.setValue(this.global.GetSession().email);
+            this.orderForm.controls.userId.setValue(this.global.GetSession().userId);
             this.progressStep++; 
             break;
           }
@@ -576,7 +576,7 @@ export class OrderFormComponent implements OnInit {
 
   isLoginActive() {
     // if logged in -> proceed next
-    if(this.global.currentUser != null && this.progressStep == 1) {
+    if(this.global.GetSession() != null && this.progressStep == 1) {
       this.toggleActive('LOGIN');
       this.makeProgressStep("NEXT");
     }

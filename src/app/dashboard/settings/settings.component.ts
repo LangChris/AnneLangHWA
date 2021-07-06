@@ -27,17 +27,17 @@ export class SettingsComponent implements OnInit {
   });
 
   userSettingsForm = new FormGroup({
-    userId: new FormControl(this.global.currentUser.userId, [Validators.required]),
-    type: new FormControl(this.global.currentUser.type, [Validators.required]),
-    status: new FormControl(this.global.currentUser.status, [Validators.required]),
-    name: new FormControl(this.global.currentUser.name, [Validators.required]),
-    email: new FormControl(this.global.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.global.currentUser.alternateEmail),
-    phoneNumber: new FormControl(this.global.currentUser.phoneNumber),
-    defaultSort: new FormControl(this.global.currentUser.defaultSort, [Validators.required]),
-    defaultFilename: new FormControl(this.global.currentUser.defaultFilename, [Validators.required]),
-    username: new FormControl(this.global.currentUser.username),
-    password: new FormControl(atob(this.global.currentUser.password), [Validators.required])
+    userId: new FormControl(this.global.GetSession().userId, [Validators.required]),
+    type: new FormControl(this.global.GetSession().type, [Validators.required]),
+    status: new FormControl(this.global.GetSession().status, [Validators.required]),
+    name: new FormControl(this.global.GetSession().name, [Validators.required]),
+    email: new FormControl(this.global.GetSession().email, [Validators.required]),
+    alternateEmail: new FormControl(this.global.GetSession().alternateEmail),
+    phoneNumber: new FormControl(this.global.GetSession().phoneNumber),
+    defaultSort: new FormControl(this.global.GetSession().defaultSort, [Validators.required]),
+    defaultFilename: new FormControl(this.global.GetSession().defaultFilename, [Validators.required]),
+    username: new FormControl(this.global.GetSession().username),
+    password: new FormControl(atob(this.global.GetSession().password), [Validators.required])
   });
 
   planForm = new FormGroup({
@@ -62,8 +62,8 @@ export class SettingsComponent implements OnInit {
 
   multiSelect: any;
 
-  generalSettingsIsOpen = this.global.currentUser.type == 'ADMIN' ? true : false;
-  userSettingsIsOpen = this.global.currentUser.type == 'ADMIN' ? false : true;
+  generalSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? true : false;
+  userSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? false : true;
   userManagementIsOpen = false;
 
   userIndex = 0;
@@ -84,7 +84,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngAfterContentInit() {
-    if(this.global.currentUser.type == 'ADMIN') {
+    if(this.global.GetSession().type == 'ADMIN') {
       setTimeout(() => {
         this.initializePromoSettings();
         this.initializePlanSettings();
@@ -286,7 +286,7 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.global.currentUser.type == 'ADMIN') {
+    if(this.global.GetSession().type == 'ADMIN') {
       this.updateGeneralSettings();
       this.updatePromoSettings();
       this.updatePlanSettings();
@@ -300,7 +300,7 @@ export class SettingsComponent implements OnInit {
   updateGeneralSettings() {
     if(this.generalSettingsForm.valid) {
 
-      return this.database.HwaUpdateSettings(this.generalSettingsForm, this.global.currentUser.token).subscribe(
+      return this.database.HwaUpdateSettings(this.generalSettingsForm, this.global.GetSession().token).subscribe(
         response => {
         },
         error => {
@@ -318,7 +318,7 @@ export class SettingsComponent implements OnInit {
     this.updatePromoForm();
 
     if(this.promoForm.valid) {
-      return this.database.HwaUpdatePromo(this.promoForm, this.global.currentUser.token).subscribe(
+      return this.database.HwaUpdatePromo(this.promoForm, this.global.GetSession().token).subscribe(
         response => {
         },
         error => {
@@ -359,7 +359,7 @@ export class SettingsComponent implements OnInit {
         };
         plans.push(plan);
       }
-      return this.database.HwaUpdatePlans(plans, this.global.currentUser.token).subscribe(
+      return this.database.HwaUpdatePlans(plans, this.global.GetSession().token).subscribe(
         response => {
         },
         error => {
@@ -387,7 +387,7 @@ export class SettingsComponent implements OnInit {
           optionalCoverages.push(option);
         }
       }
-      return this.database.HwaUpdateOptionalCoverages(optionalCoverages, this.global.currentUser.token).subscribe(
+      return this.database.HwaUpdateOptionalCoverages(optionalCoverages, this.global.GetSession().token).subscribe(
         response => {
         },
         error => {
@@ -409,7 +409,7 @@ export class SettingsComponent implements OnInit {
           );
         }
       }
-      return this.database.HwaUpdateSpecialRequests(specialRequests, this.global.currentUser.token).subscribe(
+      return this.database.HwaUpdateSpecialRequests(specialRequests, this.global.GetSession().token).subscribe(
         response => {
         },
         error => {

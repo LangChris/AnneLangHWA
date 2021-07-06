@@ -1,5 +1,5 @@
 <div class="filter-box">
-    <div class="header">Orders &#9776;</div>
+    <div class="header">Orders <i class="fa fa-bars"></i></div>
   
     <span id="filter-dropdown" class="closed" (click)="toggleFilters()">Filters</span>
     <p *ngIf="!showFilters"><small>Click to expand filters</small></p>
@@ -94,7 +94,7 @@
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block top-margin">
     <p>No orders placed yet.</p>
   </div>
-  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} <span *ngIf="global.currentUser.type == 'ADMIN'">({{enteredOrders.length}} entered)</span></p>
+  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} <span *ngIf="global.GetSession().type == 'ADMIN'">({{enteredOrders.length}} entered)</span></p>
   <div *ngIf="dashboard.orders && dashboard.orders.length > 0" style="overflow-x:auto"> 
     <table class="table" #TABLE>  
       <thead>  

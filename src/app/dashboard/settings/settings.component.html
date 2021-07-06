@@ -1,7 +1,7 @@
 <div>
-    <div class="header">Settings &#9881;</div>
+    <div class="header">Settings <i class="fa fa-gear"></i></div>
 
-    <accordion id="general-settings-accordion" header="General Settings" [is_open]="generalSettingsIsOpen" *ngIf="global.currentUser.type == 'ADMIN'">
+    <accordion id="general-settings-accordion" header="General Settings" [is_open]="generalSettingsIsOpen" *ngIf="global.GetSession().type == 'ADMIN'">
         <form [hidden]='!generalSettingsIsOpen' id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
             <table class="settings-table card">
                 <tr>
@@ -211,7 +211,7 @@
         </form>
     </accordion>
 
-    <accordion id="user-management-accordion" header="User Management" [is_open]="userManagementIsOpen" *ngIf="global.currentUser.type == 'ADMIN'">
+    <accordion id="user-management-accordion" header="User Management" [is_open]="userManagementIsOpen" *ngIf="global.GetSession().type == 'ADMIN'">
         <div [hidden]='!userManagementIsOpen'>
             <div class="card user" *ngFor="let user of global.users;let userIndex=index;" [hidden]="!showUser(userIndex)">
                 <div class="card-inner">

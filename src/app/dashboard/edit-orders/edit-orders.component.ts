@@ -205,7 +205,7 @@ export class EditOrdersComponent implements OnInit {
     // convert editForm to Order Object
     let order = {};
 
-    return this.database.HwaUpdateOrder(order, this.global.currentUser.token).subscribe(
+    return this.database.HwaUpdateOrder(order, this.global.GetSession().token).subscribe(
       response => {
         this.dashboard.showSuccess = true;
         this.global.hwaGetOrders();
@@ -217,7 +217,7 @@ export class EditOrdersComponent implements OnInit {
   }
 
   deleteOrder(id) {
-    return this.database.HwaDeleteOrder(id, this.global.currentUser.token).subscribe(
+    return this.database.HwaDeleteOrder(id, this.global.GetSession().token).subscribe(
       response => {
         this.resetForm();
         this.dashboard.showSuccess = true;

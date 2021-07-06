@@ -16,18 +16,27 @@ export class GlobalService {
   activePromos: any;
   settings: any;
   users: any;
-  currentUser: any;
   orders: any;
   optionalCoverages: any;
   specialRequests: any;
   loginStatus = "";
   registerStatus = "";
-  applicationStatus = "";
+  applicationStatus = "Temporarily Unavailable - Please try again later";
 
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
     return brochures;
+  }
+
+  GetSession() {
+    let CurrentUser = sessionStorage.getItem('CurrentUser');
+    return JSON.parse(CurrentUser);
+  }
+
+  ClearSession() {
+    sessionStorage.removeItem('CurrentUser');
+    // then navigate home
   }
 
   hwaApiHealth() {
@@ -45,9 +54,8 @@ export class GlobalService {
     };
 
     this.database.HwaLogin(login).subscribe(response => {
-      this.currentUser = response;
       this.loginStatus = "SUCCESS";
-      //console.log(this.currentUser);
+      sessionStorage.setItem('CurrentUser', JSON.stringify(response));
     }, error => {
       console.log(error);
 
@@ -64,7 +72,7 @@ export class GlobalService {
 
   hwaRegisterUser(user: any) {
     this.database.HwaRegisterUser(user).subscribe(response => {
-      this.currentUser = response;
+      sessionStorage.setItem('CurrentUser', JSON.stringify(response));
       this.loginStatus = "SUCCESS";
       this.registerStatus = "SUCCESS";
     }, error => {
@@ -86,7 +94,7 @@ export class GlobalService {
   }
 
   hwaGetUsers() {
-    this.database.HwaUsers(this.currentUser.token).subscribe(response => {
+    this.database.HwaUsers(this.GetSession().token).subscribe(response => {
       this.users = response;
       for(let i = 0; i < this.users.length; i++) {
         try {
@@ -100,7 +108,7 @@ export class GlobalService {
   }
 
   hwaGetOrders() {
-    this.database.HwaOrders(this.currentUser.token).subscribe(response => {
+    this.database.HwaOrders(this.GetSession().token).subscribe(response => {
       this.orders = response;
       for(let i = 0; i < this.orders.length; i++) {
         try {
