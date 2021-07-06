@@ -25,14 +25,14 @@
                   <tr>
                     <th class="required">Email/Username*</th>
                     <td>
-                      <input type="text" class="large" id="login-username" (change)="isLoginActive()"/>
+                      <input type="text" class="large" id="login-username" />
                       <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
                     </td>
                   </tr>
                   <tr>
                     <th class="required">Password*</th>
                     <td>
-                      <input type="password" class="large" id="login-password" (change)="isLoginActive()" />
+                      <input type="password" class="large" id="login-password" />
                       <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is Invalid!</span>
                       <span *ngIf="global.loginStatus == 'SUCCESS'" class="success small-text" ><br /> Successful login, proceed Next</span>
                     </td>

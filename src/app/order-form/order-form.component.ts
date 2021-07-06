@@ -118,6 +118,7 @@ export class OrderFormComponent implements OnInit {
         }
         this.updateOrderTotal();
         this.updateOptionalCoverageSelect();
+        this.isLoginActive();
       }, 100);
 
     }
@@ -482,7 +483,7 @@ export class OrderFormComponent implements OnInit {
       this.total += +(discountYear * 2);
     }
 
-    if(this.global.promo.active && this.validPromo && this.orderForm.controls.promo.value != '' && this.global.promo.type == 'Money Off') {
+    if(this.global.promo && this.global.promo.active && this.validPromo && this.orderForm.controls.promo.value != '' && this.global.promo.type == 'Money Off') {
       this.total -= +this.global.promo.amount;
     }
 
@@ -491,8 +492,6 @@ export class OrderFormComponent implements OnInit {
         if(optionalCoverageSelect.options[i].selected) {
           let option = optionalCoverageSelect.options[i].text.substring(0, optionalCoverageSelect.options[i].text.lastIndexOf("-") - 1);
           let price = optionalCoverageSelect.options[i].text.substring(optionalCoverageSelect.options[i].text.lastIndexOf("-") + 2);
-          console.log(option);
-          console.log(price);
           if(!this.validPromo) {
             this.total += +price;
           } else {
@@ -583,6 +582,9 @@ export class OrderFormComponent implements OnInit {
 
     let loginUsername = document.getElementById('login-username') as HTMLInputElement;
     let loginPassword = document.getElementById('login-password') as HTMLInputElement;
+
+    loginUsername.value = this.global.GetSession().userName;
+    loginPassword.value = this.global.GetSession().password;
 
     if( ((loginUsername.value != null && loginUsername.value != '') || 
     (loginPassword.value != null && loginPassword.value != '')) ) {

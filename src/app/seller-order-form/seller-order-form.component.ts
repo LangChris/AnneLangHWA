@@ -89,6 +89,8 @@ export class SellerOrderFormComponent implements OnInit {
 
         var hvacCoverage = document.getElementById('hvac-coverage') as HTMLSelectElement;
         hvacCoverage.selectedIndex = 0;
+
+        this.isLoginActive();
       }, 100);
     }
   }
@@ -333,6 +335,9 @@ export class SellerOrderFormComponent implements OnInit {
     let loginUsername = document.getElementById('login-username') as HTMLInputElement;
     let loginPassword = document.getElementById('login-password') as HTMLInputElement;
 
+    loginUsername.value = this.global.GetSession().userName;
+    loginPassword.value = this.global.GetSession().password;
+    
     if( ((loginUsername.value != null && loginUsername.value != '') || 
     (loginPassword.value != null && loginPassword.value != '')) ) {
       this.toggleActive('LOGIN');
