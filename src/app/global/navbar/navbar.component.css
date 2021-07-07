@@ -227,4 +227,8 @@
     .nav-table td ul{
         padding: 0 45px 0 0;
     }
+
+    .nav-table td {
+        width: auto;
+    }
 }
