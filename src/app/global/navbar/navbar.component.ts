@@ -12,14 +12,22 @@ export class NavbarComponent implements OnInit {
 
   constructor(public global: GlobalService, public router: Router) { }
 
+  dropdown = {
+    contact: false,
+    help: false,
+    profile: false
+  };
+
   ngOnInit() {
   }
 
   navigateToClaims() {
+    this.closeDropdowns();
     this.router.navigate(['claims']);
   }
 
   navigateToLogin() {
+    this.closeDropdowns();
     if(this.global.GetSession() == null) {
       this.router.navigate(['dashboard']);
     } else {
@@ -31,16 +39,34 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToDashboard() {
+    this.closeDropdowns();
     this.router.navigate(['dashboard']);
   }
 
   navigateToHome() {
+    this.closeDropdowns();
     this.router.navigate(['']);
   }
 
   doLogout() {
+    this.closeDropdowns();
     this.global.ClearSession();
     this.router.navigate(['']);
+  }
+
+  toggleDropdown(dropdown) {
+    this.dropdown[dropdown] = !this.dropdown[dropdown];
+
+    for(let key of Object.keys(this.dropdown)) {
+      if(key != dropdown)
+        this.dropdown[key] = false;
+    }
+  }
+
+  closeDropdowns() {
+    for(let key of Object.keys(this.dropdown)) {
+        this.dropdown[key] = false;
+    }
   }
 
 }

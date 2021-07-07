@@ -16,7 +16,7 @@
       <td></td>
       <td>
         <ul>
-          <li class="option dropdown">Contact <i class="fa fa-angle-down"></i>
+          <li (click)="toggleDropdown('contact')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.contact}">Contact <i class="fa fa-angle-down"></i>
             <div class="dropdown-content">
               <ul>
                 <li><a href="mailTo:{{global.settings.email}}">Email <i class="fa fa-envelope"></i></a></li>
@@ -24,7 +24,7 @@
               </ul>
             </div>
           </li>
-          <li class="option dropdown">Help <i class="fa fa-angle-down"></i>
+          <li (click)="toggleDropdown('help')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.help}">Help <i class="fa fa-angle-down"></i>
             <div class="dropdown-content">
               <ul>
                 <li><a (click)="navigateToClaims()">Claim Info <i class="fa fa-book"></i></a></li>
@@ -32,7 +32,7 @@
             </div>
           </li>
           <li class="option" *ngIf="global.GetSession() == null" (click)="navigateToLogin()">Login <i class="fa fa-user"></i></li>
-          <li class="option dropdown" *ngIf="global.GetSession() != null">{{global.GetSession().name}} <i class="fa fa-angle-down"></i>
+          <li (click)="toggleDropdown('profile')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.profile}" *ngIf="global.GetSession() != null">{{global.GetSession().name}} <i class="fa fa-angle-down"></i>
             <div class="dropdown-content">
               <ul>
                 <li (click)="navigateToHome()">Home <i class="fa fa-home"></i></li>

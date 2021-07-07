@@ -55,8 +55,14 @@
     cursor: pointer;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown-open .dropdown-content {
     display: block;
+}
+
+.dropdown-open{
+    color: #eb5e17;
+    background: #dae2ef;
+    cursor: pointer;
 }
 
 .dropdown-content {
