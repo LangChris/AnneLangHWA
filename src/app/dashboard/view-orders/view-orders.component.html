@@ -1,5 +1,5 @@
 <div class="filter-box">
-    <div class="header">Orders &#9776;</div>
+    <div class="header">Orders <i class="fa fa-bars"></i></div>
   
     <span id="filter-dropdown" class="closed" (click)="toggleFilters()">Filters</span>
     <p *ngIf="!showFilters"><small>Click to expand filters</small></p>
@@ -34,10 +34,10 @@
               <td>
                 <select id="plan" (change)="filter()">
                   <option value="all">All Plans</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Platinum">Platinum</option>
-                  <option value="Diamond">Diamond</option>
-                  <option value="Free Sellers Coverage">Free Sellers Coverage</option>
+                  <option value="GOLD">Gold</option>
+                  <option value="PLATINUM">Platinum</option>
+                  <option value="DIAMOND">Diamond</option>
+                  <option value="FREE_SELLERS_COVERAGE">Free Sellers Coverage</option>
                 </select>
               </td>
             </tr>
@@ -67,8 +67,8 @@
               <td>
                 <select id="home-type" (change)="filter()">
                   <option value="all">All Homes</option>
-                  <option value="Single Family Home">Single Family Home</option>
-                  <option value="Townhome/Condo">Townhome/Condo</option>
+                  <option value="SINGLE_FAMILY_HOME">Single Family Home</option>
+                  <option value="TOWNHOME_CONDO">Townhome/Condo</option>
                 </select>
               </td>
             </tr>
@@ -94,8 +94,8 @@
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block top-margin">
     <p>No orders placed yet.</p>
   </div>
-  <div *ngIf="dashboard.orders && dashboard.orders.length > 0"> 
-    <p class="top-margin">Results: {{dashboard.orders.length}} ({{enteredOrders.length}} entered)</p>
+  <p class="top-margin" *ngIf="dashboard.orders && dashboard.orders.length > 0">Results: {{dashboard.orders.length}} <span *ngIf="global.GetSession().type == 'ADMIN'">({{enteredOrders.length}} entered)</span></p>
+  <div *ngIf="dashboard.orders && dashboard.orders.length > 0" style="overflow-x:auto"> 
     <table class="table" #TABLE>  
       <thead>  
         <tr>  
@@ -124,32 +124,43 @@
         </tr>  
       </thead>  
       <tbody>  
-        <tr *ngFor="let order of dashboard.orders" id="{{order.id}}" (mouseenter)="showOrderEntered(true, order.id)" (mouseleave)="showOrderEntered(false, order.id)" >  
+        <tr *ngFor="let order of dashboard.orders" id="{{order.orderId}}" (mouseenter)="showOrderEntered(true, order.orderId)" (mouseleave)="showOrderEntered(false, order.orderId)" >  
           <td data-th="Name">
-            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.id}}" class="check order-entered" (click)="orderEntered(order.id)" ></span></div>
+            <div class="top-wrapper"><span style="display: none" id="order-entered-{{order.orderId}}" class="check order-entered" (click)="enterOrder(order)" ></span></div>
             <div class="bottom-wrapper">{{order.name}}</div>
           </td>  
           <td data-th="Email">{{order.email}}</td>
           <td data-th="Plan">{{formatOrder(order.plan)}}</td>
           <td data-th="Years">{{formatOrder(order.years)}}</td>
-          <td data-th="Optional Coverage">{{formatOrder(order.optional_coverage)}}</td>
-          <td data-th="Hvac Coverage">{{formatOrder(order.hvac_coverage)}}</td>
-          <td data-th="Close/Start Date">{{formatOrder(order.close_start_date)}}</td>
-          <td data-th="Home Type">{{formatOrder(order.home_type)}}</td>
-          <td data-th="Address">{{formatOrder(order.address_line)}}<br />&nbsp;{{formatOrder(order.city)}},{{formatOrder(order.state)}} {{formatOrder(order.zip)}}</td>
-          <td data-th="Buyer Name">{{formatOrder(order.buyer_name)}}</td>
-          <td data-th="Buyer Email">{{formatOrder(order.buyer_email)}}</td>
-          <td data-th="Buyer Phone">{{formatOrder(order.buyer_phone)}}</td>
-          <td data-th="Seller Name">{{formatOrder(order.seller_name)}}</td>
-          <td data-th="Seller Email">{{formatOrder(order.seller_email)}}</td>
-          <td data-th="Seller Phone">{{formatOrder(order.seller_phone)}}</td>
-          <td data-th="Realtor Name">{{formatOrder(order.realtor_name)}}</td>
-          <td data-th="Realtor Email">{{formatOrder(order.realtor_email)}}</td>
-          <td data-th="Realtor Company">{{formatOrder(order.realtor_company)}}</td>
-          <td data-th="Realtor Zip">{{formatOrder(order.realtor_zip)}}</td>
-          <td data-th="Title Agent Email">{{formatOrder(order.title_agent_email)}}</td>
+          <td data-th="Optional Coverage">{{formatOrder(order.optionalCoverage)}}</td>
+          <td data-th="Hvac Coverage">{{formatOrder(order.hvacCoverage)}}</td>
+          <td data-th="Close/Start Date">{{formatOrder(order.closeStartDateString)}}</td>
+          <td data-th="Home Type">{{formatOrder(order.homeType)}}</td>
+          <td data-th="Address">{{formatOrder(order.address.addressLine)}}<br />&nbsp;{{formatOrder(order.address.city)}},{{formatOrder(order.address.state)}} {{formatOrder(order.address.zip)}}</td>
+          <td data-th="Buyer Name" *ngIf="order.buyer != null">{{formatOrder(order.buyer.name)}}</td>
+          <td data-th="Buyer Name" *ngIf="order.buyer == null">--</td>
+          <td data-th="Buyer Email" *ngIf="order.buyer != null">{{formatOrder(order.buyer.email)}}</td>
+          <td data-th="Buyer Email" *ngIf="order.buyer == null">--</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyer != null">{{formatOrder(order.buyer.phone)}}</td>
+          <td data-th="Buyer Phone" *ngIf="order.buyer == null">--</td>
+          <td data-th="Seller Name" *ngIf="order.seller != null">{{formatOrder(order.seller.name)}}</td>
+          <td data-th="Seller Name" *ngIf="order.seller == null">--</td>
+          <td data-th="Seller Email" *ngIf="order.seller != null">{{formatOrder(order.seller.email)}}</td>
+          <td data-th="Seller Email" *ngIf="order.seller == null">--</td>
+          <td data-th="Seller Phone" *ngIf="order.seller != null">{{formatOrder(order.seller.phone)}}</td>
+          <td data-th="Seller Phone" *ngIf="order.seller == null">--</td>
+          <td data-th="Realtor Name" *ngIf="order.realtor != null">{{formatOrder(order.realtor.name)}}</td>
+          <td data-th="Realtor Name" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Email" *ngIf="order.realtor != null">{{formatOrder(order.realtor.email)}}</td>
+          <td data-th="Realtor Email" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Company" *ngIf="order.realtor != null">{{formatOrder(order.realtor.company)}}</td>
+          <td data-th="Realtor Company" *ngIf="order.realtor == null">--</td>
+          <td data-th="Realtor Zip" *ngIf="order.realtor != null">{{formatOrder(order.realtor.zip)}}</td>
+          <td data-th="Realtor Zip" *ngIf="order.realtor == null">--</td>
+          <td data-th="Title Agent Email" *ngIf="order.titleAgent != null">{{formatOrder(order.titleAgent.email)}}</td>
+          <td data-th="Title Agent Email" *ngIf="order.titleAgent == null">--</td>
           <td data-th="Promo">{{formatOrder(order.promo)}}</td>
-          <td data-th="Special Request">{{formatOrder(order.special_request)}}</td>
+          <td data-th="Special Request">{{formatOrder(order.specialRequest)}}</td>
         </tr>  
       </tbody>  
     </table> 

@@ -1,35 +1,40 @@
 <div class="centered-block">
-  <div class="header">{{global.getGeneralSettings.webpageTitle}}</div>
-  <div class="sub-header">{{global.getGeneralSettings.webpageSubTitle}}</div>
-  <p>{{global.getGeneralSettings.webpageDescription}}</p>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'">
+        <div class="header" *ngIf="global.settings != null">{{global.settings.webpageTitle}}</div>
+        <div class="sub-header" *ngIf="global.settings != null">{{global.settings.webpageSubtitle}}</div>
+        <p *ngIf="global.settings != null" [innerHTML]="global.settings.webpageDescription"></p>
+  </div>
+  
   <div class="double-section">
       <button (click)="navigateToBrochure('english')">ENGLISH BROCHURE</button>
       <button (click)="navigateToBrochure('spanish')">SPANISH BROCHURE</button>
   </div>
-  <app-promo></app-promo>
-  <table class="plans">
+  
+  <app-promo *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'"></app-promo>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'">
+  <table class="plans" *ngIf="global.plans != null">
       <tr>
-        <td id="gold" *ngIf="global.plans.gold.header != null">
-            <span class="plan-header" id="gold-header">{{global.plans.gold.header}}</span>
+        <td id="gold" *ngIf="global.plans[0].plan != null">
+            <span class="plan-header" id="gold-header">{{global.plans[0].plan.name}}</span>
             <hr width="50%" color="#ddd" />
             <ul class="plan-table" id="gold-table">
-                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans[0].options">&#10004; {{option.option}}</li>
             </ul>
             <div class="plan-footer" id="gold-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="gold-price" [ngStyle]="priceStyle()" >${{global.plans.gold.price}}</span>
-                <p id="gold-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.gold.price - global.getPromo.amount}}</p>
+                <span id="gold-price" [ngStyle]="priceStyle()" >${{global.plans[0].plan.price}}</span>
+                <p id="gold-price-promo" *ngIf="global.promo != null && global.promo.type == 'Money Off'">${{global.plans[0].plan.price - global.promo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="gold-discount">-${{global.plans.gold.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
+                <h4 id="gold-discount">-${{global.plans[0].plan.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('gold')">ORDER NOW</button>
             </div>
         </td>
-        <td id="platinum" *ngIf="global.plans.platinum.header != null">
-            <span class="plan-header" id="platinum-header">{{global.plans.platinum.header}}</span>
+        <td id="platinum" *ngIf="global.plans[1].plan.name != null">
+            <span class="plan-header" id="platinum-header">{{global.plans[1].plan.name}}</span>
             <hr width="50%" color="#ddd" />
             <ul class="plan-table" id="platinum-table">
-                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
-                <li *ngFor="let option of global.plans.platinum.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans[0].options">&#10004; {{option.option}}</li>
+                <li *ngFor="let option of global.plans[1].options">&#10004; {{option.option}}</li>
             </ul>
             <div class="plan-sub-header">
             <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
@@ -41,19 +46,19 @@
             </div>
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="platinum-price" [ngStyle]="priceStyle()">${{global.plans.platinum.price}}</span>
-                <p id="platinum-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.platinum.price - global.getPromo.amount}}</p>
+                <span id="platinum-price" [ngStyle]="priceStyle()">${{global.plans[1].plan.price}}</span>
+                <p id="platinum-price-promo" *ngIf="global.promo != null && global.promo.type == 'Money Off'">${{global.plans[1].plan.price - global.promo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="platinum-discount">-${{global.plans.platinum.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
+                <h4 id="platinum-discount">-${{global.plans[1].plan.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('platinum')">ORDER NOW</button>
             </div>
         </td>
-        <td id="diamond" *ngIf="global.plans.diamond.header != null">
-            <span class="plan-header" id="diamond-header">{{global.plans.diamond.header}}</span>
+        <td id="diamond" *ngIf="global.plans[2].plan.name != null">
+            <span class="plan-header" id="diamond-header">{{global.plans[2].plan.name}}</span>
             <hr width="50%" color="#ddd" />
             <ul class="plan-table" id="diamond-table">
-                <li *ngFor="let option of global.plans.gold.options">&#10004; {{option}}</li>
-                <li *ngFor="let option of global.plans.platinum.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans[0].options">&#10004; {{option.option}}</li>
+                <li *ngFor="let option of global.plans[1].options">&#10004; {{option.option}}</li>
             </ul>
             <div class="plan-sub-header">
             <span>Includes coverage for over 30 items traditionally not covered by basic home warranty plans:</span>
@@ -64,7 +69,7 @@
             </ul>
             </div>
             <ul class="plan-table" id="diamond-table-extra">
-                <li *ngFor="let option of global.plans.diamond.options">&#10004; {{option}}</li>
+                <li *ngFor="let option of global.plans[2].options">&#10004; {{option.option}}</li>
             </ul>
             <div class="plan-sub-header">
             <ul>
@@ -77,10 +82,10 @@
             </div>
             <div class="plan-footer">
                 <hr width="50%" color="#ddd" />
-                <span id="diamond-price" [ngStyle]="priceStyle()">${{global.plans.diamond.price}}</span>
-                <p id="diamond-price-promo" *ngIf="global.displayPromo() && global.getPromo.type == 'Money Off'">${{global.plans.diamond.price - global.getPromo.amount}}</p>
+                <span id="diamond-price" [ngStyle]="priceStyle()">${{global.plans[2].plan.price}}</span>
+                <p id="diamond-price-promo" *ngIf="global.promo != null && global.promo.type == 'Money Off'">${{global.plans[2].plan.price - global.promo.amount}}</p>
                 <h6>* Additional fees apply for homes over 5000 Sq Ft</h6>
-                <h4 id="diamond-discount">-${{global.plans.diamond.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
+                <h4 id="diamond-discount">-${{global.plans[2].plan.townhomeDiscount}} Townhome/Condo/Mobile Home Discount</h4>
                 <button (click)="navigateToOrderForm('diamond')">ORDER NOW</button>
             </div>
         </td>
@@ -89,5 +94,9 @@
   <div class="sellers-coverage-block">
     <div class="header">FREE Sellers Coverage</div> 
     <button (click)="navigateToOrderForm('seller')">ORDER NOW</button>
+  </div>
+  </div>
+  <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus != 'Healthy'" class="sellers-coverage-block">
+    <div class="un-healthy">{{global.applicationStatus}}</div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<h1 class="header">Welcome to the {{login.currentUser.type == 'ADMIN' ? 'Admin' : 'User'}} Portal</h1>
-<button class="list" (click)="dashboard.getOrders(); dashboard.updateDisplay('VIEW');"></button>
-<button *ngIf="login.currentUser.type == 'ADMIN'" class="top-margin edit" (click)="dashboard.getOrders(); dashboard.updateDisplay('EDIT');"></button>
-<button class="top-margin settings" (click)="dashboard.updateDisplay('SETTINGS');"></button>
+<h1 class="header">Welcome to the {{global.GetSession().type == 'ADMIN' ? 'Admin' : 'User'}} Portal</h1>
+<button (click)="dashboard.getOrders(); dashboard.updateDisplay('VIEW');"><i class="fa fa-bars"></i></button>
+<button *ngIf="global.GetSession().type == 'ADMIN'" class="top-margin" (click)="dashboard.getOrders(); dashboard.updateDisplay('EDIT');"><i class="fa fa-pencil"></i></button>
+<button class="top-margin" (click)="dashboard.updateDisplay('SETTINGS');"><i class="fa fa-gear"></i></button>

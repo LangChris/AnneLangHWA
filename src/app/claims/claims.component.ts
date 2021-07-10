@@ -11,7 +11,6 @@ export class ClaimsComponent implements OnInit {
   constructor(private global: GlobalService) { }
 
   ngOnInit(): void {
-    this.global.setShowPortal(false);
   }
 
 }

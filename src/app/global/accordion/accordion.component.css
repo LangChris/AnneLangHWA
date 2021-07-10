@@ -1,0 +1,21 @@
+span {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #ccc;
+}
+
+span:hover {
+    cursor: pointer;
+}
+
+h4 {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #ccc;
+}
+
+h4:hover {
+    cursor: pointer;
+}

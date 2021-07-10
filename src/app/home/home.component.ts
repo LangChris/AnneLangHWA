@@ -13,28 +13,23 @@ export class HomeComponent implements OnInit {
   constructor(public global: GlobalService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
-    if(!this.global.testing) {
-      this.global.updatePlans();
-      this.global.updatePlanOptions();
-      this.global.updateOptionalCoverage();
-      this.global.updateSpecialRequest();
-      this.global.updateGeneralSettings();
-      this.global.updateOrders();
-      this.global.updateUsers();
-    } else {
-      this.global.setTestData();
-    }
+    this.global.hwaApiHealth();
+    this.global.hwaGetPlans();
+    this.global.hwaGetSettings();
+    this.global.hwaGetOptionalCoverages();
+    this.global.hwaGetSpecialRequests();
     setTimeout(()=>{
-      this.titleService.setTitle(this.global.getGeneralSettings.webpageTitle);
+      if(this.global.settings != null) {
+          this.titleService.setTitle(this.global.settings.webpageTitle);
+      }
     },200);
-    this.global.setShowPortal(true);
   }
 
   priceStyle() {
     return {
-      'text-decoration': this.global.displayPromo() && this.global.getPromo.type == 'Money Off' ? 'line-through' : 'none',
-      'text-decoration-color': this.global.displayPromo() && this.global.getPromo.type == 'Money Off' ? '#eb5e17' : 'orange',
-      'font-size': this.global.displayPromo() && this.global.getPromo.type == 'Money Off' ? '25px' : '30px'
+      'text-decoration': this.global.promo != null && this.global.promo.type == 'Money Off' ? 'line-through' : 'none',
+      'text-decoration-color': this.global.promo != null && this.global.promo.type == 'Money Off' ? '#eb5e17' : 'orange',
+      'font-size': this.global.promo != null && this.global.promo.type == 'Money Off' ? '25px' : '30px'
     }
   }
 
@@ -47,10 +42,10 @@ export class HomeComponent implements OnInit {
 
   navigateToOrderForm(plan: string) {
     switch(plan) {
-      case "gold": this.router.navigate(['/order-form', { plan: "Gold"}]); break;
-      case "platinum": this.router.navigate(['/order-form', { plan: "Platinum"}]); break;
-      case "diamond": this.router.navigate(['/order-form', { plan: "Diamond"}]); break;
-      case "seller": this.router.navigate(['/seller-order-form']); break;
+      case "gold": this.router.navigate(['/order/buyer', { plan: "Gold"}]); break;
+      case "platinum": this.router.navigate(['/order/buyer', { plan: "Platinum"}]); break;
+      case "diamond": this.router.navigate(['/order/buyer', { plan: "Diamond"}]); break;
+      case "seller": this.router.navigate(['/order/seller']); break;
     }
   }
 }

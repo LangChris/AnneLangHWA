@@ -10,18 +10,39 @@
       </td>
     </tr>
   </table>
-  <table class="nav-table">
+  
+  <table class="nav-table" *ngIf="global.settings != null">
     <tr>
       <td></td>
       <td>
-        <div class="navigation-container">
-          <div class="info tooltip"><a class="telephone" href="tel:{{global.getGeneralSettings.phoneNumber}}"></a><span class="tooltiptext">Call Me</span></div>
-          <div class="info tooltip"><a class="email" href="mailTo:{{global.getGeneralSettings.email}}"></a><span class="tooltiptext">Email Me</span></div>
-          <div class="info tooltip"><span class="claims" (click)="navigateToClaims()"></span><span class="tooltiptext">Claim Info</span></div>
-          <div class="info tooltip"><span class="login" (click)="navigateToLogin()"></span><span class="tooltiptext">User Portal</span></div>
-        </div>
+        <ul>
+          <li (click)="toggleDropdown('contact')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.contact}">Contact <i class="fa fa-angle-down"></i>
+            <div class="dropdown-content">
+              <ul>
+                <li><a href="mailTo:{{global.settings.email}}">Email <i class="fa fa-envelope"></i></a></li>
+                <li><a href="tel:{{global.settings.phoneNumber}}">Phone <i class="fa fa-phone"></i></a></li>
+              </ul>
+            </div>
+          </li>
+          <li (click)="toggleDropdown('help')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.help}">Help <i class="fa fa-angle-down"></i>
+            <div class="dropdown-content">
+              <ul>
+                <li><a (click)="navigateToClaims()">Claim Info <i class="fa fa-book"></i></a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="option" *ngIf="global.GetSession() == null" (click)="navigateToLogin()">Login <i class="fa fa-user"></i></li>
+          <li (click)="toggleDropdown('profile')" class="option dropdown" [ngClass]="{'dropdown-open' : dropdown.profile}" *ngIf="global.GetSession() != null">{{global.GetSession().name}} <i class="fa fa-angle-down"></i>
+            <div class="dropdown-content">
+              <ul>
+                <li (click)="navigateToHome()">Home <i class="fa fa-home"></i></li>
+                <li (click)="navigateToDashboard()">Dashboard <i class="fa fa-user"></i></li>
+                <li (click)="doLogout()">Logout <i class="fa fa-lock"></i></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
       </td>
     </tr>
   </table>
 </div>
-<div *ngIf="login.currentUser != null" class="user-wrapper"><div class="user">Welcome, {{login.currentUser.name}}</div>

@@ -1,25 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 
-const endpoints = {
-  order: "/assets/database/place-order.php",
-  sellerOrder: "/assets/database/place-seller-order.php",
-  getOrders: "/assets/database/get-orders.php",
-  updateOrder: "/assets/database/update-order.php",
-  deleteOrder: "/assets/database/delete-order.php",
-  enterOrder: "/assets/database/enter-order.php",
-  getPromo: "/assets/database/get-promo.php",
-  getPlans: "/assets/database/get-plans.php",
-  getPlanOptions: "/assets/database/get-plan-options.php",
-  getOptionalCoverage: "/assets/database/get-optional-coverage.php",
-  getSpecialRequest: "/assets/database/get-special-request.php",
-  getGeneralSettings: "/assets/database/get-general-settings.php",
-  updateGeneralSettings: "/assets/database/update-general-settings.php",
-  updateSettings: "/assets/database/update-settings.php",
-  getLogin: "/assets/database/get-login.php",
-  saveUser: "/assets/database/save-user.php",
-  resetPassword: "/assets/database/reset-password.php"
+const hwa = {
+  url: "https://hwa-api.servehttp.com:8443/v1/api",
+  endpoints: {
+    health: "/health",
+    login: "/login",
+    importOrders: "/import/orders",
+    getOrders: "/orders",
+    deleteOrder: "/order",
+    updateOrder: "/order",
+    updateUser: "/user",
+    enterOrder: "/order/enter",
+    placeOrder: "/order",
+    getUsers: "/users",
+    registerUser: "/user",
+    resetPassword: "/user/password-reset",
+    getPlans: "/plans",
+    updatePlans: "/plans",
+    getPromo: "/promo",
+    updatePromo: "/promo",
+    getSettings: "/settings",
+    updateSettings: "/settings",
+    getSpecialRequests: "/special-requests",
+    getOptionalCoverages: "/optional-coverages",
+    updateSpecialRequests: "/special-requests",
+    updateOptionalCoverages: "/optional-coverages"
+  }
 };
 
 @Injectable()
@@ -27,89 +35,149 @@ export class DatabaseService {
 
   constructor(private http: HttpClient) { }
 
-  // Place a new Order
-  placeOrder(formGroup: FormGroup) {
-    return this.http.post(endpoints.order, formGroup.value );
+  // HWA API Health Check
+  HwaApiHealthCheck() {
+    return this.http.get(hwa.url + hwa.endpoints.health);
   }
 
-  // Place a new Seller Order
-  placeSellerOrder(formGroup: FormGroup) {
-    return this.http.post(endpoints.sellerOrder, formGroup.value );
+  // HWA Login
+  HwaLogin(login: any) {  
+    return this.http.post(hwa.url + hwa.endpoints.login, login);
   }
 
-  // Get Orders
-  getOrders() {
-    return this.http.get(endpoints.getOrders);
+  // HWA Register User
+  HwaRegisterUser(user: any) {  
+    return this.http.post(hwa.url + hwa.endpoints.registerUser, user);
+  }
+  
+  // HWA Orders
+  HwaOrders(token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.get(hwa.url + hwa.endpoints.getOrders, httpOptions);
   }
 
-  // Update Order
-  updateOrder(formGroup: FormGroup) {
-    return this.http.put(endpoints.updateOrder, formGroup.value );
+  // HWA Users
+  HwaUsers(token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.get(hwa.url + hwa.endpoints.getUsers, httpOptions);
   }
 
-  // Enter Order
-  enterOrder(id: any) {
-    return this.http.put(endpoints.enterOrder, id );
+  // HWA Password Reset
+  HwaPasswordReset(username: any) {
+    return this.http.get(hwa.url + hwa.endpoints.resetPassword + "/" + username);
   }
 
-  // Delete Order
-  deleteOrder(id: any) {
-    return this.http.post(endpoints.deleteOrder, id );
+  // HWA Plans
+  HwaPlans() {
+    return this.http.get(hwa.url + hwa.endpoints.getPlans);
   }
 
-  // Get Promo
-  getPromo() {
-    return this.http.get(endpoints.getPromo);
+  // HWA Update Plans
+  HwaUpdatePlans(plans: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updatePlans, plans, httpOptions);
   }
 
-  // Get Plans
-  getPlans() {
-    return this.http.get(endpoints.getPlans);
+  // HWA Update Optional Coverages
+  HwaUpdateOptionalCoverages(coverages: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updateOptionalCoverages, coverages, httpOptions);
   }
 
-  // Get Plan Options
-  getPlanOptions() {
-    return this.http.get(endpoints.getPlanOptions);
+  // HWA Update Special Requests
+  HwaUpdateSpecialRequests(requests: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updateSpecialRequests, requests, httpOptions);
   }
 
-  // Get Optional Coverage
-  getOptionalCoverage() {
-    return this.http.get(endpoints.getOptionalCoverage);
+  // HWA Promo
+  HwaPromo() {
+    return this.http.get(hwa.url + hwa.endpoints.getPromo);
   }
 
-  // Get Special Request
-  getSpecialRequest() {
-    return this.http.get(endpoints.getSpecialRequest);
+  // HWA Settings
+  HwaSettings() {
+    return this.http.get(hwa.url + hwa.endpoints.getSettings);
   }
 
-  // Get General Settings
-  getGeneralSettings() {
-    return this.http.get(endpoints.getGeneralSettings);
+  // HWA Special Requests
+  HwaSpecialRequests() {
+    return this.http.get(hwa.url + hwa.endpoints.getSpecialRequests);
   }
 
-  // Save General Settings
-  saveGeneralSettings(formGroup: FormGroup) {
-    return this.http.put(endpoints.updateGeneralSettings, formGroup.value);
+  // HWA Optional Coverages
+  HwaOptionalCoverages() {
+    return this.http.get(hwa.url + hwa.endpoints.getOptionalCoverages);
   }
 
-  // Save Settings
-  saveSettings(formGroup: FormGroup) {
-    return this.http.put(endpoints.updateSettings, formGroup.value);
+  // HWA Delete Order
+  HwaDeleteOrder(id: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.delete(hwa.url + hwa.endpoints.deleteOrder + "/" + id, httpOptions);
   }
 
-  // Get Users
-  getUsers() {
-    return this.http.get(endpoints.getLogin);
+  // HWA Update Order
+  HwaUpdateOrder(order: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updateOrder, order, httpOptions);
   }
 
-  // Save User
-  saveUser(user: any) {
-    return this.http.post(endpoints.saveUser, user);
+  // HWA Update User
+  HwaUpdateUser(formGroup: FormGroup) {
+    return this.http.put(hwa.url + hwa.endpoints.updateUser, formGroup.value);
   }
 
-  // Reset Password
-  resetPassword(formGroup: FormGroup) {
-    return this.http.post(endpoints.resetPassword, formGroup.value);
+  // HWA Update Settings
+  HwaUpdateSettings(formGroup: FormGroup, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updateSettings, formGroup.value, httpOptions);
+  }
+
+  // HWA Update Promo
+  HwaUpdatePromo(formGroup: FormGroup, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.updatePromo, formGroup.value, httpOptions);
+  }
+
+  // HWA Enter Order
+  HwaEnterOrder(order: any, token) {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'token': token })
+    };
+
+    return this.http.put(hwa.url + hwa.endpoints.enterOrder, order, httpOptions);
+  }
+
+  // HWA Place Order
+  HwaPlaceOrder(order: any) {
+    return this.http.post(hwa.url + hwa.endpoints.placeOrder, order);
   }
 
 }

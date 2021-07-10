@@ -15,12 +15,14 @@ export class ViewOrdersComponent implements OnInit {
   constructor(public global: GlobalService, public dashboard: DashboardComponent, private database: DatabaseService) { }
 
   showFilters: boolean = false;
-  filename: string = this.global.getGeneralSettings.defaultFilename;
+  filename: string = this.global.GetSession().defaultFilename;
   extension: string = "xlsx";
   enteredOrders = [];
 
   ngOnInit() {
+    this.dashboard.filterOrders(this.global.GetSession().defaultSort, "all", "all", "all", "all", "all", "all");
     this.updateEnteredOrders();
+    console.log(this.dashboard.orders);
   }
 
   updateFilename(event) {
@@ -66,16 +68,24 @@ export class ViewOrdersComponent implements OnInit {
       if(value.toString().substring(value.length - 2) == ", ") {
         value = value.toString().substring(0, value.length - 2);
       }
+      if(value.toString() == value.toString().toUpperCase()) {
+        let regex = /\_/gi;
+        value = value.toString().replace(regex, " ");
+        value = value.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+      }
       return value;
     }
     return "--";
   }
 
   showOrderEntered(show: boolean, id: any) {
+    if(this.global.GetSession().type == 'USER') {
+      return;
+    }
     let enterOrder = document.getElementById('order-entered-' + id);
     for(var i = 0; i < this.dashboard.orders.length; i++) {
-      if(this.dashboard.orders[i]['id'] == id) {
-        if(this.dashboard.orders[i]['entered'] == 1) {
+      if(this.dashboard.orders[i].orderId == id) {
+        if(this.dashboard.orders[i].entered == true) {
           return;
         }
       }
@@ -87,39 +97,34 @@ export class ViewOrdersComponent implements OnInit {
     }
   }
 
-  orderEntered(id: any) {
-    let index;
-    for(var i = 0; i < this.dashboard.orders.length; i++) {
-      if(this.dashboard.orders[i]['id'] == id && this.dashboard.orders[i]['entered'] == 0) {
-        index = i;
-        if(!this.global.testing) {
-          this.database.enterOrder(id).subscribe(
-            response => {
-              this.dashboard.orders[index]['entered'] = 1;
-              let enterOrder = document.getElementById('order-entered-' + id);
-              enterOrder.style.display = "block";
-              this.enteredOrders.push(this.dashboard.orders[index]);
-            },
-            error => {
-              console.log(error);
-            }
-          );
-        } else {
-          this.dashboard.orders[index]['entered'] = 1;
-          let enterOrder = document.getElementById('order-entered-' + id);
+  enterOrder(order: any) {
+    if(this.global.GetSession().type == 'USER') {
+      return;
+    }
+    if(!order.entered) {
+      this.database.HwaEnterOrder(order, this.global.GetSession().token).subscribe(
+        response => {
+          order = response;
+          let enterOrder = document.getElementById('order-entered-' + order.orderId);
           enterOrder.style.display = "block";
-          this.enteredOrders.push(this.dashboard.orders[index]);
+          this.enteredOrders.push(order);
+          this.global.hwaGetOrders();
+          this.updateEnteredOrders();
+        },
+        error => {
+          console.log(error);
         }
-      }
+      );
     }
   }
 
   updateEnteredOrders() {
+    this.dashboard.getFilteredOrders();
     setTimeout(()=>{
       this.enteredOrders = [];
       for(var i = 0; i < this.dashboard.orders.length; i++) {
-        if(this.dashboard.orders[i]['entered'] == 1) {
-          let enterOrder = document.getElementById('order-entered-' + this.dashboard.orders[i]['id']);
+        if(this.dashboard.orders[i].entered == true) {
+          let enterOrder = document.getElementById('order-entered-' + this.dashboard.orders[i].orderId);
           enterOrder.style.display = "block";
           this.enteredOrders.push(this.dashboard.orders[i]);
         }

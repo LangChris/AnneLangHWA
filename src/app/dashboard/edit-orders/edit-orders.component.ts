@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardComponent } from '../dashboard.component'; 
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { DatePipe } from '@angular/common';
 import { GlobalService } from '../../services/global.service';
 import { DatabaseService } from '../../services/database.service';
@@ -48,8 +48,6 @@ export class EditOrdersComponent implements OnInit {
   constructor(private global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.global.setShowPortal(false);
-
     this.editForm.controls.orderId.valueChanges.subscribe(value => {
       let table = document.getElementsByTagName('table');
       table[0].style.width = "auto";
@@ -57,9 +55,9 @@ export class EditOrdersComponent implements OnInit {
         if(this.editForm.controls.orderId.value != 'Select Order') {
           this.dashboard.showSuccess = false;
           this.dashboard.showError = false;
-          for(var i = 0; i < this.global.getOrders.length; i++) {
-            if(this.global.getOrders[i]['id'] == value) {
-              this.updateForm(this.global.getOrders[i]);
+          for(var i = 0; i < this.global.orders.length; i++) {
+            if(this.global.orders[i].orderId == value) {
+              this.updateForm(this.global.orders[i]);
             }
           }
         }
@@ -69,30 +67,30 @@ export class EditOrdersComponent implements OnInit {
   }
 
   updateForm(order: any) {
-    this.editForm.controls.name.setValue(order['name']);
-    this.editForm.controls.email.setValue(order['email']);
-    this.editForm.controls.plan.setValue(order['plan']);
-    this.editForm.controls.years.setValue(order['years']);
-    this.editForm.controls.homeType.setValue(order['home_type']);
-    this.editForm.controls.addressLine.setValue(order['address_line']);
-    this.editForm.controls.city.setValue(order['city']);
-    this.editForm.controls.state.setValue(order['state']);
-    this.editForm.controls.zip.setValue(order['zip']);
-    this.editForm.controls.buyerName.setValue(order['buyer_name']);
-    this.editForm.controls.buyerEmail.setValue(order['buyer_email']);
-    this.editForm.controls.buyerPhone.setValue(order['buyer_phone']);
-    this.editForm.controls.sellerName.setValue(order['seller_name']);
-    this.editForm.controls.sellerEmail.setValue(order['seller_email']);
-    this.editForm.controls.sellerPhone.setValue(order['seller_phone']);
-    this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(order['close_start_date'], 'yyyy-MM-dd'));
+    this.editForm.controls.name.setValue(order.name);
+    this.editForm.controls.email.setValue(order.email);
+    this.editForm.controls.plan.setValue(order.plan);
+    this.editForm.controls.years.setValue(order.years);
+    this.editForm.controls.homeType.setValue(order.homeType);
+    this.editForm.controls.addressLine.setValue(order.address.addressLine);
+    this.editForm.controls.city.setValue(order.address.city);
+    this.editForm.controls.state.setValue(order.address.state);
+    this.editForm.controls.zip.setValue(order.address.zip);
+    this.editForm.controls.buyerName.setValue(order.buyer != null ? order.buyer.name : '');
+    this.editForm.controls.buyerEmail.setValue(order.buyer != null ? order.buyer.email : '');
+    this.editForm.controls.buyerPhone.setValue(order.buyer != null ? order.buyer.phone : '');
+    this.editForm.controls.sellerName.setValue(order.seller != null ? order.seller.name : '');
+    this.editForm.controls.sellerEmail.setValue(order.seller != null ? order.seller.email : '');
+    this.editForm.controls.sellerPhone.setValue(order.seller != null ? order.seller.phone : '');
+    this.editForm.controls.closeStartDate.setValue(this.datePipe.transform(order.closeStartDate, 'yyyy-MM-dd'));
     let options = [];
     let selectedOptions = [];
-    for(var option = 0; option < this.global.getOptionalCoverage.length; option++) {
-      options.push(this.global.getOptionalCoverage[option].option);
+    for(var option = 0; option < this.global.optionalCoverages.length; option++) {
+      options.push(this.global.optionalCoverages[option].coverageOption);
     }
 
-    if(order['optional_coverage'] != null) {
-      selectedOptions = order['optional_coverage'].split(", ");            
+    if(order.optionalCoverage != null) {
+      selectedOptions = order.optionalCoverage.split(", ");            
     }
 
     this.editForm.controls.optionalCoverage.setValue(selectedOptions);
@@ -146,40 +144,40 @@ export class EditOrdersComponent implements OnInit {
         }
     });
 
-    for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+    for(let i = 0; i < this.global.specialRequests.length; i++) {
       var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
       specialRequest.checked = false;
     }
 
-    if(order['special_request'] != null) {
-      let selectedRequests = order['special_request'].split(", ");
-      for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+    if(order.specialRequest != null) {
+      let selectedRequests = order.specialRequest.split(", ");
+      for(let i = 0; i < this.global.specialRequests.length; i++) {
         var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
-        let index = selectedRequests.indexOf(this.global.getSpecialRequest[i]);
+        let index = selectedRequests.indexOf(this.global.specialRequests[i]);
         specialRequest.checked = index >= 0 ? true : false;
       }
       this.editForm.controls.specialRequest.setValue(selectedRequests);
     }
 
-    this.editForm.controls.hvacCoverage.setValue(order['hvac_coverage']);
-    this.editForm.controls.realtorName.setValue(order['realtor_name']);
-    this.editForm.controls.realtorEmail.setValue(order['realtor_email']);
-    this.editForm.controls.realtorCompany.setValue(order['realtor_company']);
-    this.editForm.controls.realtorZip.setValue(order['realtor_zip']);
-    this.editForm.controls.titleAgentEmail.setValue(order['title_agent_email']);
-    this.editForm.controls.promo.setValue(order['promo']);
-    this.editForm.controls.createdDate.setValue(this.datePipe.transform(order['created_date'], 'yyyy-MM-dd'));
+    this.editForm.controls.hvacCoverage.setValue(order.hvacCoverage);
+    this.editForm.controls.realtorName.setValue(order.realtor != null ? order.realtor.name : '');
+    this.editForm.controls.realtorEmail.setValue(order.realtor != null ? order.realtor.email : '');
+    this.editForm.controls.realtorCompany.setValue(order.realtor != null ? order.realtor.company : '');
+    this.editForm.controls.realtorZip.setValue(order.realtor != null ? order.realtor.zip : '');
+    this.editForm.controls.titleAgentEmail.setValue(order.titleAgent != null ? order.titleAgent.email : '');
+    this.editForm.controls.promo.setValue(order.promo);
+    this.editForm.controls.createdDate.setValue(this.datePipe.transform(order.createdDate, 'yyyy-MM-dd'));
   }
 
   resetForm() {
-    if(this.global.getOrders && this.global.getOrders.length > 0){
+    if(this.global.orders && this.global.orders.length > 0){
       let orderSelect = document.getElementById('order-id') as HTMLSelectElement;
       if(orderSelect != null) {
         orderSelect.selectedIndex = 0;
         this.editForm.controls.orderId.setValue('Select Order');
       }
       
-      this.global.updateOrders();
+      this.global.hwaGetOrders();
     }
   }
 
@@ -195,19 +193,22 @@ export class EditOrdersComponent implements OnInit {
     this.editForm.controls.optionalCoverage.setValue(selectedOptions);
 
     let selectedRequests = [];
-    for(let i = 0; i < this.global.getSpecialRequest.length; i++) {
+    for(let i = 0; i < this.global.specialRequests.length; i++) {
       var specialRequest = document.getElementById('special-request-' + i) as HTMLInputElement;
       if(specialRequest.checked) {
-        selectedRequests.push(this.global.getSpecialRequest[i]);
+        selectedRequests.push(this.global.specialRequests[i]);
       }
     }
 
     this.editForm.controls.specialRequest.setValue(selectedRequests);
 
-    return this.database.updateOrder(this.editForm).subscribe(
+    // convert editForm to Order Object
+    let order = {};
+
+    return this.database.HwaUpdateOrder(order, this.global.GetSession().token).subscribe(
       response => {
         this.dashboard.showSuccess = true;
-        this.global.updateOrders();
+        this.global.hwaGetOrders();
       },
       error => {
         this.dashboard.showError = true;
@@ -216,12 +217,13 @@ export class EditOrdersComponent implements OnInit {
   }
 
   deleteOrder(id) {
-    return this.database.deleteOrder(id).subscribe(
+    return this.database.HwaDeleteOrder(id, this.global.GetSession().token).subscribe(
       response => {
         this.resetForm();
         this.dashboard.showSuccess = true;
       },
       error => {
+        console.log(error);
         this.resetForm();
         this.dashboard.showError = true;
       }

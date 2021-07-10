@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
-import { LoginService } from '../../services/login.service';
 
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,21 +10,63 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public global: GlobalService, public router: Router, public login: LoginService) { }
+  constructor(public global: GlobalService, public router: Router) { }
+
+  dropdown = {
+    contact: false,
+    help: false,
+    profile: false
+  };
 
   ngOnInit() {
   }
 
   navigateToClaims() {
+    this.closeDropdowns();
     this.router.navigate(['claims']);
   }
 
   navigateToLogin() {
-    this.router.navigate(['login']);
+    this.closeDropdowns();
+    if(this.global.GetSession() == null) {
+      this.router.navigate(['dashboard']);
+    } else {
+      this.global.loginStatus = ""
+      this.global.registerStatus = "";
+      this.global.ClearSession();
+      this.navigateToHome();
+    }
+  }
+
+  navigateToDashboard() {
+    this.closeDropdowns();
+    this.router.navigate(['dashboard']);
   }
 
   navigateToHome() {
+    this.closeDropdowns();
     this.router.navigate(['']);
+  }
+
+  doLogout() {
+    this.closeDropdowns();
+    this.global.ClearSession();
+    this.router.navigate(['']);
+  }
+
+  toggleDropdown(dropdown) {
+    this.dropdown[dropdown] = !this.dropdown[dropdown];
+
+    for(let key of Object.keys(this.dropdown)) {
+      if(key != dropdown)
+        this.dropdown[key] = false;
+    }
+  }
+
+  closeDropdowns() {
+    for(let key of Object.keys(this.dropdown)) {
+        this.dropdown[key] = false;
+    }
   }
 
 }

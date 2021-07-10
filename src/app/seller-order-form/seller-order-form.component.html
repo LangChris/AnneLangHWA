@@ -1,23 +1,23 @@
 <div class="centered-block">
-  <div class="header">{{global.getGeneralSettings.webpageTitle}}</div>
-  <div class="sub-header">{{global.getGeneralSettings.webpageSubTitle}}</div>
-  <p *ngIf="showForm">{{global.getGeneralSettings.orderDescription}}</p>
-  <div class="section" *ngIf="!showForm">{{global.getGeneralSettings.orderMessage}}</div>
+  <div class="header">{{global.settings.webpageTitle}}</div>
+  <div class="sub-header">{{global.settings.webpageSubTitle}}</div>
+  <p *ngIf="showForm">{{global.settings.orderDescription}}</p>
+  <div class="section" *ngIf="!showForm">{{global.settings.orderMessage}}</div>
   <div class="section" *ngIf="showForm">
       <h2>Free Sellers Coverage</h2>
       <p class="small-text" >Good for 6 months and up to $1,500 in paid claims.</p>
-      <progress value={{progressStep}} max=4></progress>
+      <progress id="progress" value={{progressStep}} max=4></progress>
       <form id="sellerOrderForm" [formGroup]="sellerOrderForm" novalidate (ngSubmit)="submitOrder()">
         
-        <div class="popout" [hidden]="progressStep != 1">
+        <div class="popout card" [hidden]="progressStep != 1">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Let's start with you...</p>
           <p *ngIf="helpClicked" class="popout-subheader">Enter Login Credentials or select Guest Checkout to continue.</p>
           <p *ngIf="helpClicked" class="popout-subheader">We need to know who is filling out the form in order to get back in contact.</p>
           <table class="double-section">
             <tr>
-              <td class="section-box" id="login-register-box" (click)="toggleActive('LOGIN')">
-                <p class="popout-header-double top-margin"><span id="login-text" (click)="togglePanel('LOGIN')">Login</span> / <span id="register-text" (click)="togglePanel('REGISTER')">Register</span></p>
+              <td class="section-box card" id="login-register-box" (click)="toggleActive('LOGIN')">
+                <p class="popout-header-double top-margin"><span id="login-text">Login</span></p>
                 <p *ngIf="helpClicked && panel == 'REGISTER'" class="popout-subheader">For faster checkout create an account</p>
                 <p *ngIf="helpClicked && panel == 'LOGIN'" class="popout-subheader">Login to keep track of your orders</p>
                 <hr width="50%" color="#ddd" />
@@ -25,46 +25,27 @@
                   <tr>
                     <th class="required">Email/Username*</th>
                     <td>
-                      <input type="text" class="large" id="login-username" (change)="isLoginActive()"/>
-                      <span *ngIf="login.getStatus.bad_user" class="required small-text" ><br /> Email or Username is Invalid!</span>
+                      <input type="text" class="large" id="login-username" />
+                      <span *ngIf="global.loginStatus == 'BAD_USER'" class="required small-text" ><br /> Email/Username not found!</span>
                     </td>
                   </tr>
                   <tr>
                     <th class="required">Password*</th>
                     <td>
-                      <input type="password" class="large" id="login-password" (change)="isLoginActive()" />
-                      <span *ngIf="login.getStatus.bad_pass" class="required small-text" ><br /> Password is Invalid!</span>
+                      <input type="password" class="large" id="login-password" />
+                      <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Password is Invalid!</span>
+                      <span *ngIf="global.loginStatus == 'SUCCESS'" class="success small-text" ><br /> Successful login, proceed Next</span>
                     </td>
                   </tr>
-                </table>
-                <table class="order-form" *ngIf="panel == 'REGISTER'">
-                  <tr>
-                    <th class="required">Name*</th>
+                  <tr *ngIf="global.loginStatus != 'SUCCESS'">
+                    <th></th>
                     <td>
-                      <input type="text" class="large" id="register-name"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="required">Email*</th>
-                    <td>
-                      <input type="email" class="large" id="register-email" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Username</th>
-                    <td>
-                      <input type="text" class="large" id="register-username" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="required">Password*</th>
-                    <td>
-                      <input type="password" class="large" id="register-password" />
+                      <span class="button" (click)="login()">Login</span>
                     </td>
                   </tr>
                 </table>
               </td>
-              <td class="section-box" id="guest-checkout-box" (click)="toggleActive('GUEST')">
+              <td class="section-box card" id="guest-checkout-box" (click)="toggleActive('GUEST')">
                 <p class="popout-header-double top-margin">Guest Checkout</p>
                 <p *ngIf="helpClicked" class="popout-subheader">Checkout as a guest</p>
                 <hr width="50%" color="#ddd" />
@@ -89,7 +70,7 @@
           </table>  
         </div>
 
-        <div class="popout" [hidden]="progressStep != 2">
+        <div class="popout card" [hidden]="progressStep != 2">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">What property do you need coverage for?</p>
           <p *ngIf="helpClicked" class="popout-subheader">We need to know the type of home, and the street address of the property you need coverage for as pricing varies.</p>
@@ -98,8 +79,8 @@
               <tr>
                 <th>Home Type</th>
                 <td>
-                  <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType" checked/>Single Family<br />
-                  <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+                  <input type="radio" name="homeType" id="home-type-sf" value="SINGLE_FAMILY_HOME" formControlName="homeType" checked/>Single Family Home<br />
+                  <input type="radio" name="homeType" id="home-type-th" value="TOWNHOME_CONDO" formControlName="homeType" />Townhome/Condo</td>
               </tr>
               <tr>
                 <th>Address Line</th>   
@@ -116,11 +97,11 @@
               <tr>
                 <th class="group-header">Special Request(Quote Needed)</th>
               </tr>
-              <tr *ngFor="let request of global.getSpecialRequest; let i = index">
-                <th class="group-label">{{request}}</th>
+              <tr *ngFor="let request of global.specialRequests; let i = index">
+                <th class="group-label">{{request.request}}</th>
                 <td>
                   <div class="checkbox">
-                    <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}" (change)="checkSpecialRequests()"/>
+                    <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}"/>
                     <label for="special-request-{{i}}"></label>
                   </div>
                 </td>
@@ -128,7 +109,7 @@
             </table>
         </div>
 
-        <div class="popout" [hidden]="progressStep != 3">
+        <div class="popout card" [hidden]="progressStep != 3">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Select your coverage options:</p>
           <p *ngIf="helpClicked" class="popout-subheader">Select an available plan and plan length, any additional coverages you need, and closing date or start date of coverage.</p>
@@ -138,7 +119,7 @@
                 <th>Plan</th>
                 <td>
                     <select id="plan" name="plan" formControlName="plan">
-                        <option value="Free Sellers Coverage" selected>Free Sellers Coverage</option>
+                        <option value="FREE_SELLERS_COVERAGE" selected>Free Sellers Coverage</option>
                     </select>  
                 </td>
               </tr>
@@ -161,7 +142,7 @@
             </table>
         </div>
 
-        <div class="popout" [hidden]="progressStep != 4">
+        <div class="popout card" [hidden]="progressStep != 4">
           <div class="circle" (click)="toggleHelpClicked()"><span class="help"></span></div>
           <p class="popout-header">Seller/Realtor info</p>
           <p *ngIf="helpClicked" class="popout-subheader">If you have any seller or realtor info please enter it below.</p>
@@ -207,7 +188,10 @@
         <table class="navigation">
           <tr>
             <td class="left"><span [hidden]="progressStep == 1 || progressStep == 2" class="button extra-pad top-margin back" (click)="makeProgressStep('PREV')"> Back</span></td>
-            <td class="right"><span [hidden]="progressStep == 4" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
+            <td class="right"><span [hidden]="progressStep == 4 || 
+              (active == 'GUEST' && (!sellerOrderForm.controls.name.valid || !sellerOrderForm.controls.email.valid)) || 
+              (active == 'LOGIN' && global.loginStatus != 'SUCCESS') || 
+              (active == 'REGISTER' && global.registerStatus != 'SUCCESS')" class="button extra-pad top-margin next" (click)="makeProgressStep('NEXT')"> Next</span></td>
           </tr>
         </table>
         

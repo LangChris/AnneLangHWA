@@ -71,6 +71,7 @@ p {
 
 .small-text {
     font-size: 12px;
+    display: block;
 }
 
 .large {
@@ -131,6 +132,22 @@ button:hover {
     background-color: orange;
 }
 
+.ex-small-button {
+    width: 20px;
+    height: 25px;
+    background-color: #eb5e17;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.ex-small-button:hover {
+    cursor: pointer;
+    background-color: orange;
+}
+
 .extra-padding {
     padding: 25px;
 }
@@ -162,16 +179,21 @@ button:hover {
 .email:before {
     content: "\2709";
     font-size: 30px;
+    color: #eb5e17;
+    text-decoration: none;
+    line-height: 1em;
 }
 
 .telephone:before {
     content: "\2706";
     font-size: 30px;
+    color: #eb5e17;
+    text-decoration: none;
 }
 
 .claims:before {
     content: "\01F4DD";
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .list:before {
@@ -347,6 +369,73 @@ button:hover {
     cursor: pointer;
 }
 
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: max-content;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card.flip .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background-color: transparent;
+}
+
+.card-back {
+    background-color: transparent;
+    transform: rotateY(180deg);
+}
+
+.open::after {
+    font-size: 15px;
+    content: "\25BC";
+}
+
+.closed::after {
+    font-size: 15px;
+    content: "\25B6";
+}
+
+accordion {
+    display: block;
+    width: 700px;
+    margin: 0 auto;
+}
+
+/* The Modal (background) */
+modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
 @media screen and (max-width: 1150px) {
     
     .large {
@@ -359,5 +448,18 @@ button:hover {
 
     .small {
         width: 20px;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 95%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    accordion {
+        display: block;
+        width: 95%;
+        margin: 0 auto;
     }
 }

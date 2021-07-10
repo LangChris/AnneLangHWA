@@ -1,4 +1,4 @@
-<h1 class="header">Edit Order &#9999;</h1>
+<h1 class="header">Edit Order <i class="fa fa-pencil"></i></h1>
   
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block">
     <p>No orders placed yet.</p>
@@ -11,7 +11,7 @@
       <td>
         <select id="order-id" class="large" name="orderId" formControlName="orderId">
           <option selected>Select Order</option>
-          <option *ngFor="let order of dashboard.orders; let i = index" value="{{order.id}}">{{i+1}}. {{order.name}}</option>
+          <option *ngFor="let order of dashboard.orders; let i = index" value="{{order.orderId}}">{{i+1}}. {{order.name}}</option>
         </select>
       </td>
     </tr>
@@ -28,10 +28,10 @@
       <th>Plan</th>
       <td>
           <select id="plan" name="plan" formControlName="plan">
-              <option value="Gold">Gold</option>
-              <option value="Platinum">Platinum</option>
-              <option value="Diamond">Diamond</option>
-              <option value="Free Sellers Coverage">Free Sellers Coverage</option>
+              <option value="GOLD">Gold</option>
+              <option value="PLATINUM">Platinum</option>
+              <option value="DIAMOND">Diamond</option>
+              <option value="FREE_SELLERS_COVERAGE">Free Sellers Coverage</option>
           </select>  
       </td>
     </tr>
@@ -50,7 +50,7 @@
       <td>
           <div class="multi-select large" id="multi-select"></div>
           <select id="optional-coverage" class="large" name="optionalCoverage" formControlName="optionalCoverage" multiple hidden>
-            <option *ngFor="let option of global.getOptionalCoverage" value="{{option.option}}">{{option.option}}</option>
+            <option *ngFor="let option of global.optionalCoverages" value="{{option.coverageOption}}">{{option.coverageOption}}</option>
           </select>  
       </td>
     </tr>
@@ -70,8 +70,8 @@
     <tr>
       <th>Home Type</th>
       <td>
-        <input type="radio" name="homeType" id="home-type-sf" value="Single Family Home" formControlName="homeType"/>Single Family<br />
-        <input type="radio" name="homeType" id="home-type-th" value="Townhome/Condo" formControlName="homeType" />Townhome/Condo</td>
+        <input type="radio" name="homeType" id="home-type-sf" value="SINGLE_FAMILY_HOME" formControlName="homeType"/>Single Family Home<br />
+        <input type="radio" name="homeType" id="home-type-th" value="TOWNHOME_CONDO" formControlName="homeType" />Townhome/Condo</td>
     </tr>
     <tr>
       <th>Address Line</th>   
@@ -145,8 +145,8 @@
     <tr>
       <th class="group-header">Special Request(Quote Needed)</th>
     </tr>
-    <tr *ngFor="let request of global.getSpecialRequest; let i = index">
-      <th class="group-label">{{request}}</th>
+    <tr *ngFor="let request of global.specialRequests; let i = index">
+      <th class="group-label">{{request.request}}</th>
       <td>
         <div class="checkbox">
           <input type="checkbox" value="None" id="special-request-{{i}}" name="specialRequest{{i}}"/>

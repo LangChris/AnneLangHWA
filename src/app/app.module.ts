@@ -20,9 +20,9 @@ import { EditOrdersComponent } from './dashboard/edit-orders/edit-orders.compone
 import { ViewOrdersComponent } from './dashboard/view-orders/view-orders.component';
 import { GlobalService } from './services/global.service';
 import { DatabaseService } from './services/database.service';
-import { LoginService } from './services/login.service';
-
 import { DatePipe } from '@angular/common';
+import { AccordionComponent } from './global/accordion/accordion.component';
+import { ModalComponent } from './global/modal/modal.component';
 
 const routes: Routes = [
   {
@@ -30,24 +30,24 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: "order-form",
+    path: "claims",
+    component: ClaimsComponent
+  },
+  {
+    path: "order/buyer",
     component: OrderFormComponent
   },
   {
-    path: "seller-order-form",
+    path: "order/seller",
     component: SellerOrderFormComponent
   },
   {
     path: "login",
-    component: LoginComponent
+    component: DashboardComponent
   },
   {
     path: "dashboard",
     component: DashboardComponent
-  },
-  {
-    path: "claims",
-    component: ClaimsComponent
   },
   {
     path: "**",
@@ -70,7 +70,9 @@ const routes: Routes = [
     DashboardComponent,
     SettingsComponent,
     ClaimsComponent,
-    MainComponent
+    MainComponent,
+    AccordionComponent,
+    ModalComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -78,7 +80,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [GlobalService, DatabaseService, LoginService, DatePipe],
+  providers: [GlobalService, DatabaseService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { DatabaseService } from '../../services/database.service';
 import { DashboardComponent } from '../dashboard.component';
-import { LoginService } from '../../services/login.service';
+import * as MultiSelect from '../../../assets/multi-select-umd';
 
 @Component({
   selector: 'dashboard-settings',
@@ -13,91 +13,253 @@ import { LoginService } from '../../services/login.service';
 export class SettingsComponent implements OnInit {
 
   generalSettingsForm = new FormGroup({
-    title: new FormControl(this.global.getGeneralSettings.webpageTitle, [Validators.required]),
-    subtitle: new FormControl(this.global.getGeneralSettings.webpageSubTitle, [Validators.required]),
-    description: new FormControl(this.global.getGeneralSettings.webpageDescription, [Validators.required]),
-    orderDescription: new FormControl(this.global.getGeneralSettings.orderDescription, [Validators.required]),
-    orderMessage: new FormControl(this.global.getGeneralSettings.orderMessage, [Validators.required]),
-    email: new FormControl(this.global.getGeneralSettings.email, [Validators.required]),
-    passwordResetEmail: new FormControl(this.global.getGeneralSettings.passwordResetEmail, [Validators.required]),
-    phone: new FormControl(this.global.getGeneralSettings.phoneNumber, [Validators.required]),
-    owner: new FormControl(this.global.getGeneralSettings.owner, [Validators.required]),
-    defaultSort: new FormControl(this.global.getGeneralSettings.defaultSortOrder, [Validators.required]),
-    defaultFilename: new FormControl(this.global.getGeneralSettings.defaultFilename, [Validators.required]),
-    sendEmail: new FormControl(this.global.getGeneralSettings.sendEmail, [Validators.required]),
-    planOne: new FormControl(this.global.getPlans.gold.header, [Validators.required]),
-    planTwo: new FormControl(this.global.getPlans.platinum.header, [Validators.required]),
-    planThree: new FormControl(this.global.getPlans.diamond.header, [Validators.required]),
-    planOnePrice: new FormControl(this.global.getPlans.gold.price, [Validators.required]),
-    planTwoPrice: new FormControl(this.global.getPlans.platinum.price, [Validators.required]),
-    planThreePrice: new FormControl(this.global.getPlans.diamond.price, [Validators.required]),
-    promoActive: new FormControl(this.global.getPromo.active, [Validators.required]),
-    promoType: new FormControl(this.global.getPromo.type, [Validators.required]),
-    promoGift: new FormControl(this.global.getPromo.gift),
-    promoAmount: new FormControl(this.global.getPromo.amount),
-    promoCoverage: new FormControl(this.global.getPromo.coverage),
-    promoCode: new FormControl(this.global.getPromo.code, [Validators.required]),
-    promoEndDate: new FormControl(this.global.getPromo.endDate, [Validators.required]),
-    specialRequest: new FormControl(),
-    optionalCoverage: new FormControl(),
-    id: new FormControl(this.login.currentUser.id, [Validators.required]),
-    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
-    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
-    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.login.currentUser.alternate_email),
-    phoneNumber: new FormControl(this.login.currentUser.phone_number),
-    loginUsername: new FormControl(this.login.currentUser.username),
-    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
+    settingsId: new FormControl(this.global.settings.settingsId, [Validators.required]),
+    webpageTitle: new FormControl(this.global.settings.webpageTitle, [Validators.required]),
+    webpageSubtitle: new FormControl(this.global.settings.webpageSubtitle, [Validators.required]),
+    webpageDescription: new FormControl(this.global.settings.webpageDescription, [Validators.required]),
+    orderDescription: new FormControl(this.global.settings.orderDescription, [Validators.required]),
+    orderMessage: new FormControl(this.global.settings.orderMessage, [Validators.required]),
+    email: new FormControl(this.global.settings.email, [Validators.required]),
+    alternateEmail: new FormControl(this.global.settings.alternateEmail),
+    phoneNumber: new FormControl(this.global.settings.phoneNumber, [Validators.required]),
+    owner: new FormControl(this.global.settings.owner, [Validators.required]),
+    sendEmail: new FormControl(this.global.settings.sendEmail, [Validators.required])
   });
-
 
   userSettingsForm = new FormGroup({
-    id: new FormControl(this.login.currentUser.id, [Validators.required]),
-    usersType: new FormControl(this.login.currentUser.type, [Validators.required]),
-    usersName: new FormControl(this.login.currentUser.name, [Validators.required]),
-    emailAddress: new FormControl(this.login.currentUser.email, [Validators.required]),
-    alternateEmail: new FormControl(this.login.currentUser.alternateEmail),
-    phoneNumber: new FormControl(this.login.currentUser.phoneNumber),
-    loginUsername: new FormControl(this.login.currentUser.username),
-    loginPassword: new FormControl(atob(this.login.currentUser.password), [Validators.required])
+    userId: new FormControl(this.global.GetSession().userId, [Validators.required]),
+    type: new FormControl(this.global.GetSession().type, [Validators.required]),
+    status: new FormControl(this.global.GetSession().status, [Validators.required]),
+    name: new FormControl(this.global.GetSession().name, [Validators.required]),
+    email: new FormControl(this.global.GetSession().email, [Validators.required]),
+    alternateEmail: new FormControl(this.global.GetSession().alternateEmail),
+    phoneNumber: new FormControl(this.global.GetSession().phoneNumber),
+    defaultSort: new FormControl(this.global.GetSession().defaultSort, [Validators.required]),
+    defaultFilename: new FormControl(this.global.GetSession().defaultFilename, [Validators.required]),
+    username: new FormControl(this.global.GetSession().username),
+    password: new FormControl(atob(this.global.GetSession().password), [Validators.required])
   });
 
+  planForm = new FormGroup({
+    planOne: new FormControl(this.global.plans[0].plan.name, [Validators.required]),
+    planTwo: new FormControl(this.global.plans[1].plan.name, [Validators.required]),
+    planThree: new FormControl(this.global.plans[2].plan.name, [Validators.required]),
+    planOnePrice: new FormControl(this.global.plans[0].plan.price, [Validators.required]),
+    planTwoPrice: new FormControl(this.global.plans[1].plan.price, [Validators.required]),
+    planThreePrice: new FormControl(this.global.plans[2].plan.price, [Validators.required])
+  });
 
+  promoForm = new FormGroup({
+    promoId: new FormControl(this.global.promo == null ? null : this.global.promo.promoId, [Validators.required]),
+    active: new FormControl(this.global.promo == null ? null : this.global.promo.active, [Validators.required]),
+    type: new FormControl(this.global.promo == null ? null : this.global.promo.type, [Validators.required]),
+    gift: new FormControl(this.global.promo == null ? null : this.global.promo.gift),
+    amount: new FormControl(this.global.promo == null ? null : this.global.promo.amount),
+    coverage: new FormControl(this.global.promo == null ? null : this.global.promo.coverage),
+    code: new FormControl(this.global.promo == null ? null : this.global.promo.code, [Validators.required]),
+    endDate: new FormControl(this.global.promo == null ? null : this.global.promo.endDate, [Validators.required])
+  });
 
-  constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent, public login: LoginService) { }
+  hyperlinkForm = new FormGroup({
+    link: new FormControl('', [Validators.required]),
+    text: new FormControl('', [Validators.required])
+  });
+
+  multiSelect: any;
+
+  generalSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? true : false;
+  userSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? false : true;
+  userManagementIsOpen = false;
+  hyperlinkModalIsOpen = false;
+  userIndex = 0;
+
+  constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent) { }
 
   ngOnInit(): void {
-    console.log('DASHBOARD SETTINGS LOADED');
+    this.userSettingsForm.valueChanges.subscribe(response => {
+      this.dashboard.showSuccess = false;
+      this.dashboard.showError = false;
+    });
+
     this.generalSettingsForm.valueChanges.subscribe(response => {
       this.dashboard.showSuccess = false;
       this.dashboard.showError = false;
     });
 
-    if(this.login.currentUser.type == 'ADMIN') {
+  }
+
+  ngAfterContentInit() {
+    if(this.global.GetSession().type == 'ADMIN') {
       setTimeout(() => {
-        if(this.generalSettingsForm.controls.promoType.value == 'Free Coverage Multi') {
-          let coverage1 = document.getElementById('promoCoverageMulti1') as HTMLSelectElement;
-          let coverage2 = document.getElementById('promoCoverageMulti2') as HTMLSelectElement;
-          let code1 = document.getElementById('promoCodeMulti1') as HTMLInputElement;
-          let code2 = document.getElementById('promoCodeMulti2') as HTMLInputElement;
-    
-          coverage1.value = this.global.getPromo.coverage.substring(0, this.global.getPromo.coverage.indexOf(','));
-          coverage2.value = this.global.getPromo.coverage.substring(this.global.getPromo.coverage.indexOf(',') + 1);
-    
-          code1.value = this.global.getPromo.code.substring(0, this.global.getPromo.code.indexOf(','));
-          code2.value = this.global.getPromo.code.substring(this.global.getPromo.code.indexOf(',') + 1);
-        }
-      }, 1000);
+        this.initializePromoSettings();
+        this.initializePlanSettings();
+      }, 500);
     }
+  }
+
+  showUser(index) {
+    if(index != this.userIndex) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  changeUser(index) {
+    this.userIndex += index;
+    if(this.userIndex < 0) {
+      this.userIndex = 0;
+    } else if(this.userIndex > this.global.users.length - 1) {
+      this.userIndex = this.global.users.length - 1;
+    }
+  }
+
+  getUserOrders(id) {
+    let orders = 0;
+    for(let i = 0; i < this.global.orders.length; i++) {
+      if(this.global.orders[i].userId == id) {
+        orders++;
+      }
+    }
+    return orders;
+  }
+
+  initializePromoSettings() {
+    let active = document.getElementById('promo-active') as HTMLInputElement;
+    let type = document.getElementById('promo-type') as HTMLSelectElement;
+    let gift = document.getElementById('promo-gift') as HTMLInputElement;
+    let amount = document.getElementById('promo-amount') as HTMLInputElement;
+    let coverage = document.getElementById('promo-coverage') as HTMLSelectElement;
+    let code = document.getElementById('promo-code') as HTMLInputElement;
+    let codes = document.getElementById('promo-codes') as HTMLInputElement;
+    let endDate = document.getElementById('promo-endDate') as HTMLInputElement;
+
+    active.checked = this.promoForm.controls.active.value;
+    type.value = this.promoForm.controls.type.value;
+    gift.value = this.promoForm.controls.gift.value;
+    amount.value = this.promoForm.controls.amount.value;
+    coverage.value = this.promoForm.controls.coverage.value;
+    code.value = this.promoForm.controls.code.value;
+    codes.value = this.promoForm.controls.code.value;
+    endDate.value = this.promoForm.controls.endDate.value;
+
+    if(this.promoForm.controls.type.value == 'Free Coverage Multi') {
+      var optionalCoverageSelect = document.getElementById("promo-coverages") as HTMLSelectElement;
+      optionalCoverageSelect.options.length = 0;
+      
+      var options = [];
+      let selectedOptions = [];
+      for(var i = 0; i < this.global.optionalCoverages.length; i++) {
+        var option = document.createElement("option");
+        option.text = this.global.optionalCoverages[i].coverageOption;
+        option.value = this.global.optionalCoverages[i].coverageOption;
+        optionalCoverageSelect.add(option);
+        options.push(option.text);
+      }
+      
+      if(this.promoForm.controls.coverage.value != null) {
+        selectedOptions = this.promoForm.controls.coverage.value.split(",");            
+      }
+
+      this.multiSelect = new (MultiSelect as any)('.multi-select', {
+      items: options,
+      current: selectedOptions,
+      });
+      this.multiSelect.on('change', this.optionalCoverageChange.bind(this));
+
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+      }
+    }
+  }
+
+  optionalCoverageChange(e) {
+    var optionalCoverageSelect = document.getElementById('promo-coverages') as HTMLSelectElement;
+    for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        optionalCoverageSelect.options[i].selected = this.multiSelect.getCurrent('value').indexOf(optionalCoverageSelect.options[i].text) >= 0;
+    }
+  }
+
+  updatePromoForm() {
+    let active = document.getElementById('promo-active') as HTMLInputElement;
+    let type = document.getElementById('promo-type') as HTMLSelectElement;
+    let gift = document.getElementById('promo-gift') as HTMLInputElement;
+    let amount = document.getElementById('promo-amount') as HTMLInputElement;
+    let coverage = document.getElementById('promo-coverage') as HTMLSelectElement;
+    let code = document.getElementById('promo-code') as HTMLInputElement;
+    let codes = document.getElementById('promo-codes') as HTMLInputElement;
+    let endDate = document.getElementById('promo-endDate') as HTMLInputElement;
+
+    this.promoForm.controls.active.setValue(active.checked);
+    this.promoForm.controls.type.setValue(type.value);
+    this.promoForm.controls.code.setValue(code.value);
+    var date = new Date(endDate.value);
+    date.setMinutes( date.getMinutes() + date.getTimezoneOffset() );
+    this.promoForm.controls.endDate.setValue(date);
+
+    if(this.promoForm.controls.type.value == "Money Off") {
+      this.promoForm.controls.amount.setValue(amount.value);
+      this.promoForm.controls.gift.setValue(null);
+      this.promoForm.controls.coverage.setValue(null);
+    } else if(this.promoForm.controls.type.value == "Free Gift") {
+      this.promoForm.controls.gift.setValue(gift.value);
+      this.promoForm.controls.amount.setValue(0);
+      this.promoForm.controls.coverage.setValue(null);
+    } else if(this.promoForm.controls.type.value == "Free Coverage") {
+      this.promoForm.controls.coverage.setValue(coverage.value);
+      this.promoForm.controls.amount.setValue(0);
+      this.promoForm.controls.gift.setValue(null);
+    } else if(this.promoForm.controls.type.value == "Free Coverage Multi") {
+      var optionalCoverageSelect = document.getElementById('promo-coverages') as HTMLSelectElement;
+      var selectedOptions = [];
+      for(var i = 0; i < optionalCoverageSelect.options.length; i++) {
+        if(optionalCoverageSelect.options[i].selected) {
+          selectedOptions.push(optionalCoverageSelect.options[i].value);
+        }
+      }
+      this.promoForm.controls.coverage.setValue(selectedOptions.toString());
+      this.promoForm.controls.amount.setValue(0);
+      this.promoForm.controls.gift.setValue(null);
+      this.promoForm.controls.code.setValue(codes.value);
+    }
+  }
+
+  initializePlanSettings() {
+    let planOne = document.getElementById('planOne') as HTMLInputElement;
+    let planOnePrice = document.getElementById('planOnePrice') as HTMLInputElement;
+    let planTwo = document.getElementById('planTwo') as HTMLInputElement;
+    let planTwoPrice = document.getElementById('planTwoPrice') as HTMLInputElement;
+    let planThree = document.getElementById('planThree') as HTMLInputElement;
+    let planThreePrice = document.getElementById('planThreePrice') as HTMLInputElement;
+
+    planOne.value = this.planForm.controls.planOne.value;
+    planOnePrice.value = this.planForm.controls.planOnePrice.value;
+    planTwo.value = this.planForm.controls.planTwo.value;
+    planTwoPrice.value = this.planForm.controls.planTwoPrice.value;
+    planThree.value = this.planForm.controls.planThree.value;
+    planThreePrice.value = this.planForm.controls.planThreePrice.value;
+  }
+
+  updatePlanForm() {
+    let planOne = document.getElementById('planOne') as HTMLInputElement;
+    let planOnePrice = document.getElementById('planOnePrice') as HTMLInputElement;
+    let planTwo = document.getElementById('planTwo') as HTMLInputElement;
+    let planTwoPrice = document.getElementById('planTwoPrice') as HTMLInputElement;
+    let planThree = document.getElementById('planThree') as HTMLInputElement;
+    let planThreePrice = document.getElementById('planThreePrice') as HTMLInputElement;
+
+    this.planForm.controls.planOne.setValue(planOne.value);
+    this.planForm.controls.planOnePrice.setValue(planOnePrice.value);
+    this.planForm.controls.planTwo.setValue(planTwo.value);
+    this.planForm.controls.planTwoPrice.setValue(planTwoPrice.value);
+    this.planForm.controls.planThree.setValue(planThree.value);
+    this.planForm.controls.planThreePrice.setValue(planThreePrice.value);
   }
 
   showPromoType(type: string) {
     let promoType = document.getElementById('promo-type') as HTMLSelectElement;
     return promoType.value == type ? true : false;
-  }
-
-  promoDisabled() {
-    return this.generalSettingsForm.controls.promoActive.value ? false : true;
+    return false;
   }
 
   newSpecialRequest() {
@@ -129,128 +291,213 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.login.currentUser.type == 'ADMIN') {
-      if(this.generalSettingsForm.valid) {
-        if(this.generalSettingsForm.controls.promoType.value == "Money Off") {
-          this.generalSettingsForm.controls.promoGift.setValue('');
-          this.generalSettingsForm.controls.promoCoverage.setValue('Select One');
-        } else if(this.generalSettingsForm.controls.promoType.value == "Free Gift") {
-          this.generalSettingsForm.controls.promoAmount.setValue('');
-          this.generalSettingsForm.controls.promoCoverage.setValue('Select One');
-        } else if(this.generalSettingsForm.controls.promoType.value == "Free Coverage") {
-          this.generalSettingsForm.controls.promoAmount.setValue('');
-          this.generalSettingsForm.controls.promoGift.setValue('');
-        } else if(this.generalSettingsForm.controls.promoType.value == "Free Coverage Multi") {
-          this.generalSettingsForm.controls.promoAmount.setValue('');
-          this.generalSettingsForm.controls.promoGift.setValue('');
-        }
-
-        let specialRequests = [];
-        let requests = document.getElementsByClassName('specialRequests');
-        for(var i = 0; i < requests.length; i++) {
-          let request = requests[i] as HTMLInputElement;
-          if(request.value != "") {
-            specialRequests.push(request.value);
-          }
-        }
-
-        let optionalCoverages = [];
-        let coverages = document.getElementsByClassName('optionalCoverages');
-        let prices = document.getElementsByClassName('optionalCoveragePrices');
-        for(var i = 0; i < coverages.length; i++) {
-          let coverage = coverages[i] as HTMLInputElement;
-          let price = prices[i] as HTMLInputElement;
-          let option = {
-            option: coverage.value, 
-            price: price.value
-          };
-          if(option.option != "" && option.price != "") {
-            optionalCoverages.push(option);
-          }
-        }
+    if(this.global.GetSession().type == 'ADMIN') {
+      this.updateGeneralSettings();
+      this.updatePromoSettings();
+      this.updatePlanSettings();
+      this.updateOptionalCoverageSettings();
+      this.updateSpecialRequestSettings();
+    } 
     
-        this.generalSettingsForm.controls.specialRequest.setValue(specialRequests);
-        this.generalSettingsForm.controls.optionalCoverage.setValue(optionalCoverages);
+    this.updateUserSettings();
+  }
 
-        this.userSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
+  updateGeneralSettings() {
+    if(this.generalSettingsForm.valid) {
 
-        if(!this.global.testing) {
-          return this.database.saveSettings(this.generalSettingsForm).subscribe(
-            response => {
-              this.dashboard.showSuccess = true;
-              this.global.updateGeneralSettings();
-              this.global.updatePlans();
-              this.global.updatePromo();
-              this.global.updateUsers();
-              setTimeout(()=>{
-                this.dashboard.updateDisplay('DASHBOARD');
-              },1000);
-            },
-            error => {
-              this.dashboard.showError = true;
-            }
-          );
-        } else {
-          console.log(this.generalSettingsForm.value);
-          this.dashboard.showSuccess = true;
-          setTimeout(()=>{
-            this.dashboard.updateDisplay('DASHBOARD');
-          },1000);
+      return this.database.HwaUpdateSettings(this.generalSettingsForm, this.global.GetSession().token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
         }
-      } else {
-        this.dashboard.showError = true;
-      }
+      );
 
     } else {
-
-      this.userSettingsForm.controls.id.setValue(this.generalSettingsForm.controls.id.value);
-      this.userSettingsForm.controls.usersType.setValue(this.generalSettingsForm.controls.usersType.value);
-      this.userSettingsForm.controls.usersName.setValue(this.generalSettingsForm.controls.usersName.value);
-      this.userSettingsForm.controls.emailAddress.setValue(this.generalSettingsForm.controls.emailAddress.value);
-      this.userSettingsForm.controls.alternateEmail.setValue(this.generalSettingsForm.controls.alternateEmail.value);
-      this.userSettingsForm.controls.phoneNumber.setValue(this.generalSettingsForm.controls.phoneNumber.value);
-      this.userSettingsForm.controls.loginUsername.setValue(this.generalSettingsForm.controls.loginUsername.value);
-      this.userSettingsForm.controls.loginPassword.setValue(this.generalSettingsForm.controls.loginPassword.value);
-
-      if(this.userSettingsForm.valid) {
-        this.generalSettingsForm.controls.loginPassword.setValue(btoa(this.userSettingsForm.controls.loginPassword.value));
-
-        if(!this.global.testing) {
-          return this.database.saveSettings(this.generalSettingsForm).subscribe(
-            response => {
-              this.dashboard.showSuccess = true;
-              this.global.updateGeneralSettings();
-              this.global.updatePlans();
-              this.global.updatePromo();
-              this.global.updateUsers();
-              setTimeout(()=>{
-                this.dashboard.updateDisplay('DASHBOARD');
-              },1000);
-            },
-            error => {
-              this.dashboard.showError = true;
-            }
-          );
-        } else {
-          console.log(this.generalSettingsForm.value);
-          this.dashboard.showSuccess = true;
-          setTimeout(()=>{
-            this.dashboard.updateDisplay('DASHBOARD');
-          },1000);
-        }
-      } else {
-        this.dashboard.showError = true;
-      }
+      console.log(this.generalSettingsForm);
+      this.dashboard.showError = true;
     }
   }
 
+  updatePromoSettings() {
+    this.updatePromoForm();
+
+    if(this.promoForm.valid) {
+      return this.database.HwaUpdatePromo(this.promoForm, this.global.GetSession().token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
+
+    } else {
+      console.log(this.promoForm);
+      this.dashboard.showError = true;
+    }
+
+  }
+
+  updatePlanSettings() {
+    this.updatePlanForm();
+
+    if(this.planForm.valid) {
+      let plans = [];
+      for(let i = 0; i < this.global.plans.length; i++) {
+        let name = "";
+        let price = 0;
+        if(i == 0) {
+          name = this.planForm.controls.planOne.value;
+          price = this.planForm.controls.planOnePrice.value;
+        } else if(i == 1) {
+          name = this.planForm.controls.planTwo.value;
+          price = this.planForm.controls.planTwoPrice.value;
+        } else {
+          name = this.planForm.controls.planThree.value;
+          price = this.planForm.controls.planThreePrice.value;
+        }
+        
+        let plan = {
+          name: name,
+          price: +price,
+          townhomeDiscount: this.global.plans[i].plan.townhomeDiscount
+        };
+        plans.push(plan);
+      }
+      return this.database.HwaUpdatePlans(plans, this.global.GetSession().token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
+    } else {
+      console.log(this.planForm);
+      this.dashboard.showError = true;
+    }
+  }
+
+  updateOptionalCoverageSettings() {
+    let optionalCoverages = [];
+      let coverages = document.getElementsByClassName('optionalCoverages');
+      let prices = document.getElementsByClassName('optionalCoveragePrices');
+      for(var i = 0; i < coverages.length; i++) {
+        let coverage = coverages[i] as HTMLInputElement;
+        let price = prices[i] as HTMLInputElement;
+        let option = {
+          coverageOption: coverage.value, 
+          price: price.value
+        };
+        if(option.coverageOption != "" && option.price != "") {
+          optionalCoverages.push(option);
+        }
+      }
+      return this.database.HwaUpdateOptionalCoverages(optionalCoverages, this.global.GetSession().token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
+  }
+
+  updateSpecialRequestSettings() {
+    let specialRequests = [];
+      let requests = document.getElementsByClassName('specialRequests');
+      for(var i = 0; i < requests.length; i++) {
+        let request = requests[i] as HTMLInputElement;
+        if(request.value != "") {
+          specialRequests.push(
+            {
+              request: request.value
+            }
+          );
+        }
+      }
+      return this.database.HwaUpdateSpecialRequests(specialRequests, this.global.GetSession().token).subscribe(
+        response => {
+        },
+        error => {
+          this.dashboard.showError = true;
+        }
+      );
+  }
+
+  updateUserSettings() {
+      if(this.userSettingsForm.valid) {
+        this.userSettingsForm.controls.password.setValue(btoa(this.userSettingsForm.controls.password.value));
+        
+        return this.database.HwaUpdateUser(this.userSettingsForm).subscribe(
+          response => {
+            this.dashboard.showSuccess = true;
+            this.global.hwaLogin(this.userSettingsForm.controls.username.value, atob(this.userSettingsForm.controls.password.value));
+            this.global.hwaGetSettings();
+            this.global.hwaGetPlans();
+            this.global.hwaGetPromo();
+            this.global.hwaGetOrders();
+            setTimeout(()=>{
+              this.dashboard.updateDisplay('DASHBOARD');
+            },1000);
+          },
+          error => {
+            this.dashboard.showError = true;
+          }
+        );
+
+      } else {
+        console.log(this.userSettingsForm);
+        this.dashboard.showError = true;
+      }
+  }
+
   togglePassword() {
-    var pass = document.getElementById("login-password") as HTMLInputElement;
+    var pass = document.getElementById("password") as HTMLInputElement;
     if (pass.type === "password") {
       pass.type = "text";
     } else {
       pass.type = "password";
     }
+  }
+
+  toggleModal(addLink: boolean) {
+    if(addLink) {
+      let input = document.getElementById('description') as HTMLTextAreaElement;
+      let index = input.selectionStart;
+      let before = this.generalSettingsForm.controls.webpageDescription.value.substring(0, index);
+      let after = this.generalSettingsForm.controls.webpageDescription.value.substring(index);
+      let value = '<a href="' + this.hyperlinkForm.controls.link.value + '" alt="' + this.hyperlinkForm.controls.text.value + '" target="_blank">' + this.hyperlinkForm.controls.text.value + '</a>';
+      this.generalSettingsForm.controls.webpageDescription.setValue(
+        before +
+        value + 
+        after);
+      input.selectionStart = index + value.length;
+    } else {
+      this.hyperlinkForm.reset();
+    }
+
+    this.hyperlinkModalIsOpen = !this.hyperlinkModalIsOpen;
+
+    let modal = document.getElementById('hyperlink-modal');
+        if(this.hyperlinkModalIsOpen) {
+          modal.style.display = 'block'
+        } else {
+          modal.style.display = 'none'
+        }
+  }
+
+  addLineBreak() {
+    let input = document.getElementById('description') as HTMLTextAreaElement;
+    let index = input.selectionStart;
+    console.log('index: ' + index);
+    console.log('character at index: ' + this.generalSettingsForm.controls.webpageDescription.value.substr(index, 1));
+    let before = this.generalSettingsForm.controls.webpageDescription.value.substring(0, index);
+    let after = this.generalSettingsForm.controls.webpageDescription.value.substring(index);
+    let value = '<br />';
+    this.generalSettingsForm.controls.webpageDescription.setValue(
+      before +
+      value + 
+      after);
+    input.selectionStart = index + value.length;
   }
 
 }
