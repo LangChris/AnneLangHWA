@@ -14,7 +14,29 @@
                 </tr>
                 <tr>
                     <th>Description</th>
-                    <td><textarea id="description" rows=10 cols=30 class="large" name="webpageDescription" formControlName="webpageDescription" ></textarea></td>
+                    <td>
+                        <textarea id="description" rows=10 cols=30 class="large" name="webpageDescription" formControlName="webpageDescription" ></textarea>
+                        <span class="small-button" (click)="toggleModal(false)">Hyperlink</span>
+                        <span class="small-button" (click)="addLineBreak()">Linebreak</span>
+                        <modal id="hyperlink-modal" header="Add Hyperlink" [is_open]="hyperlinkModalIsOpen">
+                            <form [hidden]='!hyperlinkModalIsOpen' id="hyperlinkForm" [formGroup]="hyperlinkForm">
+                                <table class="hyperlink-table">
+                                    <tr>
+                                        <th>Link</th>
+                                        <td><input type='text' id='hyperlink-link' name='link' formControlName='link' /></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Text</th>
+                                        <td><input type='text' id='hyperlink-text' name='text' formControlName='text' /></td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <td><span class="small-button" (click)="toggleModal(true)">Add</span></td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </modal>
+                    </td>
                 </tr>
                 <tr>
                     <th>Order Form Description</th>

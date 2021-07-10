@@ -2,7 +2,7 @@
   <div *ngIf="global.applicationStatus.length > 0 && global.applicationStatus == 'Healthy'">
         <div class="header" *ngIf="global.settings != null">{{global.settings.webpageTitle}}</div>
         <div class="sub-header" *ngIf="global.settings != null">{{global.settings.webpageSubtitle}}</div>
-        <p *ngIf="global.settings != null">{{global.settings.webpageDescription}}</p>
+        <p *ngIf="global.settings != null" [innerHTML]="global.settings.webpageDescription"></p>
   </div>
   
   <div class="double-section">

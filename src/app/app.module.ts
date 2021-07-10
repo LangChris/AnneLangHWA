@@ -22,6 +22,7 @@ import { GlobalService } from './services/global.service';
 import { DatabaseService } from './services/database.service';
 import { DatePipe } from '@angular/common';
 import { AccordionComponent } from './global/accordion/accordion.component';
+import { ModalComponent } from './global/modal/modal.component';
 
 const routes: Routes = [
   {
@@ -70,7 +71,8 @@ const routes: Routes = [
     SettingsComponent,
     ClaimsComponent,
     MainComponent,
-    AccordionComponent
+    AccordionComponent,
+    ModalComponent
   ],
   imports: [
     ReactiveFormsModule,

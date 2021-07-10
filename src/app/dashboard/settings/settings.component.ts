@@ -60,12 +60,17 @@ export class SettingsComponent implements OnInit {
     endDate: new FormControl(this.global.promo == null ? null : this.global.promo.endDate, [Validators.required])
   });
 
+  hyperlinkForm = new FormGroup({
+    link: new FormControl('', [Validators.required]),
+    text: new FormControl('', [Validators.required])
+  });
+
   multiSelect: any;
 
   generalSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? true : false;
   userSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? false : true;
   userManagementIsOpen = false;
-
+  hyperlinkModalIsOpen = false;
   userIndex = 0;
 
   constructor(public global: GlobalService, private database: DatabaseService, public dashboard: DashboardComponent) { }
@@ -452,6 +457,47 @@ export class SettingsComponent implements OnInit {
     } else {
       pass.type = "password";
     }
+  }
+
+  toggleModal(addLink: boolean) {
+    if(addLink) {
+      let input = document.getElementById('description') as HTMLTextAreaElement;
+      let index = input.selectionStart;
+      let before = this.generalSettingsForm.controls.webpageDescription.value.substring(0, index);
+      let after = this.generalSettingsForm.controls.webpageDescription.value.substring(index);
+      let value = '<a href="' + this.hyperlinkForm.controls.link.value + '" alt="' + this.hyperlinkForm.controls.text.value + '" target="_blank">' + this.hyperlinkForm.controls.text.value + '</a>';
+      this.generalSettingsForm.controls.webpageDescription.setValue(
+        before +
+        value + 
+        after);
+      input.selectionStart = index + value.length;
+    } else {
+      this.hyperlinkForm.reset();
+    }
+
+    this.hyperlinkModalIsOpen = !this.hyperlinkModalIsOpen;
+
+    let modal = document.getElementById('hyperlink-modal');
+        if(this.hyperlinkModalIsOpen) {
+          modal.style.display = 'block'
+        } else {
+          modal.style.display = 'none'
+        }
+  }
+
+  addLineBreak() {
+    let input = document.getElementById('description') as HTMLTextAreaElement;
+    let index = input.selectionStart;
+    console.log('index: ' + index);
+    console.log('character at index: ' + this.generalSettingsForm.controls.webpageDescription.value.substr(index, 1));
+    let before = this.generalSettingsForm.controls.webpageDescription.value.substring(0, index);
+    let after = this.generalSettingsForm.controls.webpageDescription.value.substring(index);
+    let value = '<br />';
+    this.generalSettingsForm.controls.webpageDescription.setValue(
+      before +
+      value + 
+      after);
+    input.selectionStart = index + value.length;
   }
 
 }

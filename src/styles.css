@@ -132,6 +132,22 @@ button:hover {
     background-color: orange;
 }
 
+.ex-small-button {
+    width: 20px;
+    height: 25px;
+    background-color: #eb5e17;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.ex-small-button:hover {
+    cursor: pointer;
+    background-color: orange;
+}
+
 .extra-padding {
     padding: 25px;
 }
@@ -405,6 +421,20 @@ accordion {
     width: 700px;
     margin: 0 auto;
 }
+
+/* The Modal (background) */
+modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
 
 @media screen and (max-width: 1150px) {
     

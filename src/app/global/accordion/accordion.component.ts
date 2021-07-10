@@ -17,11 +17,7 @@ export class AccordionComponent implements OnInit {
   }
 
   toggleContent() {
-    if(this.is_open) {
-      this.is_open = false;
-    } else {
-      this.is_open = true;
-    }
+    this.is_open = !this.is_open;
 
     switch(this.id) {
       case "general-settings-accordion" : {
