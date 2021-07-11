@@ -155,6 +155,7 @@ button:hover {
 .group-header {
     text-align: left;
     text-decoration: underline;
+    color: #dae2ef;
 }
 
 .group-label:before {

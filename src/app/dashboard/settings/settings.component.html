@@ -5,6 +5,28 @@
         <form [hidden]='!generalSettingsIsOpen' id="generalSettingsForm" [formGroup]="generalSettingsForm" novalidate (ngSubmit)="updateSettings()" >
             <table class="settings-table card">
                 <tr>
+                    <th class="group-header">Contact</th>
+                </tr>
+                <tr>
+                    <th>Owner</th>
+                    <td><input type="text" id="owner" class="large" name="owner" formControlName="owner" /></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td><input type="tel" id="phone" class="large" name="phoneNumber" formControlName="phoneNumber" /></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" id="email" class="large" name="email" formControlName="email" /></td>
+                </tr>
+                <tr>
+                    <th>Alternate Email</th>
+                    <td><input type="email" id="alternateEmail" class="large" name="alternateEmail" formControlName="alternateEmail" /></td>
+                </tr>
+                <tr>
+                    <th class="group-header">Webpage</th>
+                </tr>
+                <tr>
                     <th>Title</th>
                     <td><input type="text" id="title" class="large" name="webpageTitle" formControlName="webpageTitle" /></td>
                 </tr>
@@ -39,31 +61,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Order Form Description</th>
+                    <th class="group-header">Orders</th>
+                </tr>
+                <tr>
+                    <th>Description</th>
                     <td><input type="text" id="order-description" class="large" name="orderDescription" formControlName="orderDescription" /></td>
                 </tr>
                 <tr>
-                    <th>Order Form Message</th>
+                    <th>Message</th>
                     <td><input type="text" id="order-message" class="large" name="orderMessage" formControlName="orderMessage" /></td>
                 </tr>
+                
                 <tr>
-                    <th>Owner</th>
-                    <td><input type="text" id="owner" class="medium" name="owner" formControlName="owner" /></td>
-                </tr>
-                <tr>
-                    <th>Phone Number</th>
-                    <td><input type="tel" id="phone" class="medium" name="phoneNumber" formControlName="phoneNumber" /></td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><input type="email" id="email" class="medium" name="email" formControlName="email" /></td>
-                </tr>
-                <tr>
-                    <th>Alternate Email</th>
-                    <td><input type="email" id="alternateEmail" class="medium" name="alternateEmail" formControlName="alternateEmail" /></td>
-                </tr>
-                <tr>
-                    <th>Receive Emails</th>
+                    <th>Emails</th>
                     <td>
                         <div class="on-off-switch">  
                             <input type="checkbox" value="None" id="send-email" name="sendEmail" formControlName="sendEmail" />
