@@ -1,0 +1,12 @@
+<div class="left-nav">
+    <span *ngFor="let tab of tabs" 
+    class="tab" 
+    [style.background]="tab.active ? '#eb5e17' : 'transparent'"
+    [style.color]="tab.active ? '#4894a4' : '#000'"
+    [style.font-weight]="tab.active ? 'bold' : 'normal'"
+    [class.active]="tab.active" 
+    (click)="selectTab(tab)">
+        <i [class]="tab.class"></i>
+        {{tab.label}}
+    </span>
+</div>
