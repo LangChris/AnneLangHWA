@@ -23,6 +23,34 @@ export class GlobalService {
   registerStatus = "";
   applicationStatus = "Temporarily Unavailable - Please try again later";
 
+dashboardTabs = {
+    GENERAL: {
+      label: 'General',
+      active: true,
+      class: 'fa fa-gear'
+    },
+    PASSWORD: {
+      label: 'Login',
+      active: false,
+      class: 'fa fa-lock'
+    },
+    USERS: {
+      label: 'Users',
+      active: false,
+      class: 'fa fa-user'
+    },
+    ORDERS: {
+      label: 'Orders',
+      active: false,
+      class: 'fa fa-bars'
+    },
+    EDIT: {
+      label: 'Edit',
+      active: false,
+      class: 'fa fa-pencil'
+    }
+  };
+
   constructor(private database: DatabaseService, private datePipe: DatePipe) { }
 
   get getBrochures() {
@@ -56,6 +84,7 @@ export class GlobalService {
     this.database.HwaLogin(login).subscribe(response => {
       this.loginStatus = "SUCCESS";
       sessionStorage.setItem('CurrentUser', JSON.stringify(response));
+      this.hwaGetOrders();
     }, error => {
       console.log(error);
 
