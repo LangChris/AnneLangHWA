@@ -246,6 +246,7 @@
     </form>
 
     <!-- USER MANAGEMENT: ADMIN ONLY -->
+    <h2 [hidden]='!global.dashboardTabs.USERS.active'>Users <i class="fa fa-user"></i></h2>
     <div [hidden]='!global.dashboardTabs.USERS.active' class="settings-margin">
         <div class="card user" *ngFor="let user of global.users;let userIndex=index;" [hidden]="!showUser(userIndex)">
             <div class="card-inner">
