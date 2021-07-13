@@ -1,5 +1,5 @@
 <div class="filter-box">
-    <div class="header">Orders <i class="fa fa-bars"></i></div>
+    <h2>Orders <i class="fa fa-bars"></i></h2>
   
     <span id="filter-dropdown" class="closed" (click)="toggleFilters()">Filters</span>
     <p *ngIf="!showFilters"><small>Click to expand filters</small></p>
@@ -165,7 +165,8 @@
       </tbody>  
     </table> 
   </div> 
-  <div class="centered-block top-padding">
-    <button *ngIf="dashboard.orders && dashboard.orders.length > 0" class="export" (click)="ExportToExcel()"></button>  
-    <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
+  <div class="nav-container-footer">
+    <div class="centered-block top-padding">
+      <button *ngIf="dashboard.orders && dashboard.orders.length > 0" class="export" (click)="ExportToExcel()"> Export</button>  
+    </div>
   </div>

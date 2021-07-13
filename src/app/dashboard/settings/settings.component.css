@@ -1,8 +1,8 @@
 .settings-table {
     margin: 0 auto;
     text-align: left;
-    padding-bottom: 25px;
-    width: auto;
+    width: max-content;
+    padding: 0 20% 25px 0;
 }
 
 input,textarea,select {
@@ -99,6 +99,11 @@ h3 {
     padding-top: 40px;
 }
 
+h2 {
+    padding: 10px 20% 0 0;
+    color: #eb5e17;
+}
+
 .card:hover .card-inner {
     transform: rotateY(180deg);
 }
@@ -110,6 +115,10 @@ h3 {
 span {
     padding: 0 5px;
     margin-right: 5px;
+}
+
+.settings-margin {
+    margin: 20px 20% 20px 0;
 }
 
 @media screen and (max-width: 800px) {
@@ -128,6 +137,18 @@ span {
 
     .small {
       width: 70px;
+    }
+
+    .settings-table {
+        padding: 0 0 25px 0;
+    }
+
+    h2 {
+        padding: 10px 0 0 0;
+    }
+
+    .settings-margin {
+        margin: 20px 0 20px 0;
     }
 }
 

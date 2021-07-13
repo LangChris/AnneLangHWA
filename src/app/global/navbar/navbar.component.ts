@@ -23,6 +23,7 @@ export class NavbarComponent implements OnInit {
 
   navigateToClaims() {
     this.closeDropdowns();
+    this.global.clearActiveTab();
     this.router.navigate(['claims']);
   }
 
@@ -45,11 +46,13 @@ export class NavbarComponent implements OnInit {
 
   navigateToHome() {
     this.closeDropdowns();
+    this.global.clearActiveTab();
     this.router.navigate(['']);
   }
 
   doLogout() {
     this.closeDropdowns();
+    this.global.clearActiveTab();
     this.global.ClearSession();
     this.router.navigate(['']);
   }

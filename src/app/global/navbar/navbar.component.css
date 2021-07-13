@@ -47,6 +47,7 @@
     padding: 10px;
     line-height: 2em;
     color: #dae2ef;
+    min-width: 70px;
 }
 
 .option:hover {

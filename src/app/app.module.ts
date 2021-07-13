@@ -23,6 +23,8 @@ import { DatabaseService } from './services/database.service';
 import { DatePipe } from '@angular/common';
 import { AccordionComponent } from './global/accordion/accordion.component';
 import { ModalComponent } from './global/modal/modal.component';
+import { LeftNavComponent } from './global/left-nav/left-nav.component';
+import { TabComponent } from './global/left-nav/tab/tab.component';
 
 const routes: Routes = [
   {
@@ -72,7 +74,9 @@ const routes: Routes = [
     ClaimsComponent,
     MainComponent,
     AccordionComponent,
-    ModalComponent
+    ModalComponent,
+    LeftNavComponent,
+    TabComponent
   ],
   imports: [
     ReactiveFormsModule,

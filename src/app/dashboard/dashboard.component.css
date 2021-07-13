@@ -1,14 +1,20 @@
 .nav-container {
-    min-height: 400px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    perspective: 1000px;
+    min-height: 600px;
+    width: 100%;
+    position: relative;
 }
 
 .nav-container-content {
-    float: left;
+    float: right;
     background: #dae2ef;
-    min-height: 400px;
+    height: 100%;
     width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    perspective: 1000px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    overflow: scroll;
 }
 
 h1 {

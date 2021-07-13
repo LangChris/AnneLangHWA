@@ -26,10 +26,15 @@ export class GlobalService {
 dashboardTabs = {
     GENERAL: {
       label: 'General',
-      active: true,
+      active: false,
       class: 'fa fa-gear'
     },
-    PASSWORD: {
+    ACCOUNT: {
+      label: 'Account',
+      active: false,
+      class: 'fa fa-gear'
+    },
+    LOG_IN: {
       label: 'Login',
       active: false,
       class: 'fa fa-lock'
@@ -64,7 +69,26 @@ dashboardTabs = {
 
   ClearSession() {
     sessionStorage.removeItem('CurrentUser');
-    // then navigate home
+  }
+
+  setActiveTab(activeTab) {
+    let keys = Object.keys(this.dashboardTabs);
+
+    for(let key of keys) {
+      if(key.replace('_', '') == activeTab.toUpperCase()) {
+        this.dashboardTabs[key].active = true;
+      } else {
+        this.dashboardTabs[key].active = false;
+      }
+    }
+  }
+
+  clearActiveTab() {
+    let keys = Object.keys(this.dashboardTabs);
+
+    for(let key of keys) {
+      this.dashboardTabs[key].active = false;
+    }
   }
 
   hwaApiHealth() {
@@ -85,6 +109,9 @@ dashboardTabs = {
       this.loginStatus = "SUCCESS";
       sessionStorage.setItem('CurrentUser', JSON.stringify(response));
       this.hwaGetOrders();
+      if(this.GetSession().type == 'ADMIN') {
+        this.hwaGetUsers();
+      }
     }, error => {
       console.log(error);
 
@@ -102,6 +129,10 @@ dashboardTabs = {
   hwaRegisterUser(user: any) {
     this.database.HwaRegisterUser(user).subscribe(response => {
       sessionStorage.setItem('CurrentUser', JSON.stringify(response));
+      this.hwaGetOrders();
+      if(this.GetSession().type == 'ADMIN') {
+        this.hwaGetUsers();
+      }
       this.loginStatus = "SUCCESS";
       this.registerStatus = "SUCCESS";
     }, error => {
@@ -203,7 +234,7 @@ dashboardTabs = {
   }
 
   hwaPlaceOrder(orderForm: FormGroup, type: string) {
-    // TODO: build order object from orderForm
+
     let buyer: any = null;
     let seller: any = null;
     let titleAgent: any = null;

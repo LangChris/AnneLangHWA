@@ -67,9 +67,6 @@ export class SettingsComponent implements OnInit {
 
   multiSelect: any;
 
-  generalSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? true : false;
-  userSettingsIsOpen = this.global.GetSession().type == 'ADMIN' ? false : true;
-  userManagementIsOpen = false;
   hyperlinkModalIsOpen = false;
   userIndex = 0;
 
@@ -291,15 +288,19 @@ export class SettingsComponent implements OnInit {
   }
 
   updateSettings() {
-    if(this.global.GetSession().type == 'ADMIN') {
+
+    if(this.global.dashboardTabs.GENERAL.active) {
       this.updateGeneralSettings();
-      this.updatePromoSettings();
+      if(this.global.promo != null) {
+        this.updatePromoSettings();
+      }
       this.updatePlanSettings();
       this.updateOptionalCoverageSettings();
       this.updateSpecialRequestSettings();
-    } 
-    
-    this.updateUserSettings();
+    } else if(this.global.dashboardTabs.ACCOUNT.active || this.global.dashboardTabs.LOG_IN.active) {
+      this.updateUserSettings();
+    }
+
   }
 
   updateGeneralSettings() {
@@ -416,6 +417,10 @@ export class SettingsComponent implements OnInit {
       }
       return this.database.HwaUpdateSpecialRequests(specialRequests, this.global.GetSession().token).subscribe(
         response => {
+          this.dashboard.showSuccess = true;
+          setTimeout(()=>{
+            this.dashboard.showSuccess = false;
+        },1000);
         },
         error => {
           this.dashboard.showError = true;
@@ -425,18 +430,18 @@ export class SettingsComponent implements OnInit {
 
   updateUserSettings() {
       if(this.userSettingsForm.valid) {
-        this.userSettingsForm.controls.password.setValue(btoa(this.userSettingsForm.controls.password.value));
-        
+
         return this.database.HwaUpdateUser(this.userSettingsForm).subscribe(
           response => {
             this.dashboard.showSuccess = true;
-            this.global.hwaLogin(this.userSettingsForm.controls.username.value, atob(this.userSettingsForm.controls.password.value));
-            this.global.hwaGetSettings();
-            this.global.hwaGetPlans();
-            this.global.hwaGetPromo();
-            this.global.hwaGetOrders();
             setTimeout(()=>{
-              this.dashboard.updateDisplay('DASHBOARD');
+                this.global.hwaLogin(this.userSettingsForm.controls.username.value, this.userSettingsForm.controls.password.value);
+                this.dashboard.showSuccess = false;
+                this.userSettingsForm.controls.password.setValue(atob(this.global.GetSession().password));
+                this.global.hwaGetSettings();
+                this.global.hwaGetPlans();
+                this.global.hwaGetPromo();
+                this.global.hwaGetOrders();
             },1000);
           },
           error => {

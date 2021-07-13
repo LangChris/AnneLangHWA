@@ -18,24 +18,6 @@ export class AccordionComponent implements OnInit {
 
   toggleContent() {
     this.is_open = !this.is_open;
-
-    switch(this.id) {
-      case "general-settings-accordion" : {
-        this.settings.generalSettingsIsOpen = this.is_open; 
-        this.settings.userSettingsIsOpen = false;
-        this.settings.userManagementIsOpen = false;
-      } break;
-      case "user-settings-accordion" : { 
-        this.settings.userSettingsIsOpen = this.is_open; 
-        this.settings.generalSettingsIsOpen = false;
-        this.settings.userManagementIsOpen = false;
-      } break;
-      case "user-management-accordion" : { 
-        this.settings.userManagementIsOpen = this.is_open; 
-        this.settings.generalSettingsIsOpen = false;
-        this.settings.userSettingsIsOpen = false;
-      } break;
-    }
   }
 
 }

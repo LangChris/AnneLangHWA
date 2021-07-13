@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, ContentChildren, QueryList} from '@angular/core';
 import { TabComponent } from './tab/tab.component';
-import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'left-nav',
@@ -10,7 +10,7 @@ import { DashboardComponent } from '../../dashboard/dashboard.component';
 export class LeftNavComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
-  constructor(public dashboard: DashboardComponent) { }
+  constructor(public global: GlobalService) { }
 
   ngAfterContentInit(): void {
     // get all active tabs
@@ -18,7 +18,9 @@ export class LeftNavComponent implements AfterContentInit {
     
     // if there is no active tab set, activate the first
     if(activeTabs.length === 0) {
-      this.selectTab(this.tabs.first);
+
+      let availableTabs = this.tabs.filter((tab)=> (this.global.GetSession().type == tab.role || tab.role == 'ANY'));
+      this.selectTab(availableTabs[0]);
     }
   }
 
@@ -29,7 +31,7 @@ export class LeftNavComponent implements AfterContentInit {
     // activate the tab the user has clicked on.
     tab.active = true;
 
-    this.dashboard.setActiveTab(tab.label);
+    this.global.setActiveTab(tab.label);
   }
 
 }

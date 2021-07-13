@@ -145,6 +145,7 @@ export class DatabaseService {
 
   // HWA Update User
   HwaUpdateUser(formGroup: FormGroup) {
+    formGroup.controls.password.setValue(btoa(formGroup.controls.password.value));
     return this.http.put(hwa.url + hwa.endpoints.updateUser, formGroup.value);
   }
 

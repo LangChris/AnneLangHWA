@@ -50,7 +50,6 @@ export class EditOrdersComponent implements OnInit {
   ngOnInit() {
     this.editForm.controls.orderId.valueChanges.subscribe(value => {
       let table = document.getElementsByTagName('table');
-      table[0].style.width = "auto";
       setTimeout(()=>{
         if(this.editForm.controls.orderId.value != 'Select Order') {
           this.dashboard.showSuccess = false;

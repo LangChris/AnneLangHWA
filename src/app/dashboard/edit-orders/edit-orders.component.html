@@ -1,9 +1,8 @@
-<h1 class="header">Edit Order <i class="fa fa-pencil"></i></h1>
-  
+<h2>Edit Order <i class="fa fa-pencil"></i></h2>
   <div *ngIf="!dashboard.orders || dashboard.orders.length == 0" class="centered-block">
     <p>No orders placed yet.</p>
   </div>
-  <div *ngIf="dashboard.orders && dashboard.orders.length > 0" class="section">
+  <div *ngIf="dashboard.orders && dashboard.orders.length > 0">
   <form *ngIf="dashboard.orders && dashboard.orders.length > 0" id="editForm" [formGroup]="editForm" novalidate (ngSubmit)="updateOrder()" >
     <table class="edit-form">
     <tr>
@@ -164,8 +163,9 @@
   <div *ngIf="dashboard.showSuccess" class="success">Successfully Made Changes</div>
 </form>
 </div>
-  <div class="centered-block top-padding">
-    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin check" type="submit" form="editForm"></button>
-    <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="top-margin x" (click)="deleteOrder(editForm.controls.orderId.value);"></button>
-    <button class="top-margin home" (click)="dashboard.updateDisplay('DASHBOARD');"></button>
+  <div class="nav-container-footer">
+    <div class="centered-block top-padding">
+      <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="settings-margin check" type="submit" form="editForm"> Update</button>
+      <button *ngIf="editForm.controls.orderId.value != 'Select Order'" class="settings-margin x" (click)="deleteOrder(editForm.controls.orderId.value);"> Delete</button>
+    </div>
   </div>

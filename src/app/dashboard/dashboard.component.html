@@ -1,14 +1,29 @@
 <!-- Show Login if not logged in  -->
 <app-login *ngIf="global.GetSession() == null"></app-login>
 
-<!-- Show Dashboard if logged in  -->
 <div *ngIf="global.GetSession() != null">
-    <!-- Main Dashboard Page -->
-    <dashboard-main class="centered-block" *ngIf="display == 'DASHBOARD'"></dashboard-main>
-    <!-- View Orders Page -->
-    <dashboard-view class="centered-block" *ngIf="display == 'VIEW'"></dashboard-view>
-    <!-- Edit Orders Page -->
-    <dashboard-edit class="centered-block" *ngIf="global.GetSession() != null && global.GetSession().type == 'ADMIN' && display == 'EDIT'"></dashboard-edit>
-    <!-- Settings Page -->
-    <dashboard-settings class="centered-block" *ngIf="display == 'SETTINGS'"></dashboard-settings>
+<h1 class="header">{{global.GetSession().type == 'ADMIN' ? 'Admin' : 'User'}} Dashboard</h1>
+    <div class="nav-container">
+        <left-nav>
+            <tab *ngIf="global.GetSession().type == 'ADMIN'" [label]="global.dashboardTabs.GENERAL.label" [active]="global.dashboardTabs.GENERAL.active" [class]="global.dashboardTabs.GENERAL.class" role="ADMIN"></tab>
+            <tab [label]="global.dashboardTabs.ACCOUNT.label" [active]="global.dashboardTabs.ACCOUNT.active" [class]="global.dashboardTabs.ACCOUNT.class" role="ANY"></tab>
+            <tab [label]="global.dashboardTabs.LOG_IN.label" [active]="global.dashboardTabs.LOG_IN.active" [class]="global.dashboardTabs.LOG_IN.class" role="ANY"></tab>
+            <tab *ngIf="global.GetSession().type == 'ADMIN'" [label]="global.dashboardTabs.USERS.label" [active]="global.dashboardTabs.USERS.active" [class]="global.dashboardTabs.USERS.class"></tab>
+            <tab [label]="global.dashboardTabs.ORDERS.label" [active]="global.dashboardTabs.ORDERS.active" [class]="global.dashboardTabs.ORDERS.class"></tab>
+            <tab *ngIf="global.GetSession().type == 'ADMIN'" [label]="global.dashboardTabs.EDIT.label" [active]="global.dashboardTabs.EDIT.active" [class]="global.dashboardTabs.EDIT.class"></tab>
+        </left-nav>
+        
+        <div class="nav-container-content">
+            <!-- Show Dashboard if logged in  -->
+            <div *ngIf="global.GetSession() != null">
+                <!-- Settings Page -->
+                <dashboard-settings class="centered-block" *ngIf="global.dashboardTabs.GENERAL.active || global.dashboardTabs.ACCOUNT.active || global.dashboardTabs.LOG_IN.active || global.dashboardTabs.USERS.active"></dashboard-settings>
+                <!-- View Orders Page -->
+                <dashboard-view class="centered-block" *ngIf="global.dashboardTabs.ORDERS.active"></dashboard-view>
+                <!-- Edit Orders Page -->
+                <dashboard-edit class="centered-block" *ngIf="global.dashboardTabs.EDIT.active"></dashboard-edit>
+            </div>  
+        </div>
+
+    </div>
 </div>

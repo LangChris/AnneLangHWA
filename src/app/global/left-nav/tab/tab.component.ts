@@ -9,7 +9,8 @@ export class TabComponent implements OnInit {
   @Input() label: string;
   @Input() active: boolean;
   @Input() class: string;
-  
+  @Input() role: string;
+
   constructor() { }
 
   ngOnInit(): void {
