@@ -18,6 +18,7 @@
                             <td>
                                 <input type="password" class="large" id="password" (keydown)="checkKey($event)" />
                                 <span *ngIf="global.loginStatus == 'BAD_PASS'" class="required small-text" ><br /> Invalid Password!</span>
+                                <span *ngIf="global.loginStatus == 'EXPIRED_PASS'" class="required small-text" ><br /> Expired Password - Please request a new one!</span>
                             </td>
                         </tr>
                     </tbody>

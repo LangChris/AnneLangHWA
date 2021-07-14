@@ -123,6 +123,10 @@ dashboardTabs = {
         this.loginStatus = "BAD_PASS";
       }
 
+      if(error.error.message.includes('Temporary password has expired')) {
+        this.loginStatus = "EXPIRED_PASS";
+      }
+
     });
   }
 
